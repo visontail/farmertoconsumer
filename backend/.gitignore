@@ -1,0 +1,10 @@
+# Folders to ignore
+node_modules/
+
+# Files to ignore
+package-lock.json
+.env
+
+# File extensions to ignore
+*.sqlite
+*.log
