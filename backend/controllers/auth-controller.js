@@ -1,37 +1,47 @@
-const AuthService = require("../services/auth-service");
+const { User } = require('../models');
+const bcrypt = require('bcrypt');
 
-module.exports = (fastify, _, next) => {
-    const authService = new AuthService(fastify)
+class AuthController {
+    #fastify;
+    #userService;
 
-    fastify.post('/register', {
-        schema: {
-            body: {
-                type: 'object',
-                required: ['email', 'name', 'password', 'confirmPassword'],
-                properties: {
-                    email: { type: 'string', format: 'email' },
-                    name: { type: 'string', minLength: 3 },
-                    password: { type: 'string', minLength: 8 },
-                    confirmPassword: { type: 'string' },
-                }
-            }
+    constructor(fastify) {
+        this.#fastify = fastify;
+    }
+
+    async register(req, res) {
+        if (req.body.password !== req.body.confirmPassword) {
+            return res.status(400).send({ message: "Passwords do not match" })
         }
-    }, (req, res) => authService.register(req, res));
-
-    fastify.post('/login', {
-        schema: {
-            body: {
-                type: 'object',
-                required: ['email', 'password'],
-                properties: {
-                    email: { type: 'string', format: 'email' },
-                    password: { type: 'string' }
-                }
-            }
+        if (await User.findOne({ where: { email: req.body.email } })) {
+            return res.status(409).send({ message: "Email address is already in use" })
         }
-    }, (req, res) => authService.login(req, res))
 
-    next();
+        const { email, name } = req.body;
+        const password = await bcrypt.hash(req.body.password, 10)
+
+        const { id } = await User.create({ email, name, password })
+
+        res.status(200).send({ id })
+    }
+
+    async login(req, res) {
+        const user = await User.findOne({ where: { email: req.body.email } });
+        if (!user || !await bcrypt.compare(req.body.password, user.password)) {
+            return res.status(401).send({ message: 'Invalid credentials.' });
+        }
+        const token = this.#fastify.jwt.sign({ id: user.id });
+        return res.send({ token });
+    }
+
+    async profile(req, res) {
+        const user = await User.findByPk(req.user?.id);
+        if (!user) {
+            res.status(401).send({ message: "Unauthorized" });
+        }
+        const { id, email, name } = user;
+        res.send({ id, email, name })
+    }
 }
 
-module.exports.autoPrefix = '/auth';
+module.exports = AuthController;

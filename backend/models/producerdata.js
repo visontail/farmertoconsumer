@@ -5,8 +5,8 @@ const {
 module.exports = (sequelize, DataTypes) => {
   class ProducerData extends Model {
     static associate(models) {
-      this.belongsTo(models.User);
-      this.hasMany(models.Product);
+      this.belongsTo(models.User, { as: "User", foreignKey: "UserId" });
+      this.hasMany(models.Product, { as: "Products", foreignKey: "ProducerDataId" });
     }
   }
   ProducerData.init({

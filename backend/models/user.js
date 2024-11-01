@@ -5,8 +5,12 @@ const {
 module.exports = (sequelize, DataTypes) => {
   class User extends Model {
     static associate(models) {
-      this.hasOne(models.UserUpgradeRequest);
-      this.hasOne(models.ProducerData);
+      this.hasOne(models.UserUpgradeRequest, { as: "UserUpgradeRequest", foreignKey: "UserId" });
+      this.hasOne(models.ProducerData, { as: "ProducerData", foreignKey: "UserId" });
+    }
+
+    isProducer() {
+      return this.getProducerData() !== null
     }
   }
   User.init({

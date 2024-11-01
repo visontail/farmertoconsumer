@@ -2,7 +2,7 @@ const authenticate = async (req, res) => {
     try {
         await req.jwtVerify();
     } catch (err) {
-        res.send(err);
+        res.status(401).send({ message: "Unauthorized" });
     }
 }
 

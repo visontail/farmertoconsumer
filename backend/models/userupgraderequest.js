@@ -5,7 +5,7 @@ const {
 module.exports = (sequelize, DataTypes) => {
   class UserUpgradeRequest extends Model {
     static associate(models) {
-      this.belongsTo(models.User);
+      this.belongsTo(models.User, { as: "User", foreignKey: "UserId" });
     }
   }
   UserUpgradeRequest.init({

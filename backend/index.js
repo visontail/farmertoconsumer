@@ -8,7 +8,7 @@ const fastify = require('fastify')({
 })
 
 fastify.register(require('@fastify/autoload'), {
-    dir: path.join(__dirname, "controllers"),
+    dir: path.join(__dirname, "routes"),
 })
 
 fastify.register(require('@fastify/jwt'), {

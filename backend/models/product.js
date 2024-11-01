@@ -5,10 +5,10 @@ const {
 module.exports = (sequelize, DataTypes) => {
   class Product extends Model {
     static associate(models) {
-      this.belongsTo(models.ProducerData);
-      this.belongsTo(models.ProductCategory);
-      this.belongsTo(models.QuantityUnit);
-      this.hasMany(models.Order);
+      this.belongsTo(models.ProducerData, { as: "ProducerData", foreignKey: "ProducerDataId"});
+      this.belongsTo(models.ProductCategory, { as: "ProductCategory", foreignKey: "ProductCategoryId"});
+      this.belongsTo(models.QuantityUnit, { as: "QuantityUnit", foreignKey: "QuantityUnitId"});
+      this.hasMany(models.Order, { as: "Orders", foreignKey: "ProductId"});
     }
   }
   Product.init({
