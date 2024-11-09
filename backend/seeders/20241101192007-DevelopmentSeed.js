@@ -81,11 +81,12 @@ module.exports = {
     for (const customer of customers) {
       for (const product of faker.helpers.arrayElements(products, { min: 0, max: 3 })) {
         orders.push(await Order.create({
-          approved: faker.helpers.arrayElement(true, false, null),
+          approved: faker.helpers.arrayElement([true, false, null]),
           quantity: faker.helpers.rangeToNumber({ min: 1, max: 20 }),
           price: product.price,
           QuantityUnitId: product.QuantityUnitId,
           ProductId: product.id,
+          UserId: customer.id
         }));
       }
     }

@@ -1,19 +1,25 @@
-const UserController = require("../controllers/user-controller");
-
 module.exports = (fastify, _, next) => {
-    const userController = new UserController(fastify)
-
-    fastify.get('/users/:id', {
-        onRequest: fastify.authenticate,
+    fastify.get('/:id', {
         schema: {
             params: {
-                type: 'query',
+                type: 'object',
                 properties: {
                     id: { type: 'integer' }
                 }
             }
         }
-    }, (req, res) => userController.getUserById(req, res))
+    }, (req, res) => fastify.UserController.getById(req, res))
+
+    fastify.get('/:id/producerData', {
+        schema: {
+            params: {
+                type: 'object',
+                properties: {
+                    id: { type: 'integer' }
+                }
+            }
+        }
+    }, (req, res) => fastify.UserController.getProducerDataByUserId(req, res))
 
     next();
 }

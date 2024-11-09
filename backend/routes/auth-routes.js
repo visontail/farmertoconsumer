@@ -1,8 +1,4 @@
-const AuthController = require("../controllers/auth-controller");
-
 module.exports = (fastify, _, next) => {
-    const authController = new AuthController(fastify)
-
     fastify.post('/register', {
         schema: {
             body: {
@@ -16,7 +12,7 @@ module.exports = (fastify, _, next) => {
                 }
             }
         }
-    }, (req, res) => authController.register(req, res));
+    }, (req, res) => fastify.AuthController.register(req, res));
 
     fastify.post('/login', {
         schema: {
@@ -29,11 +25,11 @@ module.exports = (fastify, _, next) => {
                 }
             }
         }
-    }, (req, res) => authController.login(req, res))
+    }, (req, res) => fastify.AuthController.login(req, res))
 
     fastify.get('/profile', {
         onRequest: fastify.authenticate
-    }, (req, res) => authController.profile(req, res))
+    }, (req, res) => fastify.AuthController.profile(req, res))
 
     next();
 }

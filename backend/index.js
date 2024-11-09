@@ -1,6 +1,8 @@
 const path = require('path');
-const db = require('./models');
 const decorateMiddlewares = require('./middlewares/decorate');
+const injectControllers = require('./controllers/dependency-injection');
+const injectShapers = require('./formatters/dependency-injection');
+const injectHelpers = require('./helpers/dependency-injection');
 require('dotenv').config();
 
 const fastify = require('fastify')({
@@ -16,6 +18,9 @@ fastify.register(require('@fastify/jwt'), {
 })
 
 decorateMiddlewares(fastify);
+injectControllers(fastify);
+injectShapers(fastify);
+injectHelpers(fastify);
 
 const port = process.env.SERVER_PORT || 3000;
 const host = process.env.SERVER_HOST || 'localhost'

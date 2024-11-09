@@ -7,6 +7,7 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       this.hasOne(models.UserUpgradeRequest, { as: "UserUpgradeRequest", foreignKey: "UserId" });
       this.hasOne(models.ProducerData, { as: "ProducerData", foreignKey: "UserId" });
+      this.hasMany(models.Order, { as: "Orders", foreignKey: "UserId" })
     }
 
     isProducer() {

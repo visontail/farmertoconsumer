@@ -22,7 +22,7 @@ class AuthController {
 
         const { id } = await User.create({ email, name, password })
 
-        res.status(200).send({ id })
+        return res.status(200).send({ id })
     }
 
     async login(req, res) {
@@ -35,10 +35,7 @@ class AuthController {
     }
 
     async profile(req, res) {
-        const user = await User.findByPk(req.user?.id);
-        if (!user) {
-            res.status(401).send({ message: "Unauthorized" });
-        }
+        const user = await User.findByPk(req.user.id);
         const { id, email, name } = user;
         res.send({ id, email, name })
     }

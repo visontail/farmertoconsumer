@@ -7,6 +7,7 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       this.belongsTo(models.QuantityUnit, { as: "QuantityUnit", foreignKey: "QuantityUnitId"});
       this.belongsTo(models.Product, { as: "Product", foreignKey: "ProductId"});
+      this.belongsTo(models.User, { as: "User", foreignKey: "UserId"});
     }
   }
   Order.init({
@@ -15,6 +16,7 @@ module.exports = (sequelize, DataTypes) => {
     approved: DataTypes.BOOLEAN,
     QuantityUnitId: DataTypes.INTEGER,
     ProductId: DataTypes.INTEGER,
+    UserId: DataTypes.INTEGER,
   }, {
     sequelize,
     modelName: 'Order',
