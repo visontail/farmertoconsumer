@@ -1,12 +1,7 @@
-const { User, ProducerData } = require('../models');
+const { User } = require('../models');
+const ControllerBase = require('./controller-base');
 
-class UserController {
-    #fastify;
-
-    constructor(fastify) {
-        this.#fastify = fastify;
-    }
-
+class UserController extends ControllerBase{
     async getById(req, res) {
         const user = await User.findByPk(req.params.id);
         if (!user) {

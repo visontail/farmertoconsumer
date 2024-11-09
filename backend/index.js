@@ -1,7 +1,7 @@
 const path = require('path');
 const decorateMiddlewares = require('./middlewares/decorate');
 const injectControllers = require('./controllers/dependency-injection');
-const injectShapers = require('./formatters/dependency-injection');
+const injectShapers = require('./shapers/dependency-injection');
 const injectHelpers = require('./helpers/dependency-injection');
 require('dotenv').config();
 

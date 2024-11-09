@@ -1,14 +1,8 @@
 const { User } = require('../models');
 const bcrypt = require('bcrypt');
+const ControllerBase = require('./controller-base');
 
-class AuthController {
-    #fastify;
-    #userService;
-
-    constructor(fastify) {
-        this.#fastify = fastify;
-    }
-
+class AuthController extends ControllerBase {
     async register(req, res) {
         if (req.body.password !== req.body.confirmPassword) {
             return res.status(400).send({ message: "Passwords do not match" })
@@ -30,7 +24,7 @@ class AuthController {
         if (!user || !await bcrypt.compare(req.body.password, user.password)) {
             return res.status(401).send({ message: 'Invalid credentials.' });
         }
-        const token = this.#fastify.jwt.sign({ id: user.id });
+        const token = this.fastify.jwt.sign({ id: user.id });
         return res.send({ token });
     }
 

@@ -1,18 +1,13 @@
 const { Product, User } = require('../models');
 const { Op, where } = require('sequelize');
+const ControllerBase = require('./controller-base');
 
-class ProductController {
-    #fastify;
-
-    constructor(fastify) {
-        this.#fastify = fastify;
-    }
-
+class ProductController extends ControllerBase {
     async getAll(req, res) {
         const { query } = req;
-        const { ProductShaper } = this.#fastify;
+        const { ProductShaper } = this.fastify;
 
-        const where = this.#fastify.ObjectSimplifier.simplify({
+        const where = this.fastify.ObjectSimplifier.simplify({
             name: { [Op.like]: `%${req.query.search ?? ""}%` },
             ProductCategoryId: query.categoryId,
             ProducerDataId: query.producerDataId,
@@ -29,7 +24,7 @@ class ProductController {
         const total = await Product.count(config);
         const data = await Product.findAll(config);
 
-        const products = await ProductShaper.single.formatArray(data);
+        const products = await ProductShaper.single.shapeArray(data);
 
         return {
             products,
@@ -39,14 +34,14 @@ class ProductController {
     }
 
     async getById(req, res) {
-        const { ProductShaper } = this.#fastify;
+        const { ProductShaper } = this.fastify;
 
         const product = await Product.findByPk(req.params.id, { include: ProductShaper.single.includes });
         if (!product) {
             res.status(404).send({ message: 'Product with the given id could not be found.' })
         }
 
-        return await ProductShaper.single.format(product);
+        return await ProductShaper.single.shape(product);
     }
 
     async create(req, res) {
@@ -64,11 +59,11 @@ class ProductController {
             ProducerDataId: producerData.id,
         })
         
-        return this.#fastify.ProductShaper.single.format(product);
+        return this.fastify.ProductShaper.single.shape(product);
     }
 
     async update(req, res) {
-        const { ProductShaper } = this.#fastify;
+        const { ProductShaper } = this.fastify;
 
         const user = await User.findByPk(req.user.id);
         const producerData = await user.getProducerData();
@@ -80,7 +75,7 @@ class ProductController {
 
         const { name, categoryId, quantity, quantityUnitId, price } = req.body;
 
-        await product.update(this.#fastify.ObjectSimplifier.simplify({
+        await product.update(this.fastify.ObjectSimplifier.simplify({
             name,
             ProductCategoryId: categoryId,
             quantity,
@@ -89,7 +84,7 @@ class ProductController {
             ProducerDataId: producerData.id,
         }));
 
-        return ProductShaper.single.format(product);
+        return ProductShaper.single.shape(product);
     }
 }
 

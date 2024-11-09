@@ -45,7 +45,7 @@ class OrderShaper extends ModelShaperBase {
             await ModelExtender.ensureAssociationIncluded(order.Product, 'ProductCategory');
             await ModelExtender.ensureAssociationIncluded(order.Product, 'QuantityUnit');
         }
-        const formatterCallback = async (order) => {
+        const shaperCallback = async (order) => {
             const product = order.Product;
             const customer = order.User;
             const producerData = product.ProducerData;
@@ -91,7 +91,7 @@ class OrderShaper extends ModelShaperBase {
                 approved: order.approved
             }
         };
-        return new ModelShape(formatterCallback, includes, associationSetup);
+        return new ModelShape(shaperCallback, includes, associationSetup);
     }
 }
 

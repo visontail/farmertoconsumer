@@ -1,11 +1,11 @@
 class ModelShape {
     #includes
-    #formatterCallback
+    #shaperCallBack
     #associationSetup
 
-    constructor(formatterCallback, includes, associationSetup) {
+    constructor(shaperCallback, includes, associationSetup) {
         this.#includes = includes;
-        this.#formatterCallback = formatterCallback;
+        this.#shaperCallBack = shaperCallback;
         this.#associationSetup = associationSetup
     }
 
@@ -13,15 +13,15 @@ class ModelShape {
         return this.#includes;
     }
 
-    async format(model) {
+    async shape(model) {
         await this.#associationSetup(model);
-        return this.#formatterCallback(model);
+        return this.#shaperCallBack(model);
     }
 
-    async formatArray(models) {
+    async shapeArray(models) {
         const result = [];
         for (let model of models) {
-            result.push(await this.format(model));
+            result.push(await this.shape(model));
         }
         return result;
     }

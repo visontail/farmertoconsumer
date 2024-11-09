@@ -1,16 +1,11 @@
 const { User, Product, ProducerData, Order } = require('../models');
 const { Op, where } = require('sequelize');
+const ControllerBase = require('./controller-base');
 
-class OrderController {
-    #fastify;
-
-    constructor(fastify) {
-        this.#fastify = fastify;
-    }
-
+class OrderController extends ControllerBase {
     async getAll(req, res) {
         const { query } = req;
-        const { OrderShaper } = this.#fastify;
+        const { OrderShaper } = this.fastify;
 
         let whereTemp = {
             [`${query.userType === 'customer'
@@ -43,7 +38,7 @@ class OrderController {
             }
         }
 
-        const where = this.#fastify.ObjectSimplifier.simplify(whereTemp)
+        const where = this.fastify.ObjectSimplifier.simplify(whereTemp)
 
         const config = {
             where,
@@ -55,7 +50,7 @@ class OrderController {
         const total = await Order.count(config);
         const data = await Order.findAll(config);
 
-        const orders = await OrderShaper.single.formatArray(data);
+        const orders = await OrderShaper.single.shapeArray(data);
 
         return {
             orders,
@@ -65,14 +60,14 @@ class OrderController {
     }
 
     async getById(req, res) {
-        const { OrderShaper } = this.#fastify;
+        const { OrderShaper } = this.fastify;
 
         const order = await Order.findByPk(req.params.id, { include: OrderShaper.single.includes });
         if (!order) {
             return res.status(404).send({ message: 'Order with the given id could not be found.' })
         }
 
-        return await OrderShaper.single.format(order);
+        return await OrderShaper.single.shape(order);
     }
 
     async create(req, res) {
@@ -91,7 +86,7 @@ class OrderController {
             UserId: user.id,
         })
 
-        return this.#fastify.OrderShaper.single.format(order);
+        return this.fastify.OrderShaper.single.shape(order);
     }
 
     async response(req, res) {

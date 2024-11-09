@@ -32,7 +32,7 @@ class ProductShaper extends ModelShaperBase {
             await ModelExtender.ensureAssociationIncluded(product, 'ProductCategory');
             await ModelExtender.ensureAssociationIncluded(product, 'QuantityUnit');
         }
-        const formatterCallback = async (product) => {
+        const shaperCallback = async (product) => {
             const producerData = product.ProducerData;
             const producer = product.ProducerData.User;
             const category = product.ProductCategory;
@@ -62,7 +62,7 @@ class ProductShaper extends ModelShaperBase {
                 price: product.price
             }
         };
-        return new ModelShape(formatterCallback, includes, associationSetup);
+        return new ModelShape(shaperCallback, includes, associationSetup);
     }
 }
 
