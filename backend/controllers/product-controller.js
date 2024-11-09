@@ -1,18 +1,13 @@
 const { Product, User } = require('../models');
 const { Op, where } = require('sequelize');
+const ControllerBase = require('./controller-base');
 
-class ProductController {
-    #fastify;
-
-    constructor(fastify) {
-        this.#fastify = fastify;
-    }
-
+class ProductController extends ControllerBase {
     async getAll(req, res) {
         const { query } = req;
-        const { ProductShaper } = this.#fastify;
+        const { ProductShaper } = this.fastify;
 
-        const where = this.#fastify.ObjectSimplifier.simplify({
+        const where = this.fastify.ObjectSimplifier.simplify({
             name: { [Op.like]: `%${req.query.search ?? ""}%` },
             ProductCategoryId: query.categoryId,
             ProducerDataId: query.producerDataId,
@@ -39,7 +34,7 @@ class ProductController {
     }
 
     async getById(req, res) {
-        const { ProductShaper } = this.#fastify;
+        const { ProductShaper } = this.fastify;
 
         const product = await Product.findByPk(req.params.id, { include: ProductShaper.single.includes });
         if (!product) {
@@ -64,11 +59,11 @@ class ProductController {
             ProducerDataId: producerData.id,
         })
         
-        return this.#fastify.ProductShaper.single.format(product);
+        return this.fastify.ProductShaper.single.format(product);
     }
 
     async update(req, res) {
-        const { ProductShaper } = this.#fastify;
+        const { ProductShaper } = this.fastify;
 
         const user = await User.findByPk(req.user.id);
         const producerData = await user.getProducerData();
@@ -80,7 +75,7 @@ class ProductController {
 
         const { name, categoryId, quantity, quantityUnitId, price } = req.body;
 
-        await product.update(this.#fastify.ObjectSimplifier.simplify({
+        await product.update(this.fastify.ObjectSimplifier.simplify({
             name,
             ProductCategoryId: categoryId,
             quantity,

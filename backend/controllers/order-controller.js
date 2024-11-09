@@ -1,16 +1,11 @@
 const { User, Product, ProducerData, Order } = require('../models');
 const { Op, where } = require('sequelize');
+const ControllerBase = require('./controller-base');
 
-class OrderController {
-    #fastify;
-
-    constructor(fastify) {
-        this.#fastify = fastify;
-    }
-
+class OrderController extends ControllerBase {
     async getAll(req, res) {
         const { query } = req;
-        const { OrderShaper } = this.#fastify;
+        const { OrderShaper } = this.fastify;
 
         let whereTemp = {
             [`${query.userType === 'customer'
@@ -43,7 +38,7 @@ class OrderController {
             }
         }
 
-        const where = this.#fastify.ObjectSimplifier.simplify(whereTemp)
+        const where = this.fastify.ObjectSimplifier.simplify(whereTemp)
 
         const config = {
             where,
@@ -65,7 +60,7 @@ class OrderController {
     }
 
     async getById(req, res) {
-        const { OrderShaper } = this.#fastify;
+        const { OrderShaper } = this.fastify;
 
         const order = await Order.findByPk(req.params.id, { include: OrderShaper.single.includes });
         if (!order) {
@@ -91,7 +86,7 @@ class OrderController {
             UserId: user.id,
         })
 
-        return this.#fastify.OrderShaper.single.format(order);
+        return this.fastify.OrderShaper.single.format(order);
     }
 
     async response(req, res) {
