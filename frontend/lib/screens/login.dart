@@ -1,11 +1,13 @@
-import 'package:farmertoconsumer/services/auth_service.dart';
-import 'package:farmertoconsumer/widgets/custom_button.dart';
 import 'package:flutter/material.dart';
-import '../widgets/custom_text_field.dart';
 import 'package:provider/provider.dart';
+
+import '../services/auth_service.dart';
+import '../widgets/custom_button.dart';
+import '../widgets/custom_text_field.dart';
 
 
 class LoginScreen extends StatelessWidget {
+  
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
   
@@ -28,7 +30,7 @@ class LoginScreen extends StatelessWidget {
           CustomButton(
             text: 'Login',
             onPressed: () {
-              print('Login: ${emailController.text} ${passwordController.text}');
+              print('Login: ${emailController.text} ${passwordController.text}'); // debug log, remove in prod
               Provider.of<AuthService>(context, listen: false).login(
                 emailController.text,
                 passwordController.text,

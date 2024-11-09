@@ -1,6 +1,6 @@
-
-import 'package:farmertoconsumer/services/auth_service.dart';
 import 'package:flutter/material.dart';
+
+import '../services/auth_service.dart';
 
 class AuthProvider extends ChangeNotifier {
   final AuthService _authService = AuthService();
@@ -11,11 +11,20 @@ class AuthProvider extends ChangeNotifier {
     try {
       await _authService.login(email, password);
       _isAuthenticated = true;
-      print('Logged in');
       notifyListeners();
     } catch (e) {
       _isAuthenticated = false;
-      print("Error logging in: $e");
+      rethrow;
+    }
+  }
+
+  Future<void> register(String email, String name, String password, String confirmPassword) async {
+    try {
+      await _authService.register(email, name, password, confirmPassword);
+      _isAuthenticated = true;
+      notifyListeners();
+    } catch (e) {
+      _isAuthenticated = false;
       rethrow;
     }
   }
