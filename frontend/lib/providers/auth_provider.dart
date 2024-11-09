@@ -11,9 +11,11 @@ class AuthProvider extends ChangeNotifier {
     try {
       await _authService.login(email, password);
       _isAuthenticated = true;
+      print('Logged in');
       notifyListeners();
     } catch (e) {
       _isAuthenticated = false;
+      print("Error logging in: $e");
       rethrow;
     }
   }
