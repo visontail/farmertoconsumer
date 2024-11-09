@@ -17,6 +17,10 @@ fastify.register(require('@fastify/jwt'), {
     secret: process.env.JWT_SECRET
 })
 
+fastify.register(require('@fastify/cors'), {
+    origin: true
+})
+
 decorateMiddlewares(fastify);
 injectControllers(fastify);
 injectShapers(fastify);
