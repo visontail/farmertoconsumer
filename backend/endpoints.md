@@ -150,7 +150,7 @@ response: {
 ```js
 @Authenticated
 @Admin
-POST /user-upgrade-requests/{id}/response
+POST /user-upgrade-requests/{id}/reply
 
 body: {
     approve: boolean;
@@ -462,7 +462,7 @@ response: {
 @Producer
 @ProductOwner
 
-POST /orders/{id}/response
+POST /orders/{id}/reply
 
 body: {
     approve: boolean;

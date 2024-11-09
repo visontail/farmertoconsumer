@@ -89,7 +89,7 @@ class OrderController extends ControllerBase {
         return this.fastify.OrderShaper.single.shape(order);
     }
 
-    async response(req, res) {
+    async reply(req, res) {
         const order = await Order.findByPk(req.params.id, {
             include: [
                 {

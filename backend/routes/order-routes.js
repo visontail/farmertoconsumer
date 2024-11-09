@@ -46,7 +46,7 @@ module.exports = (fastify, _, next) => {
         }
     }, (req, res) => fastify.OrderController.create(req, res))
 
-    fastify.post('/:id/response', {
+    fastify.post('/:id/reply', {
         onRequest: fastify.authenticateProducer,
         schema: {
             body: {
@@ -57,7 +57,7 @@ module.exports = (fastify, _, next) => {
                 },
             }
         }
-    }, (req, res) => fastify.OrderController.response(req, res))
+    }, (req, res) => fastify.OrderController.reply(req, res))
 
     next();
 }
