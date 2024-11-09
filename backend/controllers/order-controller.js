@@ -50,7 +50,7 @@ class OrderController extends ControllerBase {
         const total = await Order.count(config);
         const data = await Order.findAll(config);
 
-        const orders = await OrderShaper.single.formatArray(data);
+        const orders = await OrderShaper.single.shapeArray(data);
 
         return {
             orders,
@@ -67,7 +67,7 @@ class OrderController extends ControllerBase {
             return res.status(404).send({ message: 'Order with the given id could not be found.' })
         }
 
-        return await OrderShaper.single.format(order);
+        return await OrderShaper.single.shape(order);
     }
 
     async create(req, res) {
@@ -86,7 +86,7 @@ class OrderController extends ControllerBase {
             UserId: user.id,
         })
 
-        return this.fastify.OrderShaper.single.format(order);
+        return this.fastify.OrderShaper.single.shape(order);
     }
 
     async response(req, res) {

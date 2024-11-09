@@ -24,7 +24,7 @@ class ProductController extends ControllerBase {
         const total = await Product.count(config);
         const data = await Product.findAll(config);
 
-        const products = await ProductShaper.single.formatArray(data);
+        const products = await ProductShaper.single.shapeArray(data);
 
         return {
             products,
@@ -41,7 +41,7 @@ class ProductController extends ControllerBase {
             res.status(404).send({ message: 'Product with the given id could not be found.' })
         }
 
-        return await ProductShaper.single.format(product);
+        return await ProductShaper.single.shape(product);
     }
 
     async create(req, res) {
@@ -59,7 +59,7 @@ class ProductController extends ControllerBase {
             ProducerDataId: producerData.id,
         })
         
-        return this.fastify.ProductShaper.single.format(product);
+        return this.fastify.ProductShaper.single.shape(product);
     }
 
     async update(req, res) {
@@ -84,7 +84,7 @@ class ProductController extends ControllerBase {
             ProducerDataId: producerData.id,
         }));
 
-        return ProductShaper.single.format(product);
+        return ProductShaper.single.shape(product);
     }
 }
 
