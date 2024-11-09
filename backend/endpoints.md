@@ -58,10 +58,10 @@ response: {
     id: number;
     email: string;
     name: string;
-    producerData:? {
+    producerData: {
         id: number;
         description: string;
-    }
+    }?
 }
 ```
 
@@ -168,6 +168,7 @@ queryParams: {
     search:? string;
     categoryId:? number;
     producerId:? number;
+    producerDataId:? number;
     skip:? number;
     take:? number;
 }
@@ -180,6 +181,10 @@ response: {
             id: number;
             name: string;
             email: string;
+            producerData: {
+                id: number;
+                description: string;
+            }
         }
         category: {
             id: number;
@@ -209,6 +214,10 @@ response: {
         id: number;
         name: string;
         email: string;
+        producerData: {
+            id: number;
+            description: string;
+        }
     }
     category: {
         id: number;
@@ -263,6 +272,15 @@ body: {
 response: {
     id: number;
     name: string;
+    producer: {
+        id: number;
+        name: string;
+        email: string;
+        producerData: {
+            id: number;
+            description: string;
+        }
+    }
     category: {
         id: number;
         name: string;
@@ -288,7 +306,7 @@ GET /orders
 
 body: {
     userId: number;
-    userType: "consumer" | "producer";
+    userType: "customer" | "producer";
     filter:? "with_response" | "no_response" | "approved" | "declined"
     skip:? number;
     take:? number;
@@ -297,7 +315,7 @@ body: {
 response: {
     orders: {
         id: number;
-        user: {
+        customer: {
             id: number;
             name: string;
             email: string;
@@ -305,10 +323,14 @@ response: {
         product: {
             id: number;
             name: string;
-            user: {
+            producer: {
                 id: number;
                 name: string;
                 email: string;
+                producerData: {
+                    id: number;
+                    description: string;
+                };
             };
             category: {
                 id: number;
@@ -343,7 +365,59 @@ GET /orders/{id}
 
 response: {
     id: number;
-    user: {
+    customer: {
+        id: number;
+        name: string;
+        email: string;
+    };
+    product: {
+        id: number;
+        name: string;
+        producer: {
+            id: number;
+            name: string;
+            email: string;
+            producerData: {
+                id: number;
+                description: string;
+            };
+        };
+        category: {
+            id: number;
+            name: string;
+        };
+        quantity: number;
+        quantityUnit: {
+            id: number;
+            name: string;
+        }
+        price: number;
+    };
+    quantity: number;
+    quantityUnit: {
+        id: number;
+        name: string;
+    };
+    price: number;
+    approved: boolean?;
+}
+```
+
+### Create order
+
+```js
+@Authenticated
+@Owner
+POST /orders
+
+body: {
+    productId: number,
+    quantity: number,
+}
+
+response: {
+    id: number;
+    customer: {
         id: number;
         name: string;
         email: string;
@@ -355,6 +429,10 @@ response: {
             id: number;
             name: string;
             email: string;
+            producer: {
+                id: number;
+                description: string;
+            };
         };
         category: {
             id: number;
@@ -391,4 +469,48 @@ body: {
 }
 
 response: {}
+```
+
+## Categories
+
+### Get all categories
+
+```js
+GET /categories
+
+body: {
+    skip:? number;
+    take:? number;
+}
+
+response: {
+    categories: {
+        id: number,
+        name: string
+    }[],
+    total: number;
+    current: number;
+}
+```
+
+## Quantity units
+
+### Get all quantity units
+
+```js
+GET /quantityUnits
+
+body: {
+    skip:? number;
+    take:? number;
+}
+
+response: {
+    quantityUnits: {
+        id: number,
+        name: string
+    }[],
+    total: number;
+    current: number;
+}
 ```
