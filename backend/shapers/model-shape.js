@@ -3,7 +3,7 @@ class ModelShape {
     #shaperCallBack
     #associationSetup
 
-    constructor(shaperCallback, includes, associationSetup) {
+    constructor(shaperCallback, includes = [], associationSetup = undefined) {
         this.#includes = includes;
         this.#shaperCallBack = shaperCallback;
         this.#associationSetup = associationSetup
@@ -14,7 +14,9 @@ class ModelShape {
     }
 
     async shape(model) {
-        await this.#associationSetup(model);
+        if (this.#associationSetup) {
+            await this.#associationSetup(model);
+        }
         return this.#shaperCallBack(model);
     }
 

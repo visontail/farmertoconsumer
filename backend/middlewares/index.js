@@ -15,7 +15,7 @@ const authenticate = async (req, res) => {
 
 const authenticateProducer = async (req, res) => {
     const user = await authenticate(req, res);
-    if (!user.isProducer()) {
+    if (!user.isProducer) {
         res.status(401).send({ message: "Unauthorized" });
     }
 }

@@ -73,6 +73,34 @@ GET /users/{id}/producerData
 response: {
     id: number;
     description: string;
+    user: {
+        id: number;
+        email: string;
+        name: string;
+    }
+}
+```
+
+### Update user's producer data
+
+
+```js
+@Authenticated
+@Self
+PATCH /users/{id}/producerData
+
+body {
+    description?: string
+}
+
+response: {
+    id: number;
+    description: string;
+    user: {
+        id: number;
+        email: string;
+        name: string;
+    }
 }
 ```
 
@@ -498,7 +526,7 @@ response: {
 ### Get all quantity units
 
 ```js
-GET /quantityUnits
+GET /quantity-units
 
 body: {
     skip:? number;

@@ -1,8 +1,34 @@
+const { User } = require("../models");
 const ModelShaperBase = require("./model-shaper-base");
+const ModelShape = require("./model-shape");
 
 class UserUpgradeRequestShaper extends ModelShaperBase {
     get single() {
-        throw Error('Not implemented'); // TODO
+        const includes = [
+            {
+                model: User,
+                as: 'User',
+            }
+        ];
+        const associationSetup = async (userUpgradeRequest) => {
+            const { ModelExtender } = this.fastify;
+            await ModelExtender.ensureAssociationIncluded(userUpgradeRequest, 'User');
+        }
+        const shaperCallback = async (userUpgradeRequest) => {
+            const user = userUpgradeRequest.User
+
+            return {
+                id: userUpgradeRequest.id,
+                user: {
+                    id: user.id,
+                    name: user.name,
+                    emaiL: user.email
+                },
+                description: userUpgradeRequest.description,
+                approved: userUpgradeRequest.approved
+            }
+        };
+        return new ModelShape(shaperCallback, includes, associationSetup);
     }
 }
 

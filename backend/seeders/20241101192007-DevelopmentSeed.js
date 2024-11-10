@@ -47,19 +47,27 @@ module.exports = {
       producers.push(producer);
     }
 
+    console.log("Seeding admin user");
+    await User.create({
+      email: `admin@elte.hu`,
+      name: `Admin`,
+      isAdmin: true,
+      password
+    });
+
 
     console.log("Seeding quantity units");
     const quantityUnits = [];
     for (const name of ["kg", "pc", "bag", "tray"]) {
       quantityUnits.push(await QuantityUnit.create({ name }));
     }
-  
+
     console.log("Seeding product categories");
     const productCategories = [];
     for (const name of ["apple", "peach", "melon", "wheat", "potato", "carrot"]) {
       productCategories.push(await ProductCategory.create({ name }));
     }
-    
+
     console.log("Seeding products")
     const products = [];
     for (const producer of producers) {

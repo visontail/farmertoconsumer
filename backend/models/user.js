@@ -10,14 +10,15 @@ module.exports = (sequelize, DataTypes) => {
       this.hasMany(models.Order, { as: "Orders", foreignKey: "UserId" })
     }
 
-    isProducer() {
+    get isProducer() {
       return this.getProducerData() !== null
     }
   }
   User.init({
     name: DataTypes.STRING,
     email: DataTypes.STRING,
-    password: DataTypes.STRING
+    password: DataTypes.STRING,
+    isAdmin: DataTypes.BOOLEAN,
   }, {
     sequelize,
     modelName: 'User',

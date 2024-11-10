@@ -21,6 +21,24 @@ module.exports = (fastify, _, next) => {
         }
     }, (req, res) => fastify.UserController.getProducerDataByUserId(req, res))
 
+    fastify.patch('/:id/producerData', {
+        onRequest: fastify.authenticate,
+        schema: {
+            params: {
+                type: 'object',
+                properties: {
+                    id: { type: 'integer' }
+                }
+            },
+            body: {
+                type: 'object',
+                properties: {
+                    description: { type: 'string', minLength: 1 }
+                }
+            }
+        }
+    }, (req, res) => fastify.UserController.updateProducerDataByUserId(req, res))
+
     next();
 }
 
