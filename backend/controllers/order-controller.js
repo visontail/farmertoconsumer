@@ -7,6 +7,10 @@ class OrderController extends ControllerBase {
         const { query } = req;
         const { OrderShaper } = this.fastify;
 
+        if (req.user.id !== query.userId) {
+            return res.status(404).send({ message: 'Unauthorized' })
+        }
+
         let whereTemp = {
             [`${query.userType === 'customer'
                 ? '$User.id$'
@@ -60,11 +64,20 @@ class OrderController extends ControllerBase {
     }
 
     async getById(req, res) {
-        const { OrderShaper } = this.fastify;
+        const { OrderShaper, ModelExtender } = this.fastify;
 
         const order = await Order.findByPk(req.params.id, { include: OrderShaper.single.includes });
         if (!order) {
             return res.status(404).send({ message: 'Order with the given id could not be found.' })
+        }
+
+        await ModelExtender.ensureAssociationIncluded(order, 'User');
+        await ModelExtender.ensureAssociationIncluded(order, 'Product');
+        await ModelExtender.ensureAssociationIncluded(order.Product, 'ProducerData');
+        await ModelExtender.ensureAssociationIncluded(order.Product.ProducerData, 'User');
+
+        if (order.User.id !== req.user.id && order.Product.ProducerData.User.id !== req.user.id) {
+            return res.status(401).send({ message: 'Unauthorized' })
         }
 
         return await OrderShaper.single.shape(order);
@@ -108,7 +121,7 @@ class OrderController extends ControllerBase {
                 }
             ]
         });
-        
+
         if (!order) {
             return res.status(404).send({ message: 'Order with the given id could not be found.' })
         }

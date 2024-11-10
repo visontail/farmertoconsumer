@@ -1,5 +1,6 @@
 module.exports = (fastify, _, next) => {
     fastify.get('/', {
+        onRequest: fastify.authenticateAdmin,
         schema: {
             query: {
                 type: 'object',
@@ -17,6 +18,7 @@ module.exports = (fastify, _, next) => {
     }, (req, res) => fastify.UserUpgradeRequestController.getAll(req, res));
 
     fastify.get('/:id', {
+        onRequest: fastify.authenticate,
         schema: {
             params: {
                 type: 'object',
@@ -41,7 +43,7 @@ module.exports = (fastify, _, next) => {
     }, (req, res) => fastify.UserUpgradeRequestController.create(req, res))
 
     fastify.post('/:id/reply', {
-        onRequest: fastify.authenticate, // todo
+        onRequest: fastify.authenticateAdmin,
         schema: {
             body: {
                 type: 'object',

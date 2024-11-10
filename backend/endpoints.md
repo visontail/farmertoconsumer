@@ -388,7 +388,7 @@ response: {
 
 ```js
 @Authenticated
-@Owner
+@Owner(Producer or customer)
 GET /orders/{id}
 
 response: {
@@ -435,7 +435,6 @@ response: {
 
 ```js
 @Authenticated
-@Owner
 POST /orders
 
 body: {
@@ -487,8 +486,7 @@ response: {
 
 ```js
 @Authenticated
-@Producer
-@ProductOwner
+@Owner(Producer)
 
 POST /orders/{id}/reply
 

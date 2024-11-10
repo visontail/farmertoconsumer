@@ -66,6 +66,11 @@ class UserUpgradeRequestController extends ControllerBase {
                 .send({ message: 'User upgrade request with the given id could not be found.' })
         }
 
+        const actingUser = await User.findByPk(req.user.id)
+        if (!actingUser.isAdmin && actingUser.id !== userUpgradeRequest.UserId) {
+            return res.status(401).send({ message: 'Unauthenticated' })
+        }
+
         return await UserUpgradeRequestShaper.single.shape(userUpgradeRequest);
     }
 

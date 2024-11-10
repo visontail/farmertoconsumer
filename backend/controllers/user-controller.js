@@ -17,6 +17,10 @@ class UserController extends ControllerBase {
 
     async updateProducerDataByUserId(req, res) {
         const user = await this.#getUserByIdStrict(req.params.id, res);
+        if (user.id !== req.user.id) {
+            return res.status(401).send({ message: 'Unauthenticated' })
+        }
+        
         const producerData = await this.#getProducerDataStrict(user, res);
 
         await producerData.update(this.fastify.ObjectSimplifier.simplify({

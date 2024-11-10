@@ -64,8 +64,8 @@ class OrderShaper extends ModelShaperBase {
                     name: product.name,
                     producer: {
                         id: producer.id,
-                        name: producer.id,
-                        email: producer.id,
+                        name: producer.name,
+                        email: producer.email,
                         producerData: {
                             id: producerData.id,
                             description: producerData.description,

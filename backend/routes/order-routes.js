@@ -1,5 +1,6 @@
 module.exports = (fastify, _, next) => {
     fastify.get('/', {
+        onRequest: fastify.authenticate,
         schema: {
             query: {
                 type: 'object',
@@ -22,6 +23,7 @@ module.exports = (fastify, _, next) => {
     }, (req, res) => fastify.OrderController.getAll(req, res));
 
     fastify.get('/:id', {
+        onRequest: fastify.authenticate,
         schema: {
             params: {
                 type: 'object',

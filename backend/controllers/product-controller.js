@@ -50,7 +50,7 @@ class ProductController extends ControllerBase {
 
         const { name, categoryId, quantity, quantityUnitId, price } = req.body;
 
-        await Product.create({
+        const product = await Product.create({
             name,
             ProductCategoryId: categoryId,
             quantity,
