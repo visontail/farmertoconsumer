@@ -14,11 +14,14 @@ const authenticate = async (req, res) => {
 }
 
 const authenticateProducer = async (req, res) => {
-    _authorize(req, res, (user) => user.isProducer)
+    await _authorize(req, res, async (user) => {
+        const producerData = await user.getProducerData();
+        return producerData !== null;
+    })
 }
 
 const authenticateAdmin = async (req, res) => {
-    _authorize(req, res, (user) => user.isAdmin)
+    await _authorize(req, res, async (user) => user.isAdmin)
 }
 
 const _authorize = async (req, res, condition) => {
