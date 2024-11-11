@@ -1,0 +1,237 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<diagram program="umlet" version="14.3.0">
+  <zoom_level>6</zoom_level>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>192</x>
+      <y>156</y>
+      <w>108</w>
+      <h>144</h>
+    </coordinates>
+    <panel_attributes>
+Order
+
+--
+
++ price : float
++ quantity : int
++ approved : bool
++ QuantityUnitId : int
++ ProductId : int
+
+--
+
++ associate(models) : void</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>306</x>
+      <y>156</y>
+      <w>108</w>
+      <h>144</h>
+    </coordinates>
+    <panel_attributes>
+ProducerData
+
+--
+
++ description : String
++ UserId : int
+
+--
+
++ associate(models) : void</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>420</x>
+      <y>156</y>
+      <w>108</w>
+      <h>144</h>
+    </coordinates>
+    <panel_attributes>
+Product
+
+--
+
++ name : String
++ quantity : int
++ price : float
++ ProducerDataId : int
++ ProductCategoryId : int
++ QuantityUnitId : int
+
+--
+
++ associate(models) : void</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>534</x>
+      <y>156</y>
+      <w>108</w>
+      <h>144</h>
+    </coordinates>
+    <panel_attributes>
+ProductCategory
+
+--
+
++ name : String
+
+--
+
++ associate(models) : void</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>648</x>
+      <y>156</y>
+      <w>108</w>
+      <h>144</h>
+    </coordinates>
+    <panel_attributes>
+QuantityUnit
+
+--
+
++ name : String
+
+--
+
++ associate(models) : void</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>762</x>
+      <y>156</y>
+      <w>108</w>
+      <h>144</h>
+    </coordinates>
+    <panel_attributes>
+User
+
+--
+
++ id : int
++ name : String
++ email : String
++ password : String
+
+--
+
++ associate(models) : void</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>876</x>
+      <y>156</y>
+      <w>108</w>
+      <h>144</h>
+    </coordinates>
+    <panel_attributes>
+UserUpgradeRequest
+
+--
+
++ description : String
++ approved : bool
++ UserId : int
+
+--
+
++ associate(models) : void</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>234</x>
+      <y>294</y>
+      <w>474</w>
+      <h>54</h>
+    </coordinates>
+    <panel_attributes>lt=-&gt;&gt;&gt;&gt;
+m1=1
+m2=1</panel_attributes>
+    <additional_attributes>760.0;10.0;760.0;70.0;10.0;70.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>480</x>
+      <y>294</y>
+      <w>126</w>
+      <h>36</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;-
+m1=0..*
+m2=1</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;40.0;180.0;40.0;180.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>342</x>
+      <y>294</y>
+      <w>120</w>
+      <h>36</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;-
+m1=0..*
+m2=1</panel_attributes>
+    <additional_attributes>160.0;10.0;160.0;40.0;10.0;40.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>456</x>
+      <y>294</y>
+      <w>240</w>
+      <h>42</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;-
+m1=1
+m2=1</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;50.0;370.0;50.0;370.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>312</x>
+      <y>294</y>
+      <w>480</w>
+      <h>48</h>
+    </coordinates>
+    <panel_attributes>lt=-&gt;&gt;&gt;&gt;&gt;
+m1=1
+m2=1</panel_attributes>
+    <additional_attributes>770.0;10.0;770.0;60.0;10.0;60.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>810</x>
+      <y>294</y>
+      <w>126</w>
+      <h>48</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-
+m1=1
+m2=1</panel_attributes>
+    <additional_attributes>180.0;10.0;180.0;60.0;10.0;60.0;10.0;10.0</additional_attributes>
+  </element>
+</diagram>

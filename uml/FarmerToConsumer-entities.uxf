@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<diagram program="umlet" version="14.3.0">
+  <zoom_level>1</zoom_level>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>618</x>
+      <y>572</y>
+      <w>22</w>
+      <h>17</h>
+    </coordinates>
+    <panel_attributes>
+User
+
+--
+
+- id: int (autoincrement)
+- email: varchar
+- password: varchar
+- name: varchar
+- producerData: ProducerData?</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>648</x>
+      <y>595</y>
+      <w>22</w>
+      <h>20</h>
+    </coordinates>
+    <panel_attributes>
+Product
+
+-
+
+- id: int (autoincrement)
+- user: User
+- name: varchar
+- category: ProductCategory
+- quantity: int
+- quantity unit: QuantityUnit
+- price: int
+
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>678</x>
+      <y>587</y>
+      <w>22</w>
+      <h>12</h>
+    </coordinates>
+    <panel_attributes>
+QuantityUnit
+
+--
+
+- id: int (autoincrement)
+- name: varchar
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>588</x>
+      <y>574</y>
+      <w>22</w>
+      <h>15</h>
+    </coordinates>
+    <panel_attributes>
+UserUpgradeRequest
+
+--
+
+- id: int (autoincrement)
+- user: User
+- description: varchar
+- aproved: bool?</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>618</x>
+      <y>595</y>
+      <w>22</w>
+      <h>14</h>
+    </coordinates>
+    <panel_attributes>
+ProducerData
+
+--
+
+- id: int (autoincrement)
+- products: Product[]
+- description: varchar</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>648</x>
+      <y>572</y>
+      <w>22</w>
+      <h>20</h>
+    </coordinates>
+    <panel_attributes>
+Order
+
+--
+
+- id: int (autoincrement)
+- user: User
+- product: Product
+- price: int
+- quantity: int
+- quantity unit: QuantityUnit
+- aproved: bool?</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>678</x>
+      <y>603</y>
+      <w>22</w>
+      <h>12</h>
+    </coordinates>
+    <panel_attributes>
+ProductCategory
+
+--
+
+- id: int (autoincrement)
+- name: varchar
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>639</x>
+      <y>601</y>
+      <w>11</w>
+      <h>4</h>
+    </coordinates>
+    <panel_attributes>lt=-
+m2=0..*</panel_attributes>
+    <additional_attributes>10.0;10.0;90.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>628</x>
+      <y>588</y>
+      <w>5</w>
+      <h>9</h>
+    </coordinates>
+    <panel_attributes>lt=-
+m2=0..1</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;70.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>669</x>
+      <y>604</y>
+      <w>11</w>
+      <h>4</h>
+    </coordinates>
+    <panel_attributes>lt=-
+m2=1</panel_attributes>
+    <additional_attributes>10.0;10.0;90.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>669</x>
+      <y>596</y>
+      <w>11</w>
+      <h>4</h>
+    </coordinates>
+    <panel_attributes>lt=-
+m2=1</panel_attributes>
+    <additional_attributes>10.0;10.0;90.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>669</x>
+      <y>589</y>
+      <w>11</w>
+      <h>4</h>
+    </coordinates>
+    <panel_attributes>lt=-
+m2=1</panel_attributes>
+    <additional_attributes>10.0;10.0;90.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>609</x>
+      <y>581</y>
+      <w>11</w>
+      <h>4</h>
+    </coordinates>
+    <panel_attributes>lt=-
+m2=1</panel_attributes>
+    <additional_attributes>10.0;10.0;90.0;10.0</additional_attributes>
+  </element>
+</diagram>
