@@ -1,55 +1,11 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<diagram program="umlet" version="14.3.0">
-  <zoom_level>11</zoom_level>
-  <element>
-    <id>UMLClass</id>
-    <coordinates>
-      <x>99</x>
-      <y>297</y>
-      <w>231</w>
-      <h>143</h>
-    </coordinates>
-    <panel_attributes>
+<diagram program="umletino" version="15.1"><zoom_level>11</zoom_level><element><id>UMLClass</id><coordinates><x>88</x><y>385</y><w>231</w><h>143</h></coordinates><panel_attributes>
 *Mobile Device*
 
 --
 
 *                Mobile App*
-              (iOS/Android)</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>319</x>
-      <y>385</y>
-      <w>220</w>
-      <h>33</h>
-    </coordinates>
-    <panel_attributes>lt=&lt;-</panel_attributes>
-    <additional_attributes>180.0;10.0;10.0;10.0</additional_attributes>
-  </element>
-  <element>
-    <id>Text</id>
-    <coordinates>
-      <x>363</x>
-      <y>363</y>
-      <w>132</w>
-      <h>33</h>
-    </coordinates>
-    <panel_attributes>(HTTP/HTTPS)
-style=wordwrap</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <id>UMLClass</id>
-    <coordinates>
-      <x>517</x>
-      <y>143</y>
-      <w>231</w>
-      <h>484</h>
-    </coordinates>
-    <panel_attributes>
+              (iOS/Android)</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>308</x><y>473</y><w>220</w><h>33</h></coordinates><panel_attributes>lt=&lt;-</panel_attributes><additional_attributes>180;10;10;10</additional_attributes></element><element><id>Text</id><coordinates><x>352</x><y>451</y><w>132</w><h>33</h></coordinates><panel_attributes>(HTTP/HTTPS)
+style=wordwrap</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>506</x><y>231</y><w>231</w><h>484</h></coordinates><panel_attributes>
 *Backend Server*
 
 --
@@ -78,85 +34,16 @@ _Dependencies:_
 - rimraf                     
 - sqlite3    
 
-           </panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <id>UMLClass</id>
-    <coordinates>
-      <x>935</x>
-      <y>363</y>
-      <w>231</w>
-      <h>121</h>
-    </coordinates>
-    <panel_attributes>
+           </panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>924</x><y>451</y><w>231</w><h>121</h></coordinates><panel_attributes>
 *Database Server*
 
 --
 
 *           SQLite Database*
-</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <id>Text</id>
-    <coordinates>
-      <x>814</x>
-      <y>363</y>
-      <w>66</w>
-      <h>33</h>
-    </coordinates>
-    <panel_attributes>(SLQ)
-style=wordwrap</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>737</x>
-      <y>385</y>
-      <w>220</w>
-      <h>33</h>
-    </coordinates>
-    <panel_attributes>lt=&lt;-</panel_attributes>
-    <additional_attributes>180.0;10.0;10.0;10.0</additional_attributes>
-  </element>
-  <element>
-    <id>Text</id>
-    <coordinates>
-      <x>99</x>
-      <y>242</y>
-      <w>187</w>
-      <h>55</h>
-    </coordinates>
-    <panel_attributes>Represents the user’s smartphone or tablet.
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>Text</id><coordinates><x>803</x><y>451</y><w>66</w><h>33</h></coordinates><panel_attributes>(SLQ)
+style=wordwrap</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>726</x><y>473</y><w>220</w><h>33</h></coordinates><panel_attributes>lt=&lt;-</panel_attributes><additional_attributes>180;10;10;10</additional_attributes></element><element><id>Text</id><coordinates><x>88</x><y>330</y><w>187</w><h>55</h></coordinates><panel_attributes>Represents the user’s smartphone or tablet.
 
-style=wordwrap</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <id>Text</id>
-    <coordinates>
-      <x>957</x>
-      <y>308</y>
-      <w>187</w>
-      <h>55</h>
-    </coordinates>
-    <panel_attributes>Stores user data and application information.
-style=wordwrap</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <id>Text</id>
-    <coordinates>
-      <x>517</x>
-      <y>88</y>
-      <w>242</w>
-      <h>55</h>
-    </coordinates>
-    <panel_attributes>Hosts the application’s backend services, APIs, and database.
+style=wordwrap</panel_attributes><additional_attributes></additional_attributes></element><element><id>Text</id><coordinates><x>946</x><y>396</y><w>187</w><h>55</h></coordinates><panel_attributes>Stores user data and application information.
+style=wordwrap</panel_attributes><additional_attributes></additional_attributes></element><element><id>Text</id><coordinates><x>506</x><y>176</y><w>242</w><h>55</h></coordinates><panel_attributes>Hosts the application’s backend services, APIs, and database.
 
-style=wordwrap</panel_attributes>
-    <additional_attributes/>
-  </element>
-</diagram>
+style=wordwrap</panel_attributes><additional_attributes></additional_attributes></element></diagram>

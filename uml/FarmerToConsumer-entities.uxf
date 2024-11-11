@@ -1,15 +1,4 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<diagram program="umlet" version="14.3.0">
-  <zoom_level>1</zoom_level>
-  <element>
-    <id>UMLClass</id>
-    <coordinates>
-      <x>618</x>
-      <y>572</y>
-      <w>22</w>
-      <h>17</h>
-    </coordinates>
-    <panel_attributes>
+<diagram program="umletino" version="15.1"><zoom_level>6</zoom_level><element><id>UMLClass</id><coordinates><x>510</x><y>330</y><w>132</w><h>102</h></coordinates><panel_attributes>
 User
 
 --
@@ -18,18 +7,7 @@ User
 - email: varchar
 - password: varchar
 - name: varchar
-- producerData: ProducerData?</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <id>UMLClass</id>
-    <coordinates>
-      <x>648</x>
-      <y>595</y>
-      <w>22</w>
-      <h>20</h>
-    </coordinates>
-    <panel_attributes>
+- producerData: ProducerData?</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>690</x><y>468</y><w>132</w><h>120</h></coordinates><panel_attributes>
 Product
 
 -
@@ -42,36 +20,14 @@ Product
 - quantity unit: QuantityUnit
 - price: int
 
-</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <id>UMLClass</id>
-    <coordinates>
-      <x>678</x>
-      <y>587</y>
-      <w>22</w>
-      <h>12</h>
-    </coordinates>
-    <panel_attributes>
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>870</x><y>420</y><w>132</w><h>72</h></coordinates><panel_attributes>
 QuantityUnit
 
 --
 
 - id: int (autoincrement)
 - name: varchar
-</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <id>UMLClass</id>
-    <coordinates>
-      <x>588</x>
-      <y>574</y>
-      <w>22</w>
-      <h>15</h>
-    </coordinates>
-    <panel_attributes>
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>330</x><y>342</y><w>132</w><h>90</h></coordinates><panel_attributes>
 UserUpgradeRequest
 
 --
@@ -79,36 +35,14 @@ UserUpgradeRequest
 - id: int (autoincrement)
 - user: User
 - description: varchar
-- aproved: bool?</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <id>UMLClass</id>
-    <coordinates>
-      <x>618</x>
-      <y>595</y>
-      <w>22</w>
-      <h>14</h>
-    </coordinates>
-    <panel_attributes>
+- aproved: bool?</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>510</x><y>468</y><w>132</w><h>84</h></coordinates><panel_attributes>
 ProducerData
 
 --
 
 - id: int (autoincrement)
 - products: Product[]
-- description: varchar</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <id>UMLClass</id>
-    <coordinates>
-      <x>648</x>
-      <y>572</y>
-      <w>22</w>
-      <h>20</h>
-    </coordinates>
-    <panel_attributes>
+- description: varchar</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>690</x><y>330</y><w>132</w><h>120</h></coordinates><panel_attributes>
 Order
 
 --
@@ -119,97 +53,17 @@ Order
 - price: int
 - quantity: int
 - quantity unit: QuantityUnit
-- aproved: bool?</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <id>UMLClass</id>
-    <coordinates>
-      <x>678</x>
-      <y>603</y>
-      <w>22</w>
-      <h>12</h>
-    </coordinates>
-    <panel_attributes>
+- aproved: bool?</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>870</x><y>516</y><w>132</w><h>72</h></coordinates><panel_attributes>
 ProductCategory
 
 --
 
 - id: int (autoincrement)
 - name: varchar
-</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>639</x>
-      <y>601</y>
-      <w>11</w>
-      <h>4</h>
-    </coordinates>
-    <panel_attributes>lt=-
-m2=0..*</panel_attributes>
-    <additional_attributes>10.0;10.0;90.0;10.0</additional_attributes>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>628</x>
-      <y>588</y>
-      <w>5</w>
-      <h>9</h>
-    </coordinates>
-    <panel_attributes>lt=-
-m2=0..1</panel_attributes>
-    <additional_attributes>10.0;10.0;10.0;70.0</additional_attributes>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>669</x>
-      <y>604</y>
-      <w>11</w>
-      <h>4</h>
-    </coordinates>
-    <panel_attributes>lt=-
-m2=1</panel_attributes>
-    <additional_attributes>10.0;10.0;90.0;10.0</additional_attributes>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>669</x>
-      <y>596</y>
-      <w>11</w>
-      <h>4</h>
-    </coordinates>
-    <panel_attributes>lt=-
-m2=1</panel_attributes>
-    <additional_attributes>10.0;10.0;90.0;10.0</additional_attributes>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>669</x>
-      <y>589</y>
-      <w>11</w>
-      <h>4</h>
-    </coordinates>
-    <panel_attributes>lt=-
-m2=1</panel_attributes>
-    <additional_attributes>10.0;10.0;90.0;10.0</additional_attributes>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>609</x>
-      <y>581</y>
-      <w>11</w>
-      <h>4</h>
-    </coordinates>
-    <panel_attributes>lt=-
-m2=1</panel_attributes>
-    <additional_attributes>10.0;10.0;90.0;10.0</additional_attributes>
-  </element>
-</diagram>
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>636</x><y>504</y><w>66</w><h>24</h></coordinates><panel_attributes>lt=-
+m2=0..*</panel_attributes><additional_attributes>10;10;90;10</additional_attributes></element><element><id>Relation</id><coordinates><x>570</x><y>426</y><w>30</w><h>54</h></coordinates><panel_attributes>lt=-
+m2=0..1</panel_attributes><additional_attributes>10;10;10;70</additional_attributes></element><element><id>Relation</id><coordinates><x>816</x><y>522</y><w>66</w><h>24</h></coordinates><panel_attributes>lt=-
+m2=1</panel_attributes><additional_attributes>10;10;90;10</additional_attributes></element><element><id>Relation</id><coordinates><x>816</x><y>474</y><w>66</w><h>24</h></coordinates><panel_attributes>lt=-
+m2=1</panel_attributes><additional_attributes>10;10;90;10</additional_attributes></element><element><id>Relation</id><coordinates><x>816</x><y>432</y><w>66</w><h>24</h></coordinates><panel_attributes>lt=-
+m2=1</panel_attributes><additional_attributes>10;10;90;10</additional_attributes></element><element><id>Relation</id><coordinates><x>456</x><y>384</y><w>66</w><h>24</h></coordinates><panel_attributes>lt=-
+m2=1</panel_attributes><additional_attributes>10;10;90;10</additional_attributes></element></diagram>
