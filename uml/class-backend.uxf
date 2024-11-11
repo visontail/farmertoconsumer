@@ -1,0 +1,245 @@
+<diagram program="umletino" version="15.1"><zoom_level>4</zoom_level><element><id>UMLClass</id><coordinates><x>972</x><y>260</y><w>116</w><h>76</h></coordinates><panel_attributes>
+*AuthController*
+
+--
+
+
+--
+
++ register(Req,Res) : void
++ login(Req,Res) : bool
++ profile(Req,Res) : void</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>732</x><y>260</y><w>116</w><h>76</h></coordinates><panel_attributes>
+*OrderController*
+
+--
+
+
+--
+
++ getAll(Req,Res) : Order[]
++ getById(Req,Res) : Order
++ create(Req,Res) : Order
++ reply(Req,Res) : Order</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>432</x><y>400</y><w>88</w><h>72</h></coordinates><panel_attributes>
+*Model*
+
+--
+
+--
+
+/associate(Model[]) : void/
+belongsTo(Model,object) : void
+hasMany(Model,object) : void
+init(object,object) : void
+
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>552</x><y>404</y><w>56</w><h>24</h></coordinates><panel_attributes>
+*Sequelize*</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>640</x><y>144</y><w>116</w><h>60</h></coordinates><panel_attributes>
+/ControllerBase/
+
+--
+
+#fastify
+
+--
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>440</x><y>524</y><w>72</w><h>96</h></coordinates><panel_attributes>
+*Product*
+
+--
+
++ name : String
++ quantity : int
++ price : float
++ ProducerDataId : int
++ ProductCategoryId : int
++ QuantityUnitId : int
+
+--
+
++ associate(Model[]) : void</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>396</x><y>664</y><w>72</w><h>96</h></coordinates><panel_attributes>
+*ProducerData*
+
+--
+
++ description : String
++ UserId : int
+
+--
+
++ associate(Model[]) : void</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>492</x><y>664</y><w>72</w><h>96</h></coordinates><panel_attributes>
+*ProductCategory*
+
+--
+
++ name : String
+
+--
+
++ associate(Model[]) : void</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>588</x><y>664</y><w>72</w><h>96</h></coordinates><panel_attributes>
+*QuantityUnit*
+
+--
+
++ name : String
+
+--
+
++ associate(Model[]) : void</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>532</x><y>524</y><w>72</w><h>96</h></coordinates><panel_attributes>
+*Order*
+
+--
+
++ price : float
++ quantity : int
++ approved : bool
++ QuantityUnitId : int
++ ProductId : int
++ UserId : int
+
+--
+
++ associate(Model[]) : void</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>344</x><y>524</y><w>72</w><h>96</h></coordinates><panel_attributes>
+*User*
+
+--
+
++ id : int
++ name : String
++ email : String
++ password : String
+
+--
+
++ associate(Model[]) : void</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>300</x><y>664</y><w>72</w><h>96</h></coordinates><panel_attributes>
+*UserUpgradeRequest*
+
+--
+
++ description : String
++ approved : bool
++ UserId : int
+
+--
+
++ associate(Model[]) : void</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>440</x><y>616</y><w>20</w><h>56</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-
+m1=0..*
+m2=1</panel_attributes><additional_attributes>10;10;10;120</additional_attributes></element><element><id>Relation</id><coordinates><x>460</x><y>616</y><w>96</w><h>56</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-
+m1=0..*
+m2=1</panel_attributes><additional_attributes>10;10;10;100;210;100;210;120</additional_attributes></element><element><id>Relation</id><coordinates><x>480</x><y>616</y><w>136</w><h>56</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-
+m1=1
+m2=1</panel_attributes><additional_attributes>10;10;10;80;310;80;310;120</additional_attributes></element><element><id>Relation</id><coordinates><x>560</x><y>616</y><w>88</w><h>56</h></coordinates><panel_attributes>lt=-&gt;&gt;&gt;&gt;&gt;
+m1=1
+m2=1</panel_attributes><additional_attributes>190;120;190;40;10;40;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>380</x><y>616</y><w>48</w><h>56</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-
+m1=1
+m2=1</panel_attributes><additional_attributes>10;10;10;80;90;80;90;120</additional_attributes></element><element><id>Relation</id><coordinates><x>332</x><y>616</y><w>44</w><h>56</h></coordinates><panel_attributes>lt=-&gt;&gt;&gt;&gt;&gt;
+m1=1
+m2=1</panel_attributes><additional_attributes>10;120;10;50;80;50;80;10</additional_attributes></element><element><id>Relation</id><coordinates><x>372</x><y>468</y><w>112</w><h>64</h></coordinates><panel_attributes>lt=&lt;&lt;-</panel_attributes><additional_attributes>260;10;260;70;10;70;10;140</additional_attributes></element><element><id>Relation</id><coordinates><x>472</x><y>468</y><w>12</w><h>64</h></coordinates><panel_attributes>lt=&lt;&lt;-</panel_attributes><additional_attributes>10;10;10;140</additional_attributes></element><element><id>Relation</id><coordinates><x>472</x><y>468</y><w>104</w><h>64</h></coordinates><panel_attributes>lt=&lt;&lt;-</panel_attributes><additional_attributes>10;10;10;70;240;70;240;140</additional_attributes></element><element><id>Relation</id><coordinates><x>304</x><y>468</y><w>180</w><h>204</h></coordinates><panel_attributes>lt=&lt;&lt;-</panel_attributes><additional_attributes>430;10;430;70;10;70;10;490</additional_attributes></element><element><id>Relation</id><coordinates><x>424</x><y>468</y><w>60</w><h>204</h></coordinates><panel_attributes>lt=&lt;&lt;-</panel_attributes><additional_attributes>130;10;130;70;10;70;10;490</additional_attributes></element><element><id>Relation</id><coordinates><x>472</x><y>468</y><w>56</w><h>204</h></coordinates><panel_attributes>lt=&lt;&lt;-</panel_attributes><additional_attributes>10;10;10;70;120;70;120;490</additional_attributes></element><element><id>Relation</id><coordinates><x>472</x><y>468</y><w>192</w><h>204</h></coordinates><panel_attributes>lt=&lt;&lt;-</panel_attributes><additional_attributes>10;10;10;70;460;70;460;490</additional_attributes></element><element><id>UMLClass</id><coordinates><x>372</x><y>260</y><w>116</w><h>76</h></coordinates><panel_attributes>
+*CategoryController*
+
+--
+
+
+--
+
++ getAll(Req,Res) : ProductCategory[]
++ getById(Req,Res) : ProductCategory
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>612</x><y>260</y><w>116</w><h>76</h></coordinates><panel_attributes>
+*ProductController*
+
+--
+
+
+--
+
++ getAll(Req,Res) : Product[]
++ getById(Req,Res) : Product
++ create(Req,Res) : Produc
++ update(Req,Res) : Product</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>492</x><y>260</y><w>116</w><h>76</h></coordinates><panel_attributes>
+*QuantityUnitController*
+
+--
+
+
+--
+
++ getAll(Req,Res) : ProductCategory[]
++ getById(Req,Res) : ProductCategory
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>252</x><y>260</y><w>116</w><h>76</h></coordinates><panel_attributes>
+*UserController*
+
+--
+
+
+--
+
++ getUserById(req, res) : User
++ getProducerDataByUserId() : User</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>852</x><y>260</y><w>116</w><h>76</h></coordinates><panel_attributes>
+*UserUpgradeRequestController*
+
+--
+
+
+--
+
++ getAll(Req,Res) : UserUpgradeRequest[]
++ getById(Req,Res) : UserUpgradeRequest
++ create(Req,Res) : UserUpgradeRequest
++ reply(Req,Res) : UserUpgradeRequest</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>444</x><y>144</y><w>140</w><h>60</h></coordinates><panel_attributes>
+*ModelExtender*
+
+--
+
+
+--
+
++ ensureAssociationIncluded(Model, String) : Model</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>300</x><y>144</y><w>88</w><h>60</h></coordinates><panel_attributes>
+*ObjectSimplifier*
+
+--
+
+
+--
+
++ simplify(object, bool): object</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>404</x><y>616</y><w>156</w><h>32</h></coordinates><panel_attributes>lt=-</panel_attributes><additional_attributes>10;10;10;60;370;60;370;10</additional_attributes></element><element><id>Relation</id><coordinates><x>496</x><y>616</y><w>56</w><h>24</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-
+m2=1
+m1=1</panel_attributes><additional_attributes>10;10;10;40;110;40;110;10</additional_attributes></element><element><id>Relation</id><coordinates><x>516</x><y>412</y><w>44</w><h>12</h></coordinates><panel_attributes>lt=-&gt;</panel_attributes><additional_attributes>10;10;90;10</additional_attributes></element><element><id>UMLClass</id><coordinates><x>896</x><y>644</y><w>88</w><h>24</h></coordinates><panel_attributes>
+*CategoryShaper*
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>812</x><y>540</y><w>104</w><h>68</h></coordinates><panel_attributes>
+/ModelShaperBase/
+
+--
+
++ fastify : object
+
+--
+
+/+ single() : void/</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>860</x><y>604</y><w>44</w><h>172</h></coordinates><panel_attributes>lt=&lt;&lt;-</panel_attributes><additional_attributes>10;10;10;410;90;410</additional_attributes></element><element><id>Relation</id><coordinates><x>860</x><y>604</y><w>44</w><h>60</h></coordinates><panel_attributes>lt=&lt;&lt;-</panel_attributes><additional_attributes>10;10;10;130;90;130</additional_attributes></element><element><id>UMLClass</id><coordinates><x>816</x><y>404</y><w>92</w><h>92</h></coordinates><panel_attributes>
+*ModelShape*
+
+--
+
+- includes : bool
+- shaperCallBack : function
+- associationSetup : object
+
+--
+
++ includes() : bool
++ shape(Model) : Model
++ shapeArray(Model[]): Model[]</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>896</x><y>672</y><w>88</w><h>24</h></coordinates><panel_attributes>
+*OrderShaper*
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>896</x><y>700</y><w>88</w><h>24</h></coordinates><panel_attributes>
+*ProductShaper*
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>896</x><y>728</y><w>88</w><h>24</h></coordinates><panel_attributes>
+*QuantityUnitShaper*
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>896</x><y>756</y><w>88</w><h>24</h></coordinates><panel_attributes>
+*UserUpgradeRequestShaper*
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>860</x><y>604</y><w>44</w><h>88</h></coordinates><panel_attributes>lt=&lt;&lt;-</panel_attributes><additional_attributes>10;10;10;200;90;200</additional_attributes></element><element><id>Relation</id><coordinates><x>860</x><y>604</y><w>44</w><h>116</h></coordinates><panel_attributes>lt=&lt;&lt;-</panel_attributes><additional_attributes>10;10;10;270;90;270</additional_attributes></element><element><id>Relation</id><coordinates><x>860</x><y>604</y><w>44</w><h>144</h></coordinates><panel_attributes>lt=&lt;&lt;-</panel_attributes><additional_attributes>10;10;10;340;90;340</additional_attributes></element><element><id>UMLNote</id><coordinates><x>236</x><y>112</y><w>872</w><h>732</h></coordinates><panel_attributes>Backend</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>304</x><y>200</y><w>396</w><h>68</h></coordinates><panel_attributes>lt=&lt;&lt;-</panel_attributes><additional_attributes>970;10;970;70;10;70;10;150</additional_attributes></element><element><id>Relation</id><coordinates><x>304</x><y>332</y><w>64</w><h>200</h></coordinates><panel_attributes>lt=&lt;-</panel_attributes><additional_attributes>10;10;10;150;140;150;140;480</additional_attributes></element><element><id>Relation</id><coordinates><x>268</x><y>332</y><w>268</w><h>464</h></coordinates><panel_attributes>lt=&lt;-</panel_attributes><additional_attributes>390;10;390;80;10;80;10;1140;650;1140;650;1070</additional_attributes></element><element><id>Relation</id><coordinates><x>544</x><y>332</y><w>164</w><h>464</h></coordinates><panel_attributes>lt=&lt;-</panel_attributes><additional_attributes>10;10;10;70;380;70;390;1140;200;1140;200;1070</additional_attributes></element><element><id>Relation</id><coordinates><x>484</x><y>332</y><w>180</w><h>200</h></coordinates><panel_attributes>lt=&lt;-</panel_attributes><additional_attributes>430;10;430;380;10;380;10;480</additional_attributes></element><element><id>Relation</id><coordinates><x>584</x><y>332</y><w>208</w><h>200</h></coordinates><panel_attributes>lt=&lt;-</panel_attributes><additional_attributes>500;10;500;70;350;70;350;440;10;440;10;480</additional_attributes></element><element><id>Relation</id><coordinates><x>332</x><y>332</y><w>580</w><h>448</h></coordinates><panel_attributes>lt=&lt;-</panel_attributes><additional_attributes>1430;10;1430;140;1020;140;1020;1100;10;1100;10;1070</additional_attributes></element><element><id>Relation</id><coordinates><x>656</x><y>200</y><w>44</w><h>68</h></coordinates><panel_attributes>lt=-</panel_attributes><additional_attributes>90;10;90;70;10;70;10;150</additional_attributes></element><element><id>Relation</id><coordinates><x>688</x><y>200</y><w>104</w><h>68</h></coordinates><panel_attributes>lt=-</panel_attributes><additional_attributes>10;10;10;70;240;70;240;150</additional_attributes></element><element><id>Relation</id><coordinates><x>688</x><y>200</y><w>228</w><h>68</h></coordinates><panel_attributes>lt=-</panel_attributes><additional_attributes>10;10;10;70;550;70;550;150</additional_attributes></element><element><id>Relation</id><coordinates><x>688</x><y>200</y><w>348</w><h>68</h></coordinates><panel_attributes>lt=-</panel_attributes><additional_attributes>10;10;10;70;850;70;850;150</additional_attributes></element><element><id>Relation</id><coordinates><x>544</x><y>200</y><w>156</w><h>68</h></coordinates><panel_attributes>lt=-</panel_attributes><additional_attributes>370;10;370;70;10;70;10;150</additional_attributes></element><element><id>Relation</id><coordinates><x>424</x><y>200</y><w>276</w><h>68</h></coordinates><panel_attributes>lt=-</panel_attributes><additional_attributes>670;10;670;70;10;70;10;150</additional_attributes></element><element><id>Relation</id><coordinates><x>516</x><y>412</y><w>308</w><h>60</h></coordinates><panel_attributes>lt=&lt;-</panel_attributes><additional_attributes>10;130;640;130;640;10;750;10</additional_attributes></element><element><id>Relation</id><coordinates><x>856</x><y>492</y><w>12</w><h>56</h></coordinates><panel_attributes>lt=&lt;-</panel_attributes><additional_attributes>10;10;10;120</additional_attributes></element><element><id>Relation</id><coordinates><x>808</x><y>332</y><w>212</w><h>364</h></coordinates><panel_attributes>lt=-&gt;&gt;&gt;&gt;
+m2=1
+m1=1</panel_attributes><additional_attributes>440;880;510;880;510;70;10;70;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>448</x><y>332</y><w>560</w><h>336</h></coordinates><panel_attributes>lt=-&gt;&gt;&gt;&gt;
+m2=1
+m1=1</panel_attributes><additional_attributes>1340;810;1380;810;1380;110;10;110;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>928</x><y>332</y><w>132</w><h>448</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;-
+m2=1
+m1=1</panel_attributes><additional_attributes>10;10;10;30;310;30;310;1090;140;1090</additional_attributes></element><element><id>Relation</id><coordinates><x>684</x><y>332</y><w>348</w><h>392</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;-
+m2=1
+m1=1</panel_attributes><additional_attributes>10;10;10;50;850;50;850;950;750;950</additional_attributes></element><element><id>Relation</id><coordinates><x>576</x><y>332</y><w>468</w><h>420</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;-
+m2=1
+m1=1</panel_attributes><additional_attributes>10;10;10;90;1150;90;1150;1020;1020;1020</additional_attributes></element></diagram>
