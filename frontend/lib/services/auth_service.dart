@@ -26,11 +26,21 @@ class AuthService extends ChangeNotifier {
       final responseBody = json.decode(response.body);
       print('Response: $responseBody'); // debug log, remove in prod
 
-      return {
-        'status': 'success',
-        'data': responseBody,
-      };
+      if (response.statusCode == 200) {
+        // Success
+        return {
+          'status': 'success',
+          'data': responseBody,
+        };
+      } else {
+        // Handle error based on the statusCode
+        return {
+          'status': 'error',
+          'message': responseBody['message'] ?? 'Unknown error occurred.',
+        };
+      }
     } catch (e) {
+      // Catch any errors that occur during the request
       return {
         'status': 'error',
         'message': e.toString(),
@@ -55,12 +65,22 @@ class AuthService extends ChangeNotifier {
 
       final responseBody = json.decode(response.body);
       print('Response: $responseBody'); // debug log, remove in prod
-      
-      return {
-        'status': 'success',
-        'data': responseBody,
-      };
+
+      if (response.statusCode == 200) {
+        // Success
+        return {
+          'status': 'success',
+          'data': responseBody,
+        };
+      } else {
+        // Handle error based on the statusCode
+        return {
+          'status': 'error',
+          'message': responseBody['message'] ?? 'Unknown error occurred.',
+        };
+      }
     } catch (e) {
+      // Catch any errors that occur during the request
       return {
         'status': 'error',
         'message': e.toString(),
