@@ -1,8 +1,10 @@
+import 'package:farmertoconsumer/screens/feed/feed_data_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../screens/login.dart';
 import '../screens/registration.dart';
+import 'screens/feed/feed.dart';
 import '../services/auth_service.dart';
 
 void main() {
@@ -16,13 +18,14 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
-        providers: [
-          ChangeNotifierProvider(create: (context) => AuthService()),
-        ],
-        child: MaterialApp(
-          debugShowCheckedModeBanner: false,
+      providers: [
+        ChangeNotifierProvider(create: (context) => AuthService()),
+        ChangeNotifierProvider(create: (context) => FeedDataProvider()),
+      ],
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
           home: RegistrationScreen(),
-        ),
-      );
+      ),
+    );
   }
 }
