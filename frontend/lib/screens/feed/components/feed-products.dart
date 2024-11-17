@@ -1,6 +1,6 @@
 import 'package:farmertoconsumer/models/product.dart';
 import 'package:farmertoconsumer/screens/feed/feed_data_provider.dart';
-import 'package:farmertoconsumer/utils/colors.dart';
+import 'package:farmertoconsumer/styles/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -27,7 +27,7 @@ class _FeedProductsState extends State<FeedProducts> {
                       margin: const EdgeInsets.all(7),
                       height: 100,
                       decoration: BoxDecoration(
-                          color: primaryGreen,
+                          color: mainGreen,
                           borderRadius: BorderRadius.circular(10),
                           boxShadow: [
                             BoxShadow(

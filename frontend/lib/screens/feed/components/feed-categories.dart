@@ -1,6 +1,6 @@
 import 'package:farmertoconsumer/models/productCategory.dart';
 import 'package:farmertoconsumer/screens/feed/feed_data_provider.dart';
-import 'package:farmertoconsumer/utils/colors.dart';
+import 'package:farmertoconsumer/styles/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -33,8 +33,8 @@ class _FeedCategoriesState extends State<FeedCategories> {
               height: 80,
               decoration: BoxDecoration(
                   color: category.id == provider.selectedCategoryId
-                      ? primaryGreenLight
-                      : primaryGreen,
+                      ? lightGreen
+                      : mainGreen,
                   borderRadius: BorderRadius.circular(10),
                   boxShadow: [
                     BoxShadow(
