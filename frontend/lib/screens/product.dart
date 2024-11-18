@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../services/product_service.dart';
 import '../widgets/custom_button.dart';
+import 'counter.dart';
 
 class ProductScreen extends StatefulWidget {
-  const ProductScreen({super.key});
+  final String id;
+  const ProductScreen({super.key, required this.id});
 
   @override
   State<ProductScreen> createState() => _ProductScreenState();
@@ -31,6 +33,11 @@ class _ProductScreenState extends State<ProductScreen> {
     }
   }
 
+  @override
+  void initState() {
+    super.initState();
+    fetchProduct(widget.id);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -44,11 +51,6 @@ class _ProductScreenState extends State<ProductScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            CustomButton(
-              text: 'See product',
-              onPressed: () => fetchProduct("1"),
-            ),
-            const SizedBox(height: 16),
             if (errorMessage != null)
               Text(
                 errorMessage!,
@@ -76,13 +78,29 @@ class _ProductScreenState extends State<ProductScreen> {
                       ),
                       const SizedBox(height: 16),
 
-                      // 2. Product neve
-                      Text(
-                        productData!['name'] ?? 'N/A',
-                        style: const TextStyle(
-                          fontSize: 24,
-                          fontWeight: FontWeight.bold,
-                        ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        // 2. Product neve
+                        children: [
+                          Text(
+                            productData!['name'] ?? 'N/A',
+                            style: const TextStyle(
+                              fontSize: 24,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+
+                          // 8. Product Counter (Quantity management)
+                          Counter(
+                            initialValue: quantity,
+                            maxValue: productData?['quantity'],
+                            onChanged: (newQuantity) {
+                              setState(() {
+                                quantity = newQuantity; // Update quantity when counter changes
+                              });
+                            },
+                          ),
+                        ],
                       ),
                       const SizedBox(height: 8),
 
@@ -98,22 +116,36 @@ class _ProductScreenState extends State<ProductScreen> {
                         'Type - ${productData!['category']['name']}',
                         style: const TextStyle(fontSize: 18),
                       ),
-                      const SizedBox(height: 16),
+                      const SizedBox(height: 32),
 
                       // 5. Rendelés gomb
-                      ElevatedButton(
-                        onPressed: () {
-                          // Ide jöhet rendelés logika
-                          print('Order button clicked!');
-                        },
-                        child: const Text('Order'),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        // 2. Product neve
+                        children: [
+                          SizedBox(
+                            width: 250,
+                            child: ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                textStyle: const TextStyle(
+                                  fontSize: 18,
+                                ),
+                              ),
+                              onPressed: () {
+                                // Ide jöhet rendelés logika
+                                print('Order button clicked!');
+                              },
+                              child: const Text('Order'),
+                            ),
+                          )
+                        ]
                       ),
-                      const SizedBox(height: 16),
+                      const SizedBox(height: 32),
 
                       // 6. Learn about the producer
-                      Text(
+                      const Text(
                         'Learn about the producer',
-                        style: const TextStyle(
+                        style: TextStyle(
                           fontSize: 20,
                           fontWeight: FontWeight.bold,
                         ),
@@ -125,41 +157,7 @@ class _ProductScreenState extends State<ProductScreen> {
                         '${productData?['producer']?['name']} - ${productData?['producer']?['producerData']?['description'] ?? 'N/A'}',
                         style: const TextStyle(fontSize: 16),
                       ),
-
-                      // 8. Product Counter (Quantity management)
-                      Row(
-                        children: [
-                          const Text(
-                            'Quantity:',
-                            style: TextStyle(fontSize: 18),
-                          ),
-                          const SizedBox(width: 8),
-                          Text(
-                            '$quantity', // Dynamically displaying the quantity
-                            style: const TextStyle(fontSize: 18),
-                          ),
-                          IconButton(
-                            icon: const Icon(Icons.add),
-                            onPressed: () {
-                              setState(() {
-                                quantity++; // Increase the quantity
-                              });
-                              print("Increased quantity: $quantity");
-                            },
-                          ),
-                          IconButton(
-                            icon: const Icon(Icons.remove),
-                            onPressed: () {
-                              if (quantity > 1) {
-                                setState(() {
-                                  quantity--; // Decrease the quantity
-                                });
-                                print("Decreased quantity: $quantity");
-                              }
-                            },
-                          ),
-                        ],
-                      ),
+                      const SizedBox(height: 16),
                     ],
                   ),
                 ),

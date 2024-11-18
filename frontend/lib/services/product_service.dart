@@ -29,10 +29,18 @@ class ProductService extends ChangeNotifier {
       final responseBody = json.decode(response.body);
       print('Response: $responseBody'); // debug log, remove in prod
 
-      return {
-        'status': 'success',
-        'data': responseBody,
-      };
+      if (response.statusCode == 200) {
+        return {
+          'status': 'success',
+          'data': responseBody,
+        };
+      } else {
+        return {
+          'status': 'error',
+          'message': responseBody['message'] ??
+              'An error occurred (HTTP ${response.statusCode})',
+        };
+      }
     } catch (e) {
       return {
         'status': 'error',
@@ -58,10 +66,18 @@ class ProductService extends ChangeNotifier {
       final responseBody = json.decode(response.body);
       print('Response: $responseBody'); // debug log, remove in prod
 
-      return {
-        'status': 'success',
-        'data': responseBody,
-      };
+      if (response.statusCode == 200) {
+        return {
+          'status': 'success',
+          'data': responseBody,
+        };
+      } else {
+        return {
+          'status': 'error',
+          'message': responseBody['message'] ??
+              'An error occurred (HTTP ${response.statusCode})',
+        };
+      }
     } catch (e) {
       return {
         'status': 'error',
