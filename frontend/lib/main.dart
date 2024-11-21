@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../screens/login.dart';
-import '../screens/registration.dart';
+import '../screens/consumerProfile.dart';
 import 'screens/feed/feed.dart';
 import '../services/auth_service.dart';
 
@@ -24,7 +24,7 @@ class MyApp extends StatelessWidget {
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
-        home: LoginScreen(),
+        home: ConsumerProfileScreen(),
       ),
     );
   }
