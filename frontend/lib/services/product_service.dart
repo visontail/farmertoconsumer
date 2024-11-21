@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'package:farmertoconsumer/providers/auth_provider.dart';
 import 'package:farmertoconsumer/utils/api_endpoints.dart';
@@ -16,7 +17,7 @@ class ProductService extends ChangeNotifier {
     'Content-Type': 'application/json',
   };
 
-  Future<Map<String, dynamic>> getProduct(String id) async {
+  Future<Product?> getProduct(String id) async {
     const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTIsImlhdCI6MTczMTc2NTcxMn0.RQERtf98QOLVfjYORRBOVGgCGMmlqXeTR_q7r5duZBA";
     //TODO: final token = await authProvider.getToken();
     try {
@@ -34,22 +35,13 @@ class ProductService extends ChangeNotifier {
       print('Response: $responseBody'); // debug log, remove in prod
 
       if (response.statusCode == 200) {
-        return {
-          'status': 'success',
-          'data': responseBody,
-        };
+        Product product = Product.fromJson(responseBody);
+        return product;
       } else {
-        return {
-          'status': 'error',
-          'message': responseBody['message'] ??
-              'An error occurred (HTTP ${response.statusCode})',
-        };
+        return null;
       }
     } catch (e) {
-      return {
-        'status': 'error',
-        'message': e.toString(),
-      };
+      return null;
     }
   }
 

@@ -25,9 +25,9 @@ class MyApp extends StatelessWidget {
           ChangeNotifierProvider(create: (context) => FeedDataProvider()),
           ChangeNotifierProvider(create: (context) => ProductService())
         ],
-        child: const MaterialApp(
+        child: MaterialApp(
           debugShowCheckedModeBanner: false,
-          home: ProductScreen(id: '1'),
+          home: ProductScreen(id:"1"),
         ),
       );
   }

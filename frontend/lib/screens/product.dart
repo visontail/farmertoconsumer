@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import '../models/product.dart';
 import '../services/product_service.dart';
 import '../widgets/custom_button.dart';
 import 'counter.dart';
@@ -13,22 +14,20 @@ class ProductScreen extends StatefulWidget {
 }
 
 class _ProductScreenState extends State<ProductScreen> {
-  Map<String, dynamic>? productData;
+  Product? product;
   String? errorMessage;
 
   Future<void> fetchProduct(String id) async {
     final productService = Provider.of<ProductService>(context, listen: false);
-    final response = await productService.getProduct(id);
+    product = await productService.getProduct(id);
 
-    if (response['status'] == 'success') {
+    if (product != null) {
       setState(() {
-        productData = response['data'];
         errorMessage = null;
       });
     } else {
       setState(() {
-        productData = null;
-        errorMessage = response['message'];
+        errorMessage = 'Error!';
       });
     }
   }
@@ -56,7 +55,7 @@ class _ProductScreenState extends State<ProductScreen> {
                 errorMessage!,
                 style: const TextStyle(color: Colors.red, fontSize: 16),
               ),
-            if (productData != null)
+            if (product != null)
               Card(
                 elevation: 4,
                 shape: RoundedRectangleBorder(
@@ -83,7 +82,7 @@ class _ProductScreenState extends State<ProductScreen> {
                         // 2. Product neve
                         children: [
                           Text(
-                            productData!['name'] ?? 'N/A',
+                            product!.name,
                             style: const TextStyle(
                               fontSize: 24,
                               fontWeight: FontWeight.bold,
@@ -93,7 +92,7 @@ class _ProductScreenState extends State<ProductScreen> {
                           // 8. Product Counter (Quantity management)
                           Counter(
                             initialValue: quantity,
-                            maxValue: productData?['quantity'],
+                            maxValue: product!.quantity,
                             onChanged: (newQuantity) {
                               setState(() {
                                 quantity = newQuantity; // Update quantity when counter changes
@@ -106,14 +105,14 @@ class _ProductScreenState extends State<ProductScreen> {
 
                       // 3. Ár és quantityUnit
                       Text(
-                        '${productData!['price']} Ft / ${productData!['quantityUnit']['name']}',
+                        '${product?.price} Ft / ${product?.quantityUnit.name}',
                         style: const TextStyle(fontSize: 18),
                       ),
                       const SizedBox(height: 8),
 
                       // 4. Típus - kategória
                       Text(
-                        'Type - ${productData!['category']['name']}',
+                        'Type - ${product?.category.name}',
                         style: const TextStyle(fontSize: 18),
                       ),
                       const SizedBox(height: 32),
@@ -154,7 +153,7 @@ class _ProductScreenState extends State<ProductScreen> {
 
                       // 7. Producer adat / description
                       Text(
-                        '${productData?['producer']?['name']} - ${productData?['producer']?['producerData']?['description'] ?? 'N/A'}',
+                        '${product?.user.name} - ${product?.user.producerData?.description}',
                         style: const TextStyle(fontSize: 16),
                       ),
                       const SizedBox(height: 16),
