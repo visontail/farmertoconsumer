@@ -201,6 +201,7 @@ GET /products
 
 queryParams: {
     search:? string;
+    hideUnavailable:? boolean;
     categoryId:? number;
     producerId:? number;
     producerDataId:? number;

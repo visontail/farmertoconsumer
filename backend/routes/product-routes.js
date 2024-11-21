@@ -5,6 +5,7 @@ module.exports = (fastify, _, next) => {
                 type: 'object',
                 properties: {
                     search: { type: 'string' },
+                    hideUnavailable: { type: 'boolean' },
                     categoryId: { type: 'number' },
                     producerId: { type: 'number' },
                     producerDataId: { type: 'number' },

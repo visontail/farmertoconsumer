@@ -9,6 +9,7 @@ class ProductController extends ControllerBase {
 
         const where = this.fastify.ObjectSimplifier.simplify({
             name: { [Op.like]: `%${req.query.search ?? ""}%` },
+            quantity: query.hideUnavailable ? { [Op.gt]: 0 } : undefined,
             ProductCategoryId: query.categoryId,
             ProducerDataId: query.producerDataId,
             '$ProducerData.User.id$': query.producerId,
