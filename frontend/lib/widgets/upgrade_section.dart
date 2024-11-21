@@ -34,60 +34,76 @@ class _UpgradeSectionState extends State<UpgradeSection> {
           SizedBox(height: 20),
           Align(
             alignment: Alignment.centerRight,
-            child: ElevatedButton(
-              onPressed: _isLoading
-                  ? null // Disable the button while loading
-                  : () {
-                      // Simulate loading state
-                      setState(() {
-                        _isLoading = true;
-                      });
-
-                      // Simulate a network call or action
-                      Future.delayed(Duration(seconds: 3), () {
-                        setState(() {
-                          _isLoading = false;
-                        });
-                      });
-                    },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Color(0xFF48872B),
-                padding: EdgeInsets.symmetric(horizontal: 50, vertical: 15),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(6), // Set the border radius here
-                ),
+            child: Container(
+              decoration: BoxDecoration(
+                color: Color(0xFF48872B), // Set the background color
+                borderRadius: BorderRadius.circular(6), // Set the border radius
+                boxShadow: [
+                  BoxShadow(
+                    color: Color(0x55000000), // Shadow color with some opacity
+                    offset: Offset(0, 4), // Shadow position (X, Y)
+                    blurRadius: 4, // Shadow blur radius
+                    spreadRadius: 0, // Shadow spread
+                  ),
+                ],
               ),
-              child: _isLoading
-                  ? Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        SizedBox(
-                          width: 20, // Set the width of the spinner to make it smaller
-                          height: 20, // Set the height of the spinner to make it smaller
-                          child: CircularProgressIndicator(
-                            valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
-                            strokeWidth: 2, // You can adjust this as needed
+              child: ElevatedButton(
+                onPressed: _isLoading
+                    ? null // Disable the button while loading
+                    : () {
+                        // Simulate loading state
+                        setState(() {
+                          _isLoading = true;
+                        });
+
+                        // Simulate a network call or action
+                        Future.delayed(Duration(seconds: 3), () {
+                          setState(() {
+                            _isLoading = false;
+                          });
+                        });
+                      },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.transparent, // Make background transparent to show shadow
+                  padding: EdgeInsets.symmetric(horizontal: 50, vertical: 15),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(6), // Set the border radius here
+                  ),
+                  elevation: 0, // Remove the default shadow to avoid double shadow
+                ),
+                child: _isLoading
+                    ? Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          SizedBox(
+                            width: 20, // Set the width of the spinner to make it smaller
+                            height: 20, // Set the height of the spinner to make it smaller
+                            child: CircularProgressIndicator(
+                              valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                              strokeWidth: 2, // You can adjust this as needed
+                            ),
                           ),
-                        ),
-                        SizedBox(width: 10), // Space between the spinner and the text
-                        Text(
-                          'Upgrading...',
-                          style: TextStyle(color: Colors.white),
-                        ),
-                      ],
-                    )
-                  : Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(Icons.upload, color: Colors.white, size: 20.0),
-                        SizedBox(width: 10), // Space between the icon and the text
-                        Text(
-                          'Upgrade',
-                          style: TextStyle(color: Colors.white),
-                        ),
-                      ],
-                    ),
-            ),
+                          SizedBox(width: 10), // Space between the spinner and the text
+                          Text(
+                            'Upgrading...',
+                            style: TextStyle(color: Colors.white),
+                          ),
+                        ],
+                      )
+                    : Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(Icons.upload, color: Colors.white, size: 20.0),
+                          SizedBox(width: 10), // Space between the icon and the text
+                          Text(
+                            'Upgrade',
+                            style: TextStyle(color: Colors.white),
+                          ),
+                        ],
+                      ),
+              ),
+            )
+
           ),
         ],
       ),

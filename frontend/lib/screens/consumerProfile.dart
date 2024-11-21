@@ -33,11 +33,11 @@ class ConsumerProfileScreen extends StatelessWidget {
               ),
               textAlign: TextAlign.center,
             ),
-            SizedBox(height: 30),
+            SizedBox(height: 12),
             UpgradeSection(),
-            SizedBox(height: 30),
+            SizedBox(height: 12),
             _buildTabSection(currentOrders, orderHistory),
-            SizedBox(height: 30),
+            SizedBox(height: 12),
             _buildNavigateButton(context),
           ],
         ),
@@ -60,7 +60,7 @@ class ConsumerProfileScreen extends StatelessWidget {
             ],
           ),
           Container(
-            height: 200,
+            height: 360,
             child: TabBarView(
               children: [
                 OrderSection(title: "Current Orders", orders: currentOrders, customGreen: customGreen),
@@ -74,23 +74,38 @@ class ConsumerProfileScreen extends StatelessWidget {
   }
 
   Widget _buildNavigateButton(BuildContext context) {
-    return ElevatedButton(
-      onPressed: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => NextPage()),
-        );
-      },
-      style: ElevatedButton.styleFrom(
-        backgroundColor: customGreen,
-        padding: EdgeInsets.symmetric(horizontal: 50, vertical: 15),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(6), // Set the border radius here
-        ),
+    return Container(
+      decoration: BoxDecoration(
+        color: customGreen, // Set the background color
+        borderRadius: BorderRadius.circular(6), // Set the border radius
+        boxShadow: [
+          BoxShadow(
+            color: Color(0x55000000), // Shadow color with some opacity
+            offset: Offset(0, 4), // Shadow position (X, Y)
+            blurRadius: 4, // Shadow blur radius
+            spreadRadius: 0, // Shadow spread
+          ),
+        ],
       ),
-      child: Text(
-        'Navigate to another page',
-        style: TextStyle(color: Colors.white),
+      child: ElevatedButton(
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => NextPage()),
+          );
+        },
+        style: ElevatedButton.styleFrom(
+          backgroundColor: Colors.transparent, // Make background transparent to show shadow
+          padding: EdgeInsets.symmetric(horizontal: 50, vertical: 15),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(6), // Set the border radius here
+          ),
+          elevation: 0, // Remove the default shadow to avoid double shadow
+        ),
+        child: Text(
+          'Navigate to another page',
+          style: TextStyle(color: Colors.white),
+        ),
       ),
     );
   }
