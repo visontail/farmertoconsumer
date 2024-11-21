@@ -61,6 +61,7 @@ response: {
     producerData: {
         id: number;
         description: string;
+        contact: string;
     }?
 }
 ```
@@ -130,6 +131,8 @@ response: {
             email: string;
         },
         description: string;
+        contact: string;
+        profileDescription: string?;
         approved: boolean?;
     }[];
     total: number;
@@ -154,6 +157,8 @@ response: {
         email: string;
     },
     description: string;
+    contact: string;
+    profileDescription: string?;
     approved: boolean?;
 }
 ```
@@ -167,6 +172,8 @@ POST /user-upgrade-requests
 
 body: {
     description: string;
+    contact: string;
+    profileDescription?: string;
 }
 
 response: {
@@ -212,6 +219,7 @@ response: {
             producerData: {
                 id: number;
                 description: string;
+                contact: string;
             }
         }
         category: {
@@ -245,6 +253,7 @@ response: {
         producerData: {
             id: number;
             description: string;
+            contact: string;
         }
     }
     category: {
@@ -307,6 +316,7 @@ response: {
         producerData: {
             id: number;
             description: string;
+            contact: string;
         }
     }
     category: {
@@ -358,6 +368,7 @@ response: {
                 producerData: {
                     id: number;
                     description: string;
+                    contact: string;
                 };
             };
             category: {
@@ -408,6 +419,7 @@ response: {
             producerData: {
                 id: number;
                 description: string;
+                contact: string;
             };
         };
         category: {

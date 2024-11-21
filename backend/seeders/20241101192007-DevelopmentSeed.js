@@ -35,14 +35,24 @@ module.exports = {
         name: faker.person.fullName(),
         password
       });
+      const contact = faker.helpers.arrayElement([
+        faker.phone.number(),
+        faker.internet.email(),
+      ]);
       await UserUpgradeRequest.create({
         UserId: producer.id,
         description: faker.lorem.paragraph(),
+        profileDescription: faker.helpers.arrayElement([
+          faker.lorem.paragraph(),
+          null
+        ]),
+        contact,
         approved: true,
       });
       await ProducerData.create({
         UserId: producer.id,
         description: faker.lorem.paragraph(),
+        contact        
       });
       producers.push(producer);
     }

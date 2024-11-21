@@ -13,6 +13,14 @@ module.exports = {
         allowNull: false,
         type: Sequelize.STRING
       },
+      contact: {
+        allowNull: false,
+        type: Sequelize.STRING
+      },
+      profileDescription: {
+        allowNull: true,
+        type: Sequelize.STRING
+      },
       approved: {
         type: Sequelize.BOOLEAN
       },

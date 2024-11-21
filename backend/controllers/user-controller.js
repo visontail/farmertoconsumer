@@ -24,7 +24,8 @@ class UserController extends ControllerBase {
         const producerData = await this.#getProducerDataStrict(user, res);
 
         await producerData.update(this.fastify.ObjectSimplifier.simplify({
-            description: req.body.description
+            description: req.body.description,
+            contact: req.body.contact
         }))
 
         return await this.fastify.ProducerDataShaper.single.shape(producerData);

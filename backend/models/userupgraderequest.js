@@ -10,6 +10,8 @@ module.exports = (sequelize, DataTypes) => {
   }
   UserUpgradeRequest.init({
     description: DataTypes.STRING,
+    contact: DataTypes.STRING,
+    profileDescription: DataTypes.STRING,
     approved: DataTypes.BOOLEAN,
     UserId: DataTypes.INTEGER,
   }, {

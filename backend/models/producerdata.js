@@ -11,6 +11,7 @@ module.exports = (sequelize, DataTypes) => {
   }
   ProducerData.init({
     description: DataTypes.STRING,
+    contact: DataTypes.STRING,
     UserId: DataTypes.INTEGER,
   }, {
     sequelize,

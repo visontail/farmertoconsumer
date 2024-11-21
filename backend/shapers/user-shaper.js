@@ -14,6 +14,7 @@ class UserShaper extends ModelShaperBase {
                 producerData: producerData ? {
                     id: producerData.id,
                     description: producerData.description,
+                    contact: producerData.contact,
                 } : null
             }
         };
