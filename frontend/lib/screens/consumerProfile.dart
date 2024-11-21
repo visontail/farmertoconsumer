@@ -84,6 +84,9 @@ class ConsumerProfileScreen extends StatelessWidget {
       style: ElevatedButton.styleFrom(
         backgroundColor: customGreen,
         padding: EdgeInsets.symmetric(horizontal: 50, vertical: 15),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(6), // Set the border radius here
+        ),
       ),
       child: Text(
         'Navigate to another page',
