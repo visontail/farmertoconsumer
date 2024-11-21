@@ -1,10 +1,12 @@
 import 'package:farmertoconsumer/screens/product.dart';
 import 'package:farmertoconsumer/services/product_service.dart';
+import 'package:farmertoconsumer/screens/feed/feed_data_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../screens/login.dart';
 import '../screens/registration.dart';
+import 'screens/feed/feed.dart';
 import '../services/auth_service.dart';
 
 void main() {
@@ -20,6 +22,7 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
         providers: [
           ChangeNotifierProvider(create: (context) => AuthService()),
+          ChangeNotifierProvider(create: (context) => FeedDataProvider()),
           ChangeNotifierProvider(create: (context) => ProductService())
         ],
         child: const MaterialApp(
