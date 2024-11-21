@@ -232,6 +232,7 @@ response: {
             name: string;
         }
         price: number;
+        description: string;
     }[],
     total: number;
     current: number;
@@ -266,6 +267,7 @@ response: {
         name: string;
     }
     price: number;
+    description: string;
 }
 ```
 
@@ -283,6 +285,7 @@ body: {
     quantity: number;
     quantityUnitId: number;
     price: number;
+    description: string;
 }
 
 response: {
@@ -304,6 +307,7 @@ body: {
     quantity:? number;
     quantityUnitId:? number;
     price:? number;
+    description?: string;
 }
 
 response: {
@@ -329,6 +333,7 @@ response: {
         name: string;
     }
     price: number;
+    description: string;
 }
 ```
 

@@ -60,7 +60,8 @@ class ProductShaper extends ModelShaperBase {
                     id: quantityUnit.id,
                     name: quantityUnit.name,
                 },
-                price: product.price
+                price: product.price,
+                description: product.description,
             }
         };
         return new ModelShape(shaperCallback, includes, associationSetup);

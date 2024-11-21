@@ -87,6 +87,7 @@ module.exports = {
           name: `${capitalize(faker.lorem.word())} ${capitalize(category.name)}`,
           quantity: faker.helpers.rangeToNumber({ min: 5, max: 40 }),
           price: faker.helpers.rangeToNumber({ min: 300, max: 2000 }),
+          description: faker.lorem.paragraph(),
           ProducerDataId,
           QuantityUnitId: faker.helpers.arrayElement(quantityUnits).id,
           ProductCategoryId: category.id,
