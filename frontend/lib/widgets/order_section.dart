@@ -15,7 +15,7 @@ class OrderSection extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         // Section title
-        SizedBox(height: 20),
+        SizedBox(height: 6),
         // Wrap the ListView in an Expanded widget to take the remaining space
         Expanded(
           child: ListView.builder(
