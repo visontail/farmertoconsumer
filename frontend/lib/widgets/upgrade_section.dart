@@ -2,12 +2,14 @@ import 'package:farmertoconsumer/screens/upgrade_form.dart';
 import 'package:flutter/material.dart';
 
 class UpgradeSection extends StatefulWidget {
-  final bool isUpgradeRequested; // Accepting isUpgradeRequested as a parameter
+  final bool isProducer; // Accepting isProducer as a parameter
+  final bool hasPendingUserUpgradeRequest;
   final Function(bool) onUpgradeRequestChanged; // Callback to notify parent about the upgrade request
 
-  // Constructor to accept the isUpgradeRequested and onUpgradeRequestChanged
+  // Constructor to accept the isProducer and onUpgradeRequestChanged
   UpgradeSection({
-    required this.isUpgradeRequested,
+    required this.isProducer,
+    required this.hasPendingUserUpgradeRequest,
     required this.onUpgradeRequestChanged,
   });
 
@@ -26,7 +28,7 @@ class _UpgradeSectionState extends State<UpgradeSection> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            "Upgrade to Producer",
+            !widget.isProducer ? "Upgrade to Producer" : "",
             style: TextStyle(
               fontSize: 14,
               fontWeight: FontWeight.bold,
@@ -38,16 +40,16 @@ class _UpgradeSectionState extends State<UpgradeSection> {
             padding: const EdgeInsets.only(left: 16.0, right: 0.0),
             child: Text(
               // Change the text based on the upgrade request status
-              !widget.isUpgradeRequested
+              !widget.isProducer
                   ? "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor."
-                  : "Your upgrade request has already been submitted and is waiting for approval.",
+                  : (widget.hasPendingUserUpgradeRequest ? "Your upgrade request has already been submitted and is waiting for approval." : ""),
               style: TextStyle(fontSize: 13, color: Colors.black),
               textAlign: TextAlign.left,
             ),
           ),
           SizedBox(height: 20),
           // Show button only if upgrade request has not been made yet
-          if (!widget.isUpgradeRequested)
+          if (!widget.isProducer && !widget.hasPendingUserUpgradeRequest)
             Align(
               alignment: Alignment.centerRight,
               child: Container(

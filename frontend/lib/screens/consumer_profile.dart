@@ -21,12 +21,13 @@ class _ConsumerProfileScreenState extends State<ConsumerProfileScreen> {
   final Color customGreen = Color(0xFF48872B);
   bool isLoading = true;
 
-  bool isUpgradeRequested = false; // Initial state: upgrade not requested
+  bool isProducer = false; // Initial state: upgrade not requested
+  bool hasPendingUserUpgradeRequest = false;
 
   // Function to update the upgrade request status
   void updateUpgradeRequestStatus(bool status) {
     setState(() {
-      isUpgradeRequested = status;
+      isProducer = status;
     });
   }
 
@@ -37,7 +38,45 @@ class _ConsumerProfileScreenState extends State<ConsumerProfileScreen> {
     _fetchOrders(this.userId, this.token, 'customer'); // Fetch orders when the screen is initialized
   }
 
-  // Fetch iser from the API and store it
+  // Fetch user from the API and store it
+  Future<void> _fetchUserUpgradeRequest(userId, token) async {
+    // TODO
+    print('Fetching user data upgrade request...');
+
+    // Construct the URL for fetching user data by ID
+    var url = Uri.parse('http://10.0.2.2:3000/user-upgrade-requests?userId=$userId'); // Replace 6 with dynamic user ID if needed
+
+    try {
+      final response = await http.get(url, headers: {
+        'Authorization': 'Bearer $token',
+        'Content-Type': 'application/json',
+      });
+
+
+      if (response.statusCode == 200) {
+
+        final data = json.decode(response.body);
+        for (var i = 0; i < data["userUpgradeRequests"].length; i++) {
+          var userUpgradeRequest = data["userUpgradeRequests"][i];
+          if(userUpgradeRequest["approved"] == null) {
+            setState(() {
+              hasPendingUserUpgradeRequest = true;
+            });
+            break;
+          }
+        }
+
+      } else {
+        // Handle failure (non-200 response)
+        throw Exception('Failed to load user data');
+      }
+    } catch (e) {
+      print('Error fetching user: $e');
+    }    
+
+  }
+
+  // Fetch user from the API and store it
   Future<void> _fetchUser(userId, token) async {
     print('Fetching user data...');
 
@@ -66,7 +105,6 @@ class _ConsumerProfileScreenState extends State<ConsumerProfileScreen> {
         setState(() {
           this.userName = userName; // Update userName
           //this.userEmail = userEmail; // Update email (if you plan to use it)
-          //this.userId = userId; // Update userId (if needed)
           //this.producerDescription = producerDescription; // Update producer description if it exists
           //isLoading = false; // Stop loading after fetching user data
         });
@@ -83,6 +121,7 @@ class _ConsumerProfileScreenState extends State<ConsumerProfileScreen> {
           this.updateUpgradeRequestStatus(false);
         } else {
           this.updateUpgradeRequestStatus(true);
+          this._fetchUserUpgradeRequest(this.userId, 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTEsImlhdCI6MTczMjA5Njk2MX0.qwb27xKI6XtMAIbjZIneRHeDMWyCK2NrKIAaq1uMifQ');
         }
 
       } else {
@@ -181,7 +220,8 @@ class _ConsumerProfileScreenState extends State<ConsumerProfileScreen> {
             ),
             SizedBox(height: 24),
             UpgradeSection(
-              isUpgradeRequested: isUpgradeRequested,
+              isProducer: this.isProducer,
+              hasPendingUserUpgradeRequest: this.hasPendingUserUpgradeRequest,
               onUpgradeRequestChanged: updateUpgradeRequestStatus,
             ),
             SizedBox(height: 24),
@@ -195,27 +235,42 @@ class _ConsumerProfileScreenState extends State<ConsumerProfileScreen> {
 
   Widget _buildTabSection() {
     return DefaultTabController(
-      length: 2,
+      length: this.isProducer ? 4 : 2,
       child: Column(
         children: [
           TabBar(
+            isScrollable: true, 
             labelColor: customGreen,
             unselectedLabelColor: Colors.black,
             indicatorColor: customGreen,
-            tabs: [
+            tabs: this.isProducer ? [
+              Tab(text: 'Purchases'),
+              Tab(text: 'Purchase History'),
+              Tab(text: 'Orders'),
+              Tab(text: 'Product Management'),
+            ] :
+            [
               Tab(text: 'Current Orders'),
               Tab(text: 'Order History'),
             ],
+            labelStyle: TextStyle(fontSize: 12, fontWeight: FontWeight.bold), 
           ),
           Container(
             height: 360,
             child: isLoading
                 ? Center(child: CircularProgressIndicator()) // Show loading spinner while fetching
                 : TabBarView(
-                    children: [
-                      OrderSection(title: "Current Orders", orders: currentOrders, customGreen: customGreen),
-                      OrderSection(title: "Order History", orders: orderHistory, customGreen: customGreen),
-                    ],
+                    children: this.isProducer ? 
+                      [
+                        OrderSection(title: "Purchases", orders: currentOrders, customGreen: customGreen),
+                        OrderSection(title: "Purchase History", orders: orderHistory, customGreen: customGreen),
+                        OrderSection(title: "Orders", orders: currentOrders, customGreen: customGreen),
+                        OrderSection(title: "Product Management", orders: orderHistory, customGreen: customGreen),
+                      ] :
+                      [
+                        OrderSection(title: "Current Orders", orders: currentOrders, customGreen: customGreen),
+                        OrderSection(title: "Order History", orders: orderHistory, customGreen: customGreen),
+                      ],
                   ),
           ),
         ],

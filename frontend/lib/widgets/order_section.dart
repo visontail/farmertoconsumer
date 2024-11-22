@@ -8,8 +8,12 @@ class OrderSection extends StatelessWidget {
   final String title;
   final List<dynamic> orders;
   final Color customGreen;
-
-  OrderSection({required this.title, required this.orders, required this.customGreen});
+  
+  OrderSection({
+    required this.title, 
+    required this.orders, 
+    required this.customGreen
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -25,8 +29,6 @@ class OrderSection extends StatelessWidget {
             itemBuilder: (context, index) {
               // Extract order data
               var order = orders[index];
-              print('order');
-              print(order);
               var productName = order['product']['name']; // Product name
               var productCategory = order['product']['category']['name']; // Product category
               var quantity = order['quantity']; // Order quantity
