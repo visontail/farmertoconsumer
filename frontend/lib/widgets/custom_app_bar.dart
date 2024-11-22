@@ -12,17 +12,21 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
     return AppBar(
       backgroundColor: customGreen,
       iconTheme: IconThemeData(color: Colors.white),
-      toolbarHeight: 40.0,
-      title: Text(
-        title,
-        style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold, color: Colors.white),
+      toolbarHeight: 60.0,
+      title: Row(
+        mainAxisAlignment: MainAxisAlignment.end, // Align the title to the right
+        children: [
+          Text(
+            title,
+            style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold, color: Colors.white),
+          ),
+        ],
       ),
-      centerTitle: true,
       actions: [
         Padding(
-          padding: const EdgeInsets.all(8.0),
+          padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
           child: SvgPicture.asset(
-            'assets/icons/logo.svg',
+            'assets/icons/customer-icon.svg',
             width: 20.0,
             height: 20.0,
             color: Colors.white,
