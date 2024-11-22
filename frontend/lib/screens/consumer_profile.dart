@@ -13,12 +13,14 @@ class ConsumerProfileScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: customGreen,
       appBar: CustomAppBar(title: 'Profile', customGreen: customGreen),
       body: Container(
         padding: const EdgeInsets.all(6.0),
         decoration: BoxDecoration(
           border: Border.all(color: customGreen, width: 5.0),
           borderRadius: BorderRadius.circular(12),
+          color: Colors.white,
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
