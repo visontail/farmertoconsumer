@@ -25,12 +25,26 @@ class UpgradeFormScreen extends StatelessWidget {
             ),
             SizedBox(height: 20), // Space after logo
 
-            // Heading
+            // Heading with RichText
             Center(
-              child: Text(
-                "Fill out the form, to become a producer",
-                style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold, color: Colors.black),
+              child: RichText(
                 textAlign: TextAlign.center,
+                text: TextSpan(
+                  style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold, color: Colors.black),
+                  children: [
+                    TextSpan(
+                      text: 'Fill out the form, ',
+                    ),
+                    TextSpan(
+                      text: '\nto become a ',
+                      style: TextStyle(color: customGreen), // Make "producer" green
+                    ),
+                    TextSpan(
+                      text: 'producer',
+                      style: TextStyle(color: customGreen), // Make "producer" green
+                    ),
+                  ],
+                ),
               ),
             ),
             SizedBox(height: 30), // Space before the form
@@ -76,21 +90,37 @@ class UpgradeFormScreen extends StatelessWidget {
             // Get Started Button
             Align(
               alignment: Alignment.center,
-              child: ElevatedButton(
-                onPressed: () {
-                  // Handle button click, e.g., form submission
-                },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: customGreen, // Green background color
-                  padding: EdgeInsets.symmetric(horizontal: 50, vertical: 15),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(6), // Rounded corners
-                  ),
-                  elevation: 4, // Adding box shadow
+              child: Container(
+                decoration: BoxDecoration(
+                  color: Color(0xFF48872B), // Set the background color
+                  borderRadius: BorderRadius.circular(6), // Set the border radius
+                  boxShadow: [
+                    BoxShadow(
+                      color: Color(0x55000000), // Shadow color with some opacity
+                      offset: Offset(0, 4), // Shadow position (X, Y)
+                      blurRadius: 4, // Shadow blur radius
+                      spreadRadius: 0, // Shadow spread
+                    ),
+                  ],
                 ),
-                child: Text(
-                  'Get Started',
-                  style: TextStyle(color: Colors.white, fontSize: 16),
+                child: SizedBox(
+                  child: ElevatedButton(
+                    onPressed: () {
+                      // Handle button click, e.g., form submission
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: customGreen, // Green background color
+                      padding: EdgeInsets.symmetric(horizontal: 50, vertical: 15),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(6), // Rounded corners
+                      ),
+                      elevation: 4, // Adding box shadow
+                    ),
+                    child: Text(
+                      'Get Started',
+                      style: TextStyle(color: Colors.white, fontSize: 16),
+                    ),
+                  ),
                 ),
               ),
             ),
