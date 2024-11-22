@@ -59,7 +59,7 @@ class OrderSection extends StatelessWidget {
                             child: Column(
                               children: [
                                 ClipRRect(
-                                  borderRadius: BorderRadius.circular(12), // Apply border radius to image
+                                  borderRadius: BorderRadius.circular(6), // Apply border radius to image
                                   child: Image.asset(
                                     'assets/images/product.jpg',
                                     width: double.infinity, // Make the image fill its container
