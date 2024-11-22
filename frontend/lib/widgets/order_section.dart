@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import '../screens/next_page.dart'; // Make sure to import NextPage class
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 class OrderSection extends StatelessWidget {
   final String title;
-  final List<String> orders;
+  final List<dynamic> orders;
   final Color customGreen;
 
   OrderSection({required this.title, required this.orders, required this.customGreen});
@@ -21,6 +23,16 @@ class OrderSection extends StatelessWidget {
           child: ListView.builder(
             itemCount: orders.length,
             itemBuilder: (context, index) {
+              // Extract order data
+              var order = orders[index];
+              var productName = order['product']['name']; // Product name
+              var productCategory = order['product']['category']['name']; // Product category
+              var quantity = order['quantity']; // Order quantity
+              var status = order['approved'] != null && order['approved'] 
+                           ? 'Approved' : 'In Progress'; // Order status
+              var price = order['price']; // Order price
+              var imgSrc = 'assets/images/product.jpg'; // TODO
+
               return GestureDetector(
                 onTap: () {
                   // Navigate to NextPage when the card is tapped
@@ -61,7 +73,7 @@ class OrderSection extends StatelessWidget {
                                 ClipRRect(
                                   borderRadius: BorderRadius.circular(6), // Apply border radius to image
                                   child: Image.asset(
-                                    'assets/images/product.jpg',
+                                    imgSrc,
                                     width: double.infinity, // Make the image fill its container
                                     height: 100, // Set height of the image
                                     fit: BoxFit.cover, // Use BoxFit to adjust the image's aspect ratio
@@ -69,7 +81,7 @@ class OrderSection extends StatelessWidget {
                                 ),
                                 SizedBox(height: 8),
                                 Text(
-                                  'Carrots from Baja',
+                                  productName, // Display the product name
                                   style: TextStyle(fontSize: 12, color: Colors.white),
                                 ),
                               ],
@@ -85,20 +97,20 @@ class OrderSection extends StatelessWidget {
                                 // Display quantity and status
                                 Center(
                                   child: Text(
-                                    '6',  // Display the quantity
+                                    '$quantity',  // Display the quantity from order
                                     style: TextStyle(fontSize: 18, color: Colors.white),
                                   ),
                                 ),
                                 Center(
                                   child: Text(
-                                    'quantity',  // Display the quantity label
+                                    productCategory,  // Display product category
                                     style: TextStyle(fontSize: 12, color: Colors.white),
                                   ),
                                 ),
                                 SizedBox(height: 6),
                                 Center(
                                   child: Text(
-                                    'In Progress',  // Display the status
+                                    status,  // Display the status ("In Progress" or "Approved")
                                     style: TextStyle(fontSize: 14, color: Colors.white),
                                   ),
                                 ),
@@ -111,7 +123,7 @@ class OrderSection extends StatelessWidget {
                                       // Navigate to the next page when the button is clicked
                                       Navigator.push(
                                         context,
-                                        MaterialPageRoute(builder: (context) => NextPage()), // Ensure NextPage is imported
+                                        MaterialPageRoute(builder: (context) => NextPage()),
                                       );
                                     },
                                     style: TextButton.styleFrom(
@@ -147,7 +159,6 @@ class OrderSection extends StatelessWidget {
                     ),
                   ),
                 ),
-
               );
             },
           ),

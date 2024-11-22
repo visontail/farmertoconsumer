@@ -12,6 +12,16 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
     return AppBar(
       backgroundColor: customGreen,
       iconTheme: IconThemeData(color: Colors.white),
+      leading: IconButton(
+        icon: SvgPicture.asset(
+          'assets/icons/back-arrow-2.svg', // Path to your custom SVG icon
+          height: 20.0, // Optional: Set the height of the icon
+          width: 20.0,  // Optional: Set the width of the icon
+        ), // Customize the icon here (e.g., custom back arrow)
+        onPressed: () {
+          Navigator.pop(context);
+        },
+      ),
       toolbarHeight: 60.0,
       title: Row(
         mainAxisAlignment: MainAxisAlignment.end, // Align the title to the right
