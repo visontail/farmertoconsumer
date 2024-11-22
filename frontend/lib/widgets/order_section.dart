@@ -25,11 +25,14 @@ class OrderSection extends StatelessWidget {
             itemBuilder: (context, index) {
               // Extract order data
               var order = orders[index];
+              print('order');
+              print(order);
               var productName = order['product']['name']; // Product name
               var productCategory = order['product']['category']['name']; // Product category
               var quantity = order['quantity']; // Order quantity
-              var status = order['approved'] != null && order['approved'] 
-                           ? 'Approved' : 'In Progress'; // Order status
+              //var status = order['approved'] != null && order['approved'] 
+              //             ? 'Approved' : 'In Progress'; // Order status
+              var status = order['approved'] == null ? 'Pending' : (order['approved'] ? 'Approved' : 'In Progress');
               var price = order['price']; // Order price
               var imgSrc = 'assets/images/product.jpg'; // TODO
 
