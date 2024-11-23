@@ -67,12 +67,15 @@ class _FeedProductsState extends State<FeedProducts> {
                                       child: const Row(
                                         children: [
                                           Text(
-                                            "View product",
+                                            "View ",
                                             style:
                                                 TextStyle(color: Colors.white),
                                           ),
-                                          Icon(Icons.arrow_forward,
-                                              color: Colors.white),
+                                          Icon(
+                                            Icons.arrow_forward,
+                                            color: Colors.white,
+                                            size: 15,
+                                          ),
                                         ],
                                       ),
                                     ),
@@ -81,13 +84,22 @@ class _FeedProductsState extends State<FeedProducts> {
                               ],
                             ))));
               }),
-              ElevatedButton(
-                  onPressed: provider.hasMoreProduct
-                      ? () {
-                          provider.loadMoreProduct();
-                        }
-                      : null,
-                  child: const Text("Load more"))
+              if (provider.productsLoading) const CircularProgressIndicator(),
+              if (!provider.productsLoading && provider.products.length == 0)
+                const Text("No product to show."),
+              if (!provider.productsLoading && provider.hasMoreProduct)
+                Padding(
+                    padding: const EdgeInsets.all(10),
+                    child: ElevatedButton(
+                        onPressed: provider.hasMoreProduct
+                            ? () {
+                                provider.loadMoreProduct();
+                              }
+                            : null,
+                        child: const Text(
+                          "Load more",
+                          style: TextStyle(color: mainGreen),
+                        ))),
             ])));
   }
 }

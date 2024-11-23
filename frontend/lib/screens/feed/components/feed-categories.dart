@@ -2,6 +2,7 @@ import 'package:farmertoconsumer/models/productCategory.dart';
 import 'package:farmertoconsumer/screens/feed/feed_data_provider.dart';
 import 'package:farmertoconsumer/styles/colors.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 
 typedef SelectCategoryCallback = void Function(int);
@@ -11,10 +12,15 @@ class FeedCategories extends StatefulWidget {
 }
 
 class _FeedCategoriesState extends State<FeedCategories> {
+  String capitalizeFirstChar(String text) {
+    if (text.isEmpty) return text;
+    return text[0].toUpperCase() + text.substring(1);
+  }
+
   @override
   Widget build(BuildContext context) {
     final provider = Provider.of<FeedDataProvider>(context);
-    
+
     return SingleChildScrollView(
         scrollDirection: Axis.horizontal,
         child: Row(
@@ -45,12 +51,22 @@ class _FeedCategoriesState extends State<FeedCategories> {
                     ),
                   ]),
               child: Center(
-                child: Text(category.name,
-                    style: const TextStyle(
-                        fontWeight: FontWeight.bold, color: Colors.white),
-                    overflow: TextOverflow.clip,
-                    softWrap: false),
-              ),
+                  child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  // TODO - fallback svg
+                  SvgPicture.asset(
+                    'assets/icons/${category.name}.svg',
+                    width: 30,
+                    color: Colors.white,
+                  ),
+                  Text(capitalizeFirstChar(category.name),
+                      style: const TextStyle(
+                          fontWeight: FontWeight.bold, color: Colors.white),
+                      overflow: TextOverflow.clip,
+                      softWrap: false),
+                ],
+              )),
             ),
           );
         }).toList()));
