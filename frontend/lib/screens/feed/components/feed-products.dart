@@ -22,31 +22,65 @@ class _FeedProductsState extends State<FeedProducts> {
             child: Column(children: [
               ...provider.products.map((Product product) {
                 return Padding(
-                    padding: const EdgeInsets.fromLTRB(10, 2, 10, 2),
+                    padding: const EdgeInsets.fromLTRB(40, 15, 40, 15),
                     child: Container(
-                      margin: const EdgeInsets.all(7),
-                      height: 100,
-                      decoration: BoxDecoration(
-                          color: mainGreen,
-                          borderRadius: BorderRadius.circular(10),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.black.withOpacity(0.2),
-                              offset: const Offset(0, 4),
-                              blurRadius: 8,
-                              spreadRadius: 2,
-                            ),
-                          ]),
-                      child: Center(
-                        child: Text(product.name,
-                            style: const TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: Colors.white),
-                            overflow: TextOverflow.clip,
-                            softWrap: false),
-                      ),
-                    ));
-              }).toList(),
+                        decoration: BoxDecoration(
+                            color: mainGreen,
+                            borderRadius: BorderRadius.circular(10)),
+                        child: Padding(
+                            padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
+                            child: Column(
+                              children: [
+                                Row(
+                                  children: [
+                                    ClipRRect(
+                                        borderRadius: BorderRadius.circular(5),
+                                        child: Image.asset(
+                                            'assets/images/prod-placeholder.jpg',
+                                            width: 180,
+                                            fit: BoxFit.cover)),
+                                    Expanded(
+                                        child: Center(
+                                            child: Column(children: [
+                                      Text("#${product.category.name}",
+                                          style: const TextStyle(
+                                            color: Colors.white,
+                                          )),
+                                      Text("${product.price} Ft",
+                                          style: const TextStyle(
+                                            color: Colors.white,
+                                          )),
+                                    ]))),
+                                  ],
+                                ),
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text(product.name,
+                                        style: const TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.white,
+                                        )),
+                                    TextButton(
+                                      onPressed: () {},
+                                      child: const Row(
+                                        children: [
+                                          Text(
+                                            "View product",
+                                            style:
+                                                TextStyle(color: Colors.white),
+                                          ),
+                                          Icon(Icons.arrow_forward,
+                                              color: Colors.white),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                )
+                              ],
+                            ))));
+              }),
               ElevatedButton(
                   onPressed: provider.hasMoreProduct
                       ? () {

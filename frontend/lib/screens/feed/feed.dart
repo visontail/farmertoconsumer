@@ -22,29 +22,35 @@ class _FeedScreenState extends State<FeedScreen> {
           title: const Text('Products'),
         ),
         body: RefreshIndicator(
-          onRefresh: provider.refresh,
-          child: Column(
-          children: [
-            FeedSearch(),
-            const Align(
-                alignment: Alignment.centerLeft,
-                child: Text(
-                  'Categories',
-                  style: TextStyle(
-                    fontSize: 20,
-                  ),
-                )),
-            FeedCategories(),
-            const Align(
-                alignment: Alignment.centerLeft,
-                child: Text(
-                  'Products',
-                  style: TextStyle(
-                    fontSize: 20,
-                  ),
-                )),
-            FeedProducts()
-          ],
-        )));
+            onRefresh: provider.refresh,
+            child: Column(
+              children: [
+                FeedSearch(),
+                const Padding(
+                    padding: EdgeInsets.all(15),
+                    child: Align(
+                        alignment: Alignment.centerLeft,
+                        child: Text(
+                          'Categories',
+                          style: TextStyle(
+                            fontSize: 17,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ))),
+                FeedCategories(),
+                const Padding(
+                    padding: EdgeInsets.all(15),
+                    child: Align(
+                        alignment: Alignment.centerLeft,
+                        child: Text(
+                          'Products',
+                          style: TextStyle(
+                            fontSize: 17,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ))),
+                FeedProducts()
+              ],
+            )));
   }
 }
