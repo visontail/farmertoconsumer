@@ -22,15 +22,6 @@ class EmailField extends StatelessWidget {
       onChanged: onChanged,
       decoration: InputDecoration(
         hintText: "Email",
-        suffixIcon: emailController.text.isNotEmpty
-            ? IconButton(
-                icon: const Icon(Icons.clear, color: mainGreen),
-                onPressed: () {
-                  emailController.clear();
-                  onChanged('');
-                },
-              )
-            : null,
         border: const UnderlineInputBorder(
           borderSide: BorderSide(
             color: mainGreen,
