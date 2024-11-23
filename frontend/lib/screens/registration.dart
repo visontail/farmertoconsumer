@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../styles/colors.dart';
+import '../utils/snack_bar.dart';
 
 import '../widgets/login/register/welcome_header_section.dart';
 import '../widgets/login/register/name_field.dart';
@@ -11,6 +12,7 @@ import '../widgets/login/register/pass_field.dart';
 import '../widgets/login/register/confirm_pass_field.dart';
 import '../widgets/login/register/nav_link.dart';
 
+import '../models/user.dart';
 import '../services/auth_service.dart';
 
 class RegistrationScreen extends StatefulWidget {
@@ -186,51 +188,61 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
   }
 
   Future<void> _handleRegister(BuildContext context) async {
-    print("Get Started tapped!");
-    print('Register: ${emailController.text} ${nameController.text} ${passwordController.text} ${confirmPasswordController.text}');
+    final validationError = _validateRegistrationFields();
 
-    if (passwordController.text != confirmPasswordController.text) {
-      // Passwords do not match
-      _showSnackBar(context, "Passwords do not match!", Colors.red);
+    if (validationError != null) {
+      showSnackBar(
+          context: context, message: validationError, backgroundColor: red);
       return;
     }
 
     try {
       final authService = Provider.of<AuthService>(context, listen: false);
-      final result = await authService.register(
-        emailController.text,
-        nameController.text,
-        passwordController.text,
-        confirmPasswordController.text,
+      User? user = await authService.register(
+        emailController.text.trim(),
+        nameController.text.trim(),
+        passwordController.text.trim(),
+        confirmPasswordController.text.trim(),
       );
 
-      if (result == 'success') {
-        Navigator.pushNamed(context, '/home');
+      passwordController.clear();
+      confirmPasswordController.clear();
+
+      if (user != null) {
+        Navigator.pushNamed(context, '/user_upgrade');
       } else {
-        _showSnackBar(context, result as String, Colors.red);
+        showSnackBar(
+          context: context,
+          message: 'Registration failed. Please check your details.',
+          backgroundColor: red,
+        );
       }
     } catch (e) {
-      _showSnackBar(context, "Error during registration: $e", Colors.red);
+      showSnackBar(
+        context: context,
+        message: 'An error occurred during registration: $e',
+        backgroundColor: red,
+      );
     }
   }
 
-  void _showSnackBar(
-      BuildContext context, String message, Color backgroundColor) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(
-          message,
-          style:
-              const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
-        ),
-        backgroundColor: backgroundColor,
-        duration: const Duration(seconds: 3),
-        behavior: SnackBarBehavior.floating,
-        margin: const EdgeInsets.all(20),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(10),
-        ),
-      ),
-    );
+  /// Validates registration form fields.
+  String? _validateRegistrationFields() {
+    if (nameController.text.trim().isEmpty) {
+      return "Name field cannot be empty.";
+    }
+    if (emailController.text.trim().isEmpty) {
+      return "Email field cannot be empty.";
+    }
+    if (passwordController.text.trim().isEmpty) {
+      return "Password field cannot be empty.";
+    }
+    if (confirmPasswordController.text.trim().isEmpty) {
+      return "Confirm Password field cannot be empty.";
+    }
+    if (passwordController.text != confirmPasswordController.text) {
+      return "Passwords do not match.";
+    }
+    return null; // No errors
   }
 }

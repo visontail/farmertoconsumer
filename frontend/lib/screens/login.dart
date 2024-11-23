@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../styles/colors.dart';
+import '../utils/snack_bar.dart';
 
 import '../widgets/login/register/welcome_header_section.dart';
 import '../widgets/login/register/email_field.dart';
@@ -9,6 +10,7 @@ import '../widgets/login/register/pass_field.dart';
 import '../widgets/login/register/get_started_button.dart';
 import '../widgets/login/register/nav_link.dart';
 
+import '../models/user.dart';
 import '../services/auth_service.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -136,38 +138,45 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   Future<void> _handleLogin(BuildContext context) async {
-    print("Get Started tapped!");
-    print('Login: ${emailController.text} ${passwordController.text}');
+  String email = emailController.text.trim();
+  String password = passwordController.text.trim();
 
-    try {
-      final authService = Provider.of<AuthService>(context, listen: false);
-      final result = await authService.login(
-        emailController.text,
-        passwordController.text,
-      );
-
-      if (result == 'success') {
-        print('Login successful');
-        Navigator.pushNamed(context, '/feed');
-      } else {
-        _showErrorSnackbar(context, 'Invalid credentials');
-      }
-    } catch (e) {
-      _showErrorSnackbar(context, 'Something went wrong');
-      print("Error during login: $e");
-    }
+  if (email.isEmpty || password.isEmpty) {
+    showSnackBar(
+      context: context,
+      message: "Please fill in both fields",
+      backgroundColor: red
+    );
+    return;
   }
 
-  void _showErrorSnackbar(BuildContext context, String message) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(message),
-        backgroundColor: Colors.red,
-        duration: const Duration(seconds: 3),
-        behavior: SnackBarBehavior.floating,
-        margin: const EdgeInsets.all(20),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-      ),
+  try {
+    final authService = Provider.of<AuthService>(context, listen: false);
+    User? user = await authService.login(email, password);
+
+    passwordController.clear(); // Clear password field
+
+    if (user != null) {
+      showSnackBar(
+        context: context,
+        message: "Welcome, ${user.name}!",
+        backgroundColor: mainGreen
+      );
+      Navigator.pushReplacementNamed(context, '/feed');
+    } else {
+      showSnackBar(
+        context: context,
+        message: "Login failed. Please try again.",
+        backgroundColor: red
+      );
+    }
+  } catch (e) {
+    showSnackBar(
+      context: context,
+      message: "Login failed: ${e.toString()}",
+      backgroundColor: red
     );
   }
+}
+
 }
