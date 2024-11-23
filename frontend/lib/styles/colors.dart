@@ -7,3 +7,5 @@ const Color black = Colors.black;
 const Color mainGreen = Color(0xFF48872B);
 const Color paleGreen = Color(0xFF485842);
 const Color darkGreen = Color(0xFF293325);
+const Color red = Color(0xFFB23A48);
+
