@@ -1,24 +1,50 @@
+import 'package:farmertoconsumer/models/producerData.dart';
 import 'package:farmertoconsumer/models/productCategory.dart';
+import 'package:farmertoconsumer/models/quantityUnit.dart';
+import 'package:farmertoconsumer/models/user.dart';
 
 class Product {
-  final int id;
-  final String name;
-  final ProductCategory category;
-  final int price;
+  final int _id;
+  final String _name;
+  final int _price;
+  final ProductCategory _category;
+  final User _user;
+  final int _quantity;
+  final QuantityUnit _quantityUnit;
 
   Product({
-    required this.id,
-    required this.name,
-    required this.category,
-    required this.price,
-  });
+    required int id,
+    required String name,
+    required ProductCategory category,
+    required int price,
+    required QuantityUnit quantityUnit,
+    required User user,
+    required int quantity,
+  })  : _id = id,
+        _name = name,
+        _category = category,
+        _price = price,
+        _quantityUnit = quantityUnit,
+        _user = user,
+        _quantity = quantity;
 
   factory Product.fromJson(Map<String, dynamic> json) {
     return Product(
       id: json['id'],
       name: json['name'],
       category: ProductCategory.fromJson(json['category']),
-      price: json['price']
+      price: json['price'],
+      quantityUnit: QuantityUnit.fromJson(json['quantityUnit']),
+      quantity: json['quantity'],
+      user: User.fromJson(json['producer']),
     );
   }
+
+  int get id => _id;
+  String get name => _name;
+  int get price => _price;
+  ProductCategory get category => _category;
+  User get user => _user;
+  int get quantity => _quantity;
+  QuantityUnit get quantityUnit => _quantityUnit;
 }

@@ -1,11 +1,12 @@
 class ProductCategory {
-  final int id;
-  final String name;
+  final int _id;
+  final String _name;
 
   ProductCategory({
-    required this.id,
-    required this.name,
-  });
+    required int id,
+    required String name,
+  })  : _id = id,
+        _name = name;
 
   factory ProductCategory.fromJson(Map<String, dynamic> json) {
     return ProductCategory(
@@ -13,4 +14,7 @@ class ProductCategory {
       name: json['name'],
     );
   }
+
+  int get id => _id;
+  String get name => _name;
 }
