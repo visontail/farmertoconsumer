@@ -100,6 +100,13 @@ class _FeedScreenState extends State<FeedScreen> {
             onSubmitted: provider.searchProduct,
             decoration: const InputDecoration(
               hintText: 'Search',
+              prefixIcon: Padding(
+                  padding: EdgeInsets.fromLTRB(0, 0, 0, 5),
+                  child: Icon(
+                    Icons.search,
+                    color: mainGreen,
+                    opticalSize: 15,
+                  )),
               focusedBorder: UnderlineInputBorder(
                   borderSide: BorderSide(color: mainGreen, width: 2.0)),
             ),
