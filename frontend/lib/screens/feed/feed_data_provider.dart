@@ -22,12 +22,7 @@ class FeedDataProvider extends ChangeNotifier {
 
   FeedDataProvider() {
     reloadProducts();
-
-    _categoryService.getAll().then((v) {
-      _categories = v.data;
-      _categoriesLoading = false;
-      notifyListeners();
-    });
+    reloadCategories();
   }
 
   List<ProductCategory> get categories => _categories;
@@ -49,6 +44,14 @@ class FeedDataProvider extends ChangeNotifier {
       _productsLoading = false;
       _loadedPage = 1;
       _hasMoreProduct = _loadedPage * productsPerPage < v.total;
+      notifyListeners();
+    });
+  }
+
+  void reloadCategories() {
+    _categoryService.getAll().then((v) {
+      _categories = v.data;
+      _categoriesLoading = false;
       notifyListeners();
     });
   }
@@ -77,5 +80,10 @@ class FeedDataProvider extends ChangeNotifier {
   void selectCategory(int? categoryId) {
     _selectedCategoryId = categoryId;
     reloadProducts();
+  }
+
+  Future<void> refresh() async {
+    reloadProducts();
+    reloadCategories();
   }
 }
