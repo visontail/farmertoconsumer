@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import '../screens/login.dart';
 import '../screens/registration.dart';
 import 'screens/feed/feed.dart';
+import 'screens/producer_profile.dart';
 import '../services/auth_service.dart';
 
 void main() {
@@ -24,7 +25,7 @@ class MyApp extends StatelessWidget {
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
-        home: LoginScreen(),
+        home: ProducerProfileScreen(),
       ),
     );
   }
