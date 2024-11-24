@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-
 import 'package:flutter_svg/flutter_svg.dart';
+
 import '../../../styles/colors.dart';
+import '../../../utils/routes.dart';
 
 class WelcomeHeaderSection extends StatelessWidget {
   final String secondText;
@@ -18,11 +19,16 @@ class WelcomeHeaderSection extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         const SizedBox(height: 60),
-        SvgPicture.asset(
-          'assets/icons/icon.svg',
-          width: 48,
-          height: 48,
-          color: mainGreen,
+        GestureDetector(
+          onTap: () {
+            Navigator.pushNamed(context, Routes.feed);
+          },
+          child: SvgPicture.asset(
+            'assets/icons/icon.svg',
+            width: 48,
+            height: 48,
+            color: mainGreen,
+          ),
         ),
         const SizedBox(height: 5),
         const Text(

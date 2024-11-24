@@ -1,6 +1,8 @@
 import 'package:farmertoconsumer/screens/feed/components/feed-categories.dart';
 import 'package:farmertoconsumer/screens/feed/components/feed-products.dart';
 import 'package:farmertoconsumer/screens/feed/components/feed-search.dart';
+import 'package:farmertoconsumer/utils/routes.dart';
+import 'package:farmertoconsumer/widgets/nav_button_simple.dart';
 import 'package:flutter/material.dart';
 
 class FeedScreen extends StatefulWidget {
@@ -37,8 +39,23 @@ class _FeedScreenState extends State<FeedScreen> {
                     fontSize: 20,
                   ),
                 )),
-            FeedProducts()
-          ],
+            FeedProducts(),
+            NavigationButton(
+          routeName: Routes.login,
+          buttonText: 'Go to Login',
+        ),
+        NavigationButton(
+          routeName: Routes.registration,
+          buttonText: 'Go to Registration',
+        ),
+        NavigationButton(
+          routeName: Routes.consumerProfile,
+          buttonText: 'Go to Consumer Profile',
+        ),
+        NavigationButton(
+          routeName: Routes.producerProfile,
+          buttonText: 'Go to Producer Profile',
+        ),],
         ));
   }
 }
