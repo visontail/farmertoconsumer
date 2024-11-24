@@ -57,7 +57,6 @@ class OrderShaper extends ModelShaperBase {
                 customer: {
                     id: customer.id,
                     name: customer.name,
-                    email: customer.email,
                 },
                 product: {
                     id: product.id,
@@ -65,7 +64,6 @@ class OrderShaper extends ModelShaperBase {
                     producer: {
                         id: producer.id,
                         name: producer.name,
-                        email: producer.email,
                         producerData: {
                             id: producerData.id,
                             description: producerData.description,

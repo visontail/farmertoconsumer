@@ -9,7 +9,6 @@ class UserShaper extends ModelShaperBase {
 
             return {
                 id: user.id,
-                email: user.email,
                 name: user.name,
                 producerData: producerData ? {
                     id: producerData.id,

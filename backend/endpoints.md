@@ -56,7 +56,6 @@ GET /users/{id}
 
 response: {
     id: number;
-    email: string;
     name: string;
     producerData: {
         id: number;
@@ -76,7 +75,6 @@ response: {
     description: string;
     user: {
         id: number;
-        email: string;
         name: string;
     }
 }
@@ -99,7 +97,6 @@ response: {
     description: string;
     user: {
         id: number;
-        email: string;
         name: string;
     }
 }
@@ -216,7 +213,6 @@ response: {
         producer: {
             id: number;
             name: string;
-            email: string;
             producerData: {
                 id: number;
                 description: string;
@@ -251,7 +247,6 @@ response: {
     producer: {
         id: number;
         name: string;
-        email: string;
         producerData: {
             id: number;
             description: string;
@@ -317,7 +312,6 @@ response: {
     producer: {
         id: number;
         name: string;
-        email: string;
         producerData: {
             id: number;
             description: string;
@@ -362,7 +356,6 @@ response: {
         customer: {
             id: number;
             name: string;
-            email: string;
         };
         product: {
             id: number;
@@ -370,7 +363,6 @@ response: {
             producer: {
                 id: number;
                 name: string;
-                email: string;
                 producerData: {
                     id: number;
                     description: string;
@@ -413,7 +405,6 @@ response: {
     customer: {
         id: number;
         name: string;
-        email: string;
     };
     product: {
         id: number;
@@ -421,7 +412,6 @@ response: {
         producer: {
             id: number;
             name: string;
-            email: string;
             producerData: {
                 id: number;
                 description: string;
@@ -465,7 +455,6 @@ response: {
     customer: {
         id: number;
         name: string;
-        email: string;
     };
     product: {
         id: number;
@@ -473,7 +462,6 @@ response: {
         user: {
             id: number;
             name: string;
-            email: string;
             producer: {
                 id: number;
                 description: string;

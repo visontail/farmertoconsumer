@@ -44,7 +44,6 @@ class ProductShaper extends ModelShaperBase {
                 producer: {
                     id: producer.id,
                     name: producer.name,
-                    email: producer.email,
                     producerData: {
                         id: producerData.id,
                         description: producerData.description,
