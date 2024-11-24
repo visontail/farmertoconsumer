@@ -14,6 +14,7 @@ import '../widgets/login/register/nav_link.dart';
 
 import '../models/user.dart';
 import '../services/auth_service.dart';
+import '../utils/routes.dart';
 
 class RegistrationScreen extends StatefulWidget {
   const RegistrationScreen({super.key});
@@ -182,8 +183,8 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
 
   Widget _buildNavLink() {
     return NavLink(
-      label: "Haven't got an account yet? Register.",
-      route: '/register',
+      label: "Already have an account? Login.",
+      route: Routes.login,
     );
   }
 
@@ -209,7 +210,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
       confirmPasswordController.clear();
 
       if (user != null) {
-        Navigator.pushNamed(context, '/user_upgrade');
+        Navigator.pushNamed(context, Routes.userUpgrade);
       } else {
         showSnackBar(
           context: context,

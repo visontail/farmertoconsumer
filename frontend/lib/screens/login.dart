@@ -12,6 +12,7 @@ import '../widgets/login/register/nav_link.dart';
 
 import '../models/user.dart';
 import '../services/auth_service.dart';
+import '../utils/routes.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -133,7 +134,7 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget _buildNavLink() {
     return NavLink(
       label: "Haven't got an account yet? Register.",
-      route: '/register',
+      route: Routes.registration,
     );
   }
 
@@ -162,7 +163,8 @@ class _LoginScreenState extends State<LoginScreen> {
         message: "Welcome, ${user.name}!",
         backgroundColor: mainGreen
       );
-      Navigator.pushReplacementNamed(context, '/feed');
+      print("Navigate to ${Routes.feed}");
+      Navigator.pushReplacementNamed(context, Routes.feed);
     } else {
       showSnackBar(
         context: context,

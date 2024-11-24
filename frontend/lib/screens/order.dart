@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../utils/routes.dart';
+
 import '../widgets/nav_button_simple.dart';
 
 class OrderScreen extends StatelessWidget {
@@ -9,7 +11,7 @@ class OrderScreen extends StatelessWidget {
       appBar: AppBar(title: Text('Order')),
       body: Center(
         child: NavigationButton(
-          routeName: '/feed',
+          routeName: Routes.feed,
           buttonText: 'Go to Feed',
         ),
       ),
