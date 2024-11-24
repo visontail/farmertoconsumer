@@ -243,7 +243,7 @@ response: {
 ### Get product by ID
 
 ```js
-GET /product/{id}
+GET /products/{id}
 
 response: {
     id: number;
