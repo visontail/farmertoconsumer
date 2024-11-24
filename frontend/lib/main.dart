@@ -1,4 +1,5 @@
 import 'package:farmertoconsumer/screens/product.dart';
+import 'package:farmertoconsumer/services/oder_service.dart';
 import 'package:farmertoconsumer/services/product_service.dart';
 import 'package:farmertoconsumer/screens/feed/feed_data_provider.dart';
 import 'package:flutter/material.dart';
@@ -23,11 +24,12 @@ class MyApp extends StatelessWidget {
         providers: [
           ChangeNotifierProvider(create: (context) => AuthService()),
           ChangeNotifierProvider(create: (context) => FeedDataProvider()),
-          ChangeNotifierProvider(create: (context) => ProductService())
+          ChangeNotifierProvider(create: (context) => ProductService()),
+          ChangeNotifierProvider(create: (context) => OrderService())
         ],
         child: MaterialApp(
           debugShowCheckedModeBanner: false,
-          home: ProductScreen(id:"1"),
+          home: ProductScreen(id: "1"),
         ),
       );
   }

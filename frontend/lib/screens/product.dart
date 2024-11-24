@@ -1,3 +1,4 @@
+import 'package:farmertoconsumer/services/oder_service.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../models/product.dart';
@@ -16,6 +17,7 @@ class ProductScreen extends StatefulWidget {
 class _ProductScreenState extends State<ProductScreen> {
   Product? product;
   String? errorMessage;
+  late OrderService orderService;
 
   Future<void> fetchProduct(String id) async {
     final productService = Provider.of<ProductService>(context, listen: false);
@@ -36,6 +38,7 @@ class _ProductScreenState extends State<ProductScreen> {
   void initState() {
     super.initState();
     fetchProduct(widget.id);
+    orderService = Provider.of<OrderService>(context, listen: false);
   }
 
   @override
@@ -132,7 +135,7 @@ class _ProductScreenState extends State<ProductScreen> {
                               ),
                               onPressed: () {
                                 // Ide jöhet rendelés logika
-                                print('Order button clicked!');
+                                orderService.postOrder(product!);
                               },
                               child: const Text('Order'),
                             ),
