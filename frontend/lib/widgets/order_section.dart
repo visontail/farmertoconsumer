@@ -24,7 +24,9 @@ class OrderSection extends StatelessWidget {
         SizedBox(height: 6),
         // Wrap the ListView in an Expanded widget to take the remaining space
         Expanded(
-          child: ListView.builder(
+          child: orders.length == 0 ? 
+            Text("You don't have any orders yet.")
+          : ListView.builder(
             itemCount: orders.length,
             itemBuilder: (context, index) {
               // Extract order data

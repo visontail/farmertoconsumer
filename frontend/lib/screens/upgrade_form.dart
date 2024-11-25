@@ -170,7 +170,7 @@ class _UpgradeFormScreenState extends State<UpgradeFormScreen> {
                   ],
                 ),
               ),
-              SizedBox(height: 30), // Space before the form
+              SizedBox(height: 20), // Space before the form
 
               // Form
               Expanded(
@@ -216,7 +216,7 @@ class _UpgradeFormScreenState extends State<UpgradeFormScreen> {
                     // Description TextArea
                     TextFormField(
                       controller: _descriptionController,
-                      maxLines: 6,
+                      maxLines: 4,
                       decoration: InputDecoration(
                         labelText: 'Description',
                         hintText: 'Detailed description about you as a producer and your products',
@@ -233,7 +233,7 @@ class _UpgradeFormScreenState extends State<UpgradeFormScreen> {
                 isLoading: _isLoading,
                 onPressed: _submitUserUpgradeForm,
               ),
-              SizedBox(height: 20), // Space after the button
+              SizedBox(height: 0), // Space after the button
             ],
           ),
         ),

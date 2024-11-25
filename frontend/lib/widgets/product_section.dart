@@ -20,7 +20,9 @@ class ProductSection extends StatelessWidget {
       children: [
         SizedBox(height: 6),
         Expanded(
-          child: ListView.builder(
+          child: products.length == 0 ?
+            Text("You don't have any products yet.")
+          : ListView.builder(
             itemCount: products.length,
             itemBuilder: (context, index) {
               var product = products[index];

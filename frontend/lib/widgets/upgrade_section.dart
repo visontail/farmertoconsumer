@@ -20,6 +20,10 @@ class UpgradeSection extends StatefulWidget {
 class _UpgradeSectionState extends State<UpgradeSection> {
   bool _isLoading = false; // Tracks the loading state
 
+  String contact_information = 'Some Contact Information';
+  String description = 'Some Description';
+
+
   @override
   Widget build(BuildContext context) {
     return !widget.isProducer // Corrected this line to use widget.isProducer
@@ -173,7 +177,7 @@ class _UpgradeSectionState extends State<UpgradeSection> {
 
                   // Description Text Area (multi-line input field)
                   TextFormField(
-                    initialValue: "Valami",
+                    initialValue: description,
                     maxLines: 3,  // Makes this a multi-line field (textarea)
                     decoration: InputDecoration(
                       labelText: 'Description',
