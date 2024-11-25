@@ -99,9 +99,11 @@ class OrderScreenState extends State<OrderScreen> {
 
   @override
   Widget build(BuildContext context) {
+    var title = isProducer ? 'Confirm Order' : 'Your order summary';
+
     return Scaffold(
       backgroundColor: customGreen,
-      appBar: CustomAppBar(title: 'Order', customGreen: customGreen),
+      appBar: CustomAppBar(title: title, customGreen: customGreen),
       body: Container(
         padding: const EdgeInsets.all(6.0),
         width: MediaQuery.of(context).size.width,
