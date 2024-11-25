@@ -1,25 +1,42 @@
-import 'package:farmertoconsumer/widgets/name_field.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
 
-import '../services/auth_service.dart';
-
 import '../styles/colors.dart';
-import '../widgets/email_field.dart';
-import '../widgets/get_started_button.dart';
-import '../widgets/pass_field.dart';
+import '../utils/snack_bar.dart';
 
-class RegistrationScreen extends StatelessWidget {
+import '../widgets/login/register/welcome_header_section.dart';
+import '../widgets/login/register/name_field.dart';
+import '../widgets/login/register/email_field.dart';
+import '../widgets/login/register/get_started_button.dart';
+import '../widgets/login/register/pass_field.dart';
+import '../widgets/login/register/confirm_pass_field.dart';
+import '../widgets/login/register/nav_link.dart';
+
+import '../models/user.dart';
+import '../services/auth_service.dart';
+import '../utils/routes.dart';
+
+class RegistrationScreen extends StatefulWidget {
+  const RegistrationScreen({super.key});
+
+  @override
+  _RegistrationScreenState createState() => _RegistrationScreenState();
+}
+
+class _RegistrationScreenState extends State<RegistrationScreen> {
   final TextEditingController nameController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
-  final TextEditingController confirmPasswordController = TextEditingController();
-  
+  final TextEditingController confirmPasswordController =
+      TextEditingController();
+
   final FocusNode nameFocusNode = FocusNode();
   final FocusNode emailFocusNode = FocusNode();
   final FocusNode passwordFocusNode = FocusNode();
   final FocusNode confirmPasswordNode = FocusNode();
+
+  bool _obscurePassword = true;
+  bool _obscureConfirmPassword = true;
 
   @override
   Widget build(BuildContext context) {
@@ -33,137 +50,200 @@ class RegistrationScreen extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const SizedBox(
-                        height: 60), // To make sure every content is centered
-                    SvgPicture.asset(
-                      'assets/icons/icon.svg', // Make sure the path matches exactly
-                      width: 48,
-                      height: 48,
-                      color: mainGreen,
-                    ),
-                    const SizedBox(height: 5),
-                    const Text(
-                      "Welcome,",
-                      style: TextStyle(color: darkGreen, fontSize: 35),
-                    ),
-                    const Text(
-                      "Register in to continue",
-                      style: TextStyle(
-                        color: paleGreen,
-                        fontSize: 25,
-                      ),
-                    ),
-                  ],
+                const SizedBox(height: 10),
+                const WelcomeHeaderSection(
+                  secondText: "Register to continue",
                 ),
                 const SizedBox(height: 50),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                  child: Column(
-                    children: [
-                      NameField(
-                        fadeName: false, 
-                        nameController: nameController,
-                        node: nameFocusNode,
-                        bottomAnimationValue: 0.8,
-                        opacityAnimationValue: 1.0,
-                        paddingAnimationValue: const EdgeInsets.all(8.0),
-                        animationColor: mainGreen,
-                        onChanged: (value) {
-                          print("Name changed: $value");
-                        },
-                      ),
-                      const SizedBox(height: 40),
-                      EmailField(
-                        fadeEmail: false,
-                        emailController: emailController,
-                        node: emailFocusNode,
-                        bottomAnimationValue: 0.8, // Example value
-                        opacityAnimationValue: 1.0,
-                        paddingAnimationValue: const EdgeInsets.all(0),
-                        animationColor: Colors.green, // Example color
-                        onChanged: (value) {
-                          print("Email changed: $value");
-                        },
-                      ),
-                      const SizedBox(height: 40),
-                      PasswordField(
-                        hintText: "Password",
-                        fadePassword: false,
-                        passwordController: passwordController,
-                        obscure: true,
-                        node: passwordFocusNode,
-                        bottomAnimationValue: 0.8, // Example value
-                        opacityAnimationValue: 1.0,
-                        onToggleObscure: (isObscure) {
-                          print("Obscure toggled: $isObscure");
-                        },
-                        onPasswordChanged: (value) {
-                          print("Password changed: $value");
-                        },
-                      ),
-                      const SizedBox(height: 40),
-                      PasswordField(
-                        hintText: "Confirm Password",
-                        fadePassword: false,
-                        passwordController: confirmPasswordController,
-                        obscure: true,
-                        node: confirmPasswordNode,
-                        bottomAnimationValue: 0.8, // Example value
-                        opacityAnimationValue: 1.0,
-                        onToggleObscure: (isObscure) {
-                          print("Obscure toggled: $isObscure");
-                        },
-                        onPasswordChanged: (value) {
-                          print("Confirm password changed: $value");
-                        },
-                      ),
-                      const SizedBox(height: 90),
-                      GetStartedButton(
-                        elementsOpacity: 1.0,
-                        onTap: () {
-                          print("Get Started tapped!");
-                          print('Register: ${emailController.text} ${nameController.text} ${passwordController.text} ${confirmPasswordController.text}'); // debug log, remove in prod
-                          Provider.of<AuthService>(context, listen: false).register(
-                            emailController.text,
-                            nameController.text,
-                            passwordController.text,
-                            confirmPasswordController.text,
-                            );
-/*
-                            .then((value) {
-                            if (value == 'success') {
-                              Navigator.pushNamed(context, '/home');
-                            } else {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar( // TODO: Create a custom snackbar widget
-                                  content: Text(value as String),
-                                  backgroundColor: Colors.red,
-                                  duration: const Duration(seconds: 3),
-                                  behavior: SnackBarBehavior.floating,
-                                  margin: const EdgeInsets.all(20),
-                                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)
-                                ),
-                              );
-                            }
-                          });
-*/
-                        },
-                        onAnimationEnd: () {
-                          print("Animation ended");
-                        },
-                      ),
-                    ],
-                  ),
-                ),
+                _buildFormFields(),
+                const SizedBox(height: 60),
+                _buildFooter(context),
               ],
             ),
           ),
         ),
       ),
     );
+  }
+
+  Widget _buildFormFields() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+      child: Column(
+        children: [
+          _buildNameField(),
+          const SizedBox(height: 30),
+          _buildEmailField(),
+          const SizedBox(height: 30),
+          _buildPasswordField(),
+          const SizedBox(height: 30),
+          _buildConfirmPasswordField(),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildNameField() {
+    return NameField(
+      nameController: nameController,
+      node: nameFocusNode,
+      onChanged: (value) {
+        print("Name changed: $value");
+      },
+    );
+  }
+
+  Widget _buildEmailField() {
+    return EmailField(
+      emailController: emailController,
+      node: emailFocusNode,
+      onChanged: (value) {
+        print("Email changed: $value");
+      },
+    );
+  }
+
+  Widget _buildPasswordField() {
+    return PasswordField(
+      hintText: "Password",
+      passwordController: passwordController,
+      obscure: _obscurePassword,
+      node: passwordFocusNode,
+      onToggleObscure: _togglePasswordVisibility,
+      onPasswordChanged: (value) {
+        print("Password changed: $value");
+      },
+      border: const UnderlineInputBorder(
+        borderSide: BorderSide(
+          color: mainGreen,
+          width: 2.0,
+        ),
+      ),
+      focusedBorder: const UnderlineInputBorder(
+        borderSide: BorderSide(
+          color: mainGreen,
+          width: 3.0,
+        ),
+      ),
+    );
+  }
+
+  void _togglePasswordVisibility() {
+    setState(() {
+      _obscurePassword = !_obscurePassword;
+    });
+  }
+
+  Widget _buildConfirmPasswordField() {
+    return ConfirmPassField(
+      confirmPasswordController: confirmPasswordController,
+      node: confirmPasswordNode,
+      obscure: _obscureConfirmPassword,
+      onToggleObscure: () {
+        setState(() {
+          _obscureConfirmPassword = !_obscureConfirmPassword;
+        });
+      },
+      onPasswordChanged: (value) {
+        print("Confirm password changed: $value");
+      },
+      border: const UnderlineInputBorder(
+        borderSide: BorderSide(
+          color: mainGreen,
+          width: 2.0,
+        ),
+      ),
+      focusedBorder: const UnderlineInputBorder(
+        borderSide: BorderSide(
+          color: mainGreen,
+          width: 3.0,
+        ),
+      ),
+    );
+  }
+
+  Widget _buildFooter(BuildContext context) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        _buildGetStartedButton(context),
+        const SizedBox(height: 10),
+        _buildNavLink(),
+      ],
+    );
+  }
+
+  Widget _buildGetStartedButton(BuildContext context) {
+    return GetStartedButton(
+      elementsOpacity: 1.0,
+      onTap: () => _handleRegister(context),
+    );
+  }
+
+  Widget _buildNavLink() {
+    return NavLink(
+      label: "Already have an account? Login.",
+      route: Routes.login,
+    );
+  }
+
+  Future<void> _handleRegister(BuildContext context) async {
+    final validationError = _validateRegistrationFields();
+
+    if (validationError != null) {
+      showSnackBar(
+          context: context, message: validationError, backgroundColor: red);
+      return;
+    }
+
+    try {
+      final authService = Provider.of<AuthService>(context, listen: false);
+      User? user = await authService.register(
+        emailController.text.trim(),
+        nameController.text.trim(),
+        passwordController.text.trim(),
+        confirmPasswordController.text.trim(),
+      );
+
+      passwordController.clear();
+      confirmPasswordController.clear();
+
+      if (user != null) {
+        Navigator.pushNamed(context, Routes.userUpgrade);
+      } else {
+        showSnackBar(
+          context: context,
+          message: 'Registration failed. Please check your details.',
+          backgroundColor: red,
+        );
+      }
+    } catch (e) {
+      showSnackBar(
+        context: context,
+        message: 'An error occurred during registration: $e',
+        backgroundColor: red,
+      );
+    }
+  }
+
+  /// Validates registration form fields.
+  String? _validateRegistrationFields() {
+    if (nameController.text.trim().isEmpty) {
+      return "Name field cannot be empty.";
+    }
+    if (emailController.text.trim().isEmpty) {
+      return "Email field cannot be empty.";
+    }
+    if (passwordController.text.trim().isEmpty) {
+      return "Password field cannot be empty.";
+    }
+    if (confirmPasswordController.text.trim().isEmpty) {
+      return "Confirm Password field cannot be empty.";
+    }
+    if (passwordController.text != confirmPasswordController.text) {
+      return "Passwords do not match.";
+    }
+    return null; // No errors
   }
 }

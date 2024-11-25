@@ -1,3 +1,5 @@
+import 'package:farmertoconsumer/utils/routes.dart';
+import 'package:farmertoconsumer/widgets/nav_button_simple.dart';
 import 'package:farmertoconsumer/models/product.dart';
 import 'package:farmertoconsumer/models/productCategory.dart';
 import 'package:farmertoconsumer/screens/feed/feed_data_provider.dart';
@@ -50,7 +52,15 @@ class _FeedScreenState extends State<FeedScreen> {
                             fontWeight: FontWeight.bold,
                           ),
                         ))),
-                productsWidget(context)
+                productsWidget(context),
+                NavigationButton(
+                  routeName: Routes.login,
+                  buttonText: 'Go to Login',
+                ),
+                NavigationButton(
+                  routeName: Routes.registration,
+                  buttonText: 'Go to Registration',
+                )
               ],
             )));
   }
