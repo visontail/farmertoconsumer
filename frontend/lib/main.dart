@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 
 import '../screens/login.dart';
 import '../screens/profile.dart';
+import '../screens/order.dart';
 import 'screens/feed/feed.dart';
 import '../services/auth_service.dart';
 
@@ -27,7 +28,7 @@ class MyApp extends StatelessWidget {
         ],
         child: MaterialApp(
           debugShowCheckedModeBanner: false,
-          home: ProfileScreen(),
+          home: OrderScreen(),
         ),
       );
   }

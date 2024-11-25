@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import '../screens/next_page.dart'; // Make sure to import NextPage class
+import 'package:farmertoconsumer/screens/product.dart';
+import 'package:farmertoconsumer/services/product_service.dart';
 
 class ProductSection extends StatelessWidget {
   final String title;
@@ -26,6 +28,7 @@ class ProductSection extends StatelessWidget {
             itemCount: products.length,
             itemBuilder: (context, index) {
               var product = products[index];
+              var productId = product['id'];
               var productName = product['name'];
               var productCategory = product['category']['name'];
               var quantity = product['quantity'];
@@ -37,7 +40,7 @@ class ProductSection extends StatelessWidget {
                 onTap: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => NextPage()),
+                    MaterialPageRoute(builder: (context) => ProductScreen(id: productId.toString())),
                   );
                 },
                 child: Card(
@@ -121,7 +124,7 @@ class ProductSection extends StatelessWidget {
                                         onPressed: () {
                                           Navigator.push(
                                             context,
-                                            MaterialPageRoute(builder: (context) => NextPage()),
+                                            MaterialPageRoute(builder: (context) => ProductScreen(id: productId.toString())),
                                           );
                                         },
                                         style: TextButton.styleFrom(
