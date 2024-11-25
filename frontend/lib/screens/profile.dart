@@ -13,12 +13,12 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class ProfileScreenState extends State<ProfileScreen> {
-  //final String userId = '6';
-  //final String token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NiwiaWF0IjoxNzMyMDQ4MTY5fQ.X7Zfqx6MbHyDAOucSGjJ9r5pDnot0D5f4-mAOJBmM5o';
+  final String userId = '6';
+  final String token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NiwiaWF0IjoxNzMyMDQ4MTY5fQ.X7Zfqx6MbHyDAOucSGjJ9r5pDnot0D5f4-mAOJBmM5o';
   //final String userId = '2';
   //final String token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiaWF0IjoxNzMyNTI1MjQ5fQ.CtgMkPZz9d66vQHmvTk66jJXtLAcYEfrMwxjGZv1os4';
-  final String userId = '5';
-  final String token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NSwiaWF0IjoxNzMyNTI1NjMxfQ.4JK2-zTkqICtoyTnPTk22hT8sSdxPed7vIbEWk2XPQA';
+  //final String userId = '5';
+  //final String token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NSwiaWF0IjoxNzMyNTI1NjMxfQ.4JK2-zTkqICtoyTnPTk22hT8sSdxPed7vIbEWk2XPQA';
 
 
   final Color customGreen = Color(0xFF48872B);
@@ -107,6 +107,8 @@ class ProfileScreenState extends State<ProfileScreen> {
 
 
       final data = json.decode(response.body);
+      print('-----userId');
+      print(userId);
       print('-----data');
       print(data);
       if (response.statusCode == 200) {
@@ -338,7 +340,7 @@ class ProfileScreenState extends State<ProfileScreen> {
                       [
                         OrderSection(title: "Purchases", orders: currentPurchases, customGreen: customGreen),
                         OrderSection(title: "Purchase History", orders: purchaseHistory, customGreen: customGreen),
-                        OrderSection(title: "Orders", orders: currentPurchases, customGreen: customGreen),
+                        OrderSection(title: "Orders", orders: orders, customGreen: customGreen),
                         ProductSection(title: "Product Management", products: products, customGreen: customGreen),
                       ] :
                       [
