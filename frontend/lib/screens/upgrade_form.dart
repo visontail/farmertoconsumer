@@ -3,7 +3,7 @@ import 'package:flutter_svg/flutter_svg.dart'; // For loading SVG icons (if need
 import '../widgets/custom_app_bar.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-import '../screens/consumer_profile.dart';
+import '../screens/profile.dart';
 import '../widgets/animated_button.dart'; // Import the AnimatedButton widget
 
 class UpgradeFormScreen extends StatefulWidget {
@@ -82,7 +82,7 @@ class _UpgradeFormScreenState extends State<UpgradeFormScreen> {
           );
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => ConsumerProfileScreen()),
+            MaterialPageRoute(builder: (context) => ProfileScreen()),
           );
         } else {
           // Handle the error response

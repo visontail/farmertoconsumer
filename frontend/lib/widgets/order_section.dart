@@ -119,7 +119,7 @@ class OrderSection extends StatelessWidget {
                                     style: TextStyle(fontSize: 14, color: Colors.white),
                                   ),
                                 ),
-                                SizedBox(height: 20),
+                                SizedBox(height: 0),
                                 // Button positioned at the bottom-right corner
                                 Align(
                                   alignment: Alignment.bottomRight,
