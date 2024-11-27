@@ -12,7 +12,7 @@ class ProductCreateForm extends StatefulWidget {
 }
 
 class _ProductCreateFormState extends State<ProductCreateForm> {
-  final _formKey = GlobalKey<FormState>(); // Űrlap állapot kulcsa
+  final _formKey = GlobalKey<FormState>();
 
   // TODO
   // product create -> using product, product category, producer data/user data, quantity units
@@ -40,7 +40,7 @@ class _ProductCreateFormState extends State<ProductCreateForm> {
         leading: IconButton(
         icon: SvgPicture.asset('assets/icons/back-arrow.svg', width: 30, height: 30, color: white,),
         onPressed: () {
-          Navigator.pop(context); // Visszatérés az előző képernyőre
+          Navigator.pop(context); // navigate back
           },
         ),
       backgroundColor: mainGreen,
@@ -54,7 +54,7 @@ class _ProductCreateFormState extends State<ProductCreateForm> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               
-              // Drag-and-drop fájlfeltöltő
+              // Drag-and-drop
             Container(
               width: double.infinity,
               padding: const EdgeInsets.all(16.0),
@@ -82,63 +82,82 @@ class _ProductCreateFormState extends State<ProductCreateForm> {
             ),
             const SizedBox(height: 16),
             
-
-            
+             
             //name
-            Text('Product Name'),
+            Text(
+              'Product Name',
+              style: TextStyle(color: darkGreen, fontSize: 18, fontWeight: FontWeight.bold)),
             TextFormField(
               controller: nameController,
               decoration: const InputDecoration(
-                hintText: 'product Name',
+                hintText: 'product name',
                 border: OutlineInputBorder(),
+                enabledBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: mainGreen, width: 2.0),
+                ),
               ),
               validator: (value) {
                 if (value == null || value.isEmpty) {
-                  return 'Please enter a product name';
+                  return 'Please enter the product name';
                 }
                  return null;
               },
+              style: TextStyle(color: darkGreen),
             ),
             const SizedBox(height: 16),
             
             //category
-            Text('Category'),
+            Text(
+              'Category',
+              style: TextStyle(color: darkGreen, fontSize: 18, fontWeight: FontWeight.bold)),
             TextFormField(
               controller: categoryController,
               decoration: const InputDecoration(
                 hintText: 'category',
                 border: OutlineInputBorder(),
+                enabledBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: mainGreen, width: 2.0),
+                ),
               ),
               validator: (value) {
                 if (value == null || value.isEmpty) {
-                  return 'Please enter a product category';
+                  return 'Please enter the product category';
                 }
                 return null;
               },
+              style: TextStyle(color: darkGreen)
             ),
             const SizedBox(height: 16),
             
             //metric
-            Text('Metric'),
+            Text(
+              'Metric',
+              style: TextStyle(color: darkGreen, fontSize: 18, fontWeight: FontWeight.bold)),
             TextFormField(
               controller: metricController,
               decoration: const InputDecoration(
                 hintText: 'metric',
                 border: OutlineInputBorder(),
+                enabledBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: mainGreen, width: 2.0), 
+                ),
               ),
               validator: (value) {
                 if (value == null || value.isEmpty) {
-                  return 'Please enter a metric';
+                  return 'Please enter the metric';
                 }
                 return null;
               },
+              style: TextStyle(color: darkGreen)
             ),
             const SizedBox(height: 16),
 
             //quantity            
             Row(
               children: [
-                const Text("quantity"),
+                const Text(
+                  "Quantity",
+                  style: TextStyle(color: darkGreen, fontSize: 18, fontWeight: FontWeight.bold)),
                 IconButton(
                   icon: const Icon(Icons.remove_circle, color: mainGreen),
                   onPressed: () {
@@ -149,7 +168,9 @@ class _ProductCreateFormState extends State<ProductCreateForm> {
                     });
                   },
                 ),
-                Text(quantity.toString()), 
+                Text(
+                  quantity.toString(),
+                  style: TextStyle(color: darkGreen)), 
                 IconButton(
                   icon: const Icon(Icons.add_circle, color: mainGreen),
                   onPressed: () {
@@ -163,52 +184,63 @@ class _ProductCreateFormState extends State<ProductCreateForm> {
             const SizedBox(height: 16),
 
             //price
-            Text('Price' ),
+            Text(
+              'Price',
+              style: TextStyle(color: darkGreen, fontSize: 18, fontWeight: FontWeight.bold)),
             TextFormField(
               controller: priceController,
               decoration: const InputDecoration(
                 hintText: 'price',
                 border: OutlineInputBorder(),
+                enabledBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: mainGreen, width: 2.0),
+                ),
               ),
               keyboardType: TextInputType.number,
               validator: (value) {
                 if (value == null || value.isEmpty) {
-                  return 'Please enter a price';
+                  return 'Please enter the price';
                 }
                 if (double.tryParse(value) == null) {
                   return 'Please enter a valid number';
                  }
                 return null;
               },
+              style: TextStyle(color: darkGreen)
             ),
             const SizedBox(height: 16),
 
             //description
-            Text('Description'),
+            Text(
+              'Description',
+              style: TextStyle(color: darkGreen, fontSize: 18, fontWeight: FontWeight.bold)),
             TextFormField(
               controller: descriptionController,
               maxLines: 4,
               decoration: const InputDecoration(
                 hintText: 'descrtiption',
                 border: OutlineInputBorder(),
-                
+                enabledBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: mainGreen, width: 2.0),
+                ),
               ),
               validator: (value) {
                 if (value == null || value.isEmpty) {
-                  return 'Please enter a description';
+                  return 'Please enter the description';
                 }
                 return null;
               },
+              style: TextStyle(color: darkGreen)
             ),
             const SizedBox(height: 16),
             
-            // Mentés gomb
+            //saving button
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [ElevatedButton(
               onPressed: () {
                 if (_formKey.currentState!.validate()) {
-                  // Az adatok validak, itt dolgozhatod fel őket
+                  
                   print('Product name: ${nameController.text}');
                   print('Product type: ${typeController.text}');
                   print('Product category: ${categoryController.text}');
@@ -218,7 +250,7 @@ class _ProductCreateFormState extends State<ProductCreateForm> {
                   print('Price: ${priceController.text}');
 
                   
-                  //Navigator.pop(context); //navigate back to producer profile
+                  Navigator.pop(context); //navigate back 
                 }
               },
               style: ElevatedButton.styleFrom(
