@@ -8,3 +8,5 @@ const Color mainGreen = Color(0xFF48872B);
 const Color lightGreen = Color(0xFF6D9F54);
 const Color paleGreen = Color(0xFF485842);
 const Color darkGreen = Color(0xFF293325);
+const Color red = Color(0xFFB23A48);
+
