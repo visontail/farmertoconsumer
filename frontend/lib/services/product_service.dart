@@ -62,7 +62,7 @@ class ProductService extends ChangeNotifier {
   }
 
   // Create Product
-  Future<bool> createProduct(Map<String, dynamic> productData) async {
+  Future<void> createProduct(Map<String, dynamic> productData) async {
     const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NiwiaWF0IjoxNzMyNzkwMjI2fQ.nK9euTGcEf5LW7fkRBhLqliVbNBlsZgYF6bNwhbfoCs";
     // TODO: final token = await authProvider.getToken();
 
@@ -78,15 +78,17 @@ class ProductService extends ChangeNotifier {
         body: json.encode(productData),
       );
 
-      return response.statusCode == 201;
+      if (response.statusCode != 201) {
+        throw Exception('Failed to create product');
+      }
     } catch (e) {
       print("Error creating product: $e");
-      return false;
+      throw Exception('Error creating product: $e');
     }
   }
 
   /// Update Product
-  Future<bool> updateProduct(String id, Map<String, dynamic> productData) async {
+  Future<void> updateProduct(String id, Map<String, dynamic> productData) async {
     const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NiwiaWF0IjoxNzMyNzkwMjI2fQ.nK9euTGcEf5LW7fkRBhLqliVbNBlsZgYF6bNwhbfoCs";
     //TODO: final token = await authProvider.getToken();
     final Map<String, String> headersWithAuth = {
@@ -101,15 +103,17 @@ class ProductService extends ChangeNotifier {
         body: json.encode(productData),
       );
 
-      return response.statusCode == 200;
+      if (response.statusCode != 200) {
+        throw Exception('Failed to update product');
+      }
     } catch (e) {
       print("Error updating product: $e");
-      return false;
+      throw Exception('Error updating product: $e');
     }
   }
 
   // Delete Product
-  Future<bool> deleteProduct(String id) async {
+  Future<void> deleteProduct(String id) async {
     const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NiwiaWF0IjoxNzMyNzkwMjI2fQ.nK9euTGcEf5LW7fkRBhLqliVbNBlsZgYF6bNwhbfoCs";
     //final token = await authProvider.getToken();
     final Map<String, String> headersWithAuth = {
@@ -123,10 +127,12 @@ class ProductService extends ChangeNotifier {
         headers: headersWithAuth,
       );
 
-      return response.statusCode == 200;
+      if (response.statusCode != 200) {
+        throw Exception('Failed to delete product');
+      }
     } catch (e) {
       print("Error deleting product: $e");
-      return false;
+      throw Exception('Error deleting product: $e');
     }
   }
 }
