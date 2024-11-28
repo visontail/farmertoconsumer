@@ -60,5 +60,74 @@ class ProductService extends ChangeNotifier {
             .map((e) => Product.fromJson(e))
             .toList());
   }
+
+  // Create Product
+  Future<bool> createProduct(Map<String, dynamic> productData) async {
+    const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NiwiaWF0IjoxNzMyNzkwMjI2fQ.nK9euTGcEf5LW7fkRBhLqliVbNBlsZgYF6bNwhbfoCs";
+    // TODO: final token = await authProvider.getToken();
+
+    final Map<String, String> headersWithAuth = {
+      ...headers,
+      'Authorization': 'Bearer $token',
+    };
+
+    try {
+      final response = await http.post(
+        Uri.parse(productEndPoint),
+        headers: headersWithAuth,
+        body: json.encode(productData),
+      );
+
+      return response.statusCode == 201;
+    } catch (e) {
+      print("Error creating product: $e");
+      return false;
+    }
+  }
+
+  /// Update Product
+  Future<bool> updateProduct(String id, Map<String, dynamic> productData) async {
+    const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NiwiaWF0IjoxNzMyNzkwMjI2fQ.nK9euTGcEf5LW7fkRBhLqliVbNBlsZgYF6bNwhbfoCs";
+    //TODO: final token = await authProvider.getToken();
+    final Map<String, String> headersWithAuth = {
+      ...headers,
+      'Authorization': 'Bearer $token',
+    };
+
+    try {
+      final response = await http.patch(
+        Uri.parse(productEndPoint + id),
+        headers: headersWithAuth,
+        body: json.encode(productData),
+      );
+
+      return response.statusCode == 200;
+    } catch (e) {
+      print("Error updating product: $e");
+      return false;
+    }
+  }
+
+  // Delete Product
+  Future<bool> deleteProduct(String id) async {
+    const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NiwiaWF0IjoxNzMyNzkwMjI2fQ.nK9euTGcEf5LW7fkRBhLqliVbNBlsZgYF6bNwhbfoCs";
+    //final token = await authProvider.getToken();
+    final Map<String, String> headersWithAuth = {
+      ...headers,
+      'Authorization': 'Bearer $token',
+    };
+
+    try {
+      final response = await http.delete(
+        Uri.parse(productEndPoint + id),
+        headers: headersWithAuth,
+      );
+
+      return response.statusCode == 200;
+    } catch (e) {
+      print("Error deleting product: $e");
+      return false;
+    }
+  }
 }
 
