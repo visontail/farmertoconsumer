@@ -63,7 +63,8 @@ class ProductService extends ChangeNotifier {
 
   // Create Product
   Future<void> createProduct(Map<String, dynamic> productData) async {
-    const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NiwiaWF0IjoxNzMyNzkwMjI2fQ.nK9euTGcEf5LW7fkRBhLqliVbNBlsZgYF6bNwhbfoCs";
+    //const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NiwiaWF0IjoxNzMyNzkwMjI2fQ.nK9euTGcEf5LW7fkRBhLqliVbNBlsZgYF6bNwhbfoCs";
+    const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTAsImlhdCI6MTczMjg3NTc3N30.xSJTfHrZhyutX7-8Ai7q1AxXS282_eXzVi7C-U_HOQ4";
     // TODO: final token = await authProvider.getToken();
 
     final Map<String, String> headersWithAuth = {
@@ -89,7 +90,8 @@ class ProductService extends ChangeNotifier {
 
   /// Update Product
   Future<void> updateProduct(String id, Map<String, dynamic> productData) async {
-    const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NiwiaWF0IjoxNzMyNzkwMjI2fQ.nK9euTGcEf5LW7fkRBhLqliVbNBlsZgYF6bNwhbfoCs";
+    //const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NiwiaWF0IjoxNzMyNzkwMjI2fQ.nK9euTGcEf5LW7fkRBhLqliVbNBlsZgYF6bNwhbfoCs";
+    const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTAsImlhdCI6MTczMjg3NTc3N30.xSJTfHrZhyutX7-8Ai7q1AxXS282_eXzVi7C-U_HOQ4";
     //TODO: final token = await authProvider.getToken();
     final Map<String, String> headersWithAuth = {
       ...headers,
@@ -114,8 +116,9 @@ class ProductService extends ChangeNotifier {
 
   // Delete Product
   Future<void> deleteProduct(String id) async {
-    const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NiwiaWF0IjoxNzMyNzkwMjI2fQ.nK9euTGcEf5LW7fkRBhLqliVbNBlsZgYF6bNwhbfoCs";
-    //final token = await authProvider.getToken();
+    //const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NiwiaWF0IjoxNzMyNzkwMjI2fQ.nK9euTGcEf5LW7fkRBhLqliVbNBlsZgYF6bNwhbfoCs";
+    const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTAsImlhdCI6MTczMjg3NTc3N30.xSJTfHrZhyutX7-8Ai7q1AxXS282_eXzVi7C-U_HOQ4";
+    //TODO: final token = await authProvider.getToken();
     final Map<String, String> headersWithAuth = {
       ...headers,
       'Authorization': 'Bearer $token',
