@@ -14,7 +14,7 @@ class QuantityUnitService extends ChangeNotifier {
 
   Future<GetAllReturnValue<QuantityUnit>> getAll() async {
     final response = await http.get(
-      Uri.parse(getAllCategoryEndpoint),
+      Uri.parse(getAllQuantityUnitEndpoint),
       headers: headers,
     );
 

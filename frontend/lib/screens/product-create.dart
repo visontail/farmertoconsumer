@@ -3,6 +3,7 @@ import 'package:farmertoconsumer/models/productCategory.dart';
 import 'package:farmertoconsumer/models/quantityUnit.dart';
 import 'package:farmertoconsumer/services/category_service.dart';
 import 'package:farmertoconsumer/services/product_service.dart';
+import 'package:farmertoconsumer/services/quantityUnit_service.dart';
 import 'package:farmertoconsumer/styles/colors.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -19,17 +20,9 @@ class _ProductCreateFormState extends State<ProductCreateForm> {
   final _formKey = GlobalKey<FormState>();
 
   ProductCategory? selectedCategory;
-  List<ProductCategory> categories = [
-    ProductCategory(id: 1, name: "Vegetables"),
-    ProductCategory(id: 2, name: "Fruits"),
-    ProductCategory(id: 3, name: "Dairy"),];
+  List<ProductCategory> categories = [];
   QuantityUnit? selectedQuantityUnit;
-  List<QuantityUnit> quantityUnits = [
-    QuantityUnit(id: 1, name: "kg"),
-    QuantityUnit(id: 2, name: "pc"),
-    QuantityUnit(id: 3, name: "bag"),
-    QuantityUnit(id: 4, name: "tray"),
-  ];
+  List<QuantityUnit> quantityUnits = [];
   bool isLoading = true;
 
   final TextEditingController nameController = TextEditingController();
@@ -38,6 +31,75 @@ class _ProductCreateFormState extends State<ProductCreateForm> {
   int quantity = 1;
   final TextEditingController priceController = TextEditingController();
   final TextEditingController descriptionController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    _loadData();
+  }
+
+  Future<void> _fetchCategories() async {
+    setState(() {
+      isLoading = true;
+    });
+
+    try {
+      final categoryService = CategoryService(); // Ha nem Provider, akkor manuálisan példányosítjuk.
+      final response = await categoryService.getAll();
+
+      setState(() {
+        categories = response.data; // Kategóriák feltöltése
+      });
+    } catch (e) {
+      // Hiba kezelése, pl. Snackbar megjelenítése
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Failed to load categories: $e')),
+      );
+    } finally {
+      setState(() {
+        isLoading = false;
+      });
+    }
+  }
+
+  Future<void> _fetchQuantityUnits() async {
+    setState(() {
+      isLoading = true;
+    });
+
+    try {
+      final quantityUnitService = QuantityUnitService(); // Ha nem Provider, akkor manuálisan példányosítjuk.
+      final response = await quantityUnitService.getAll();
+
+      setState(() {
+        quantityUnits = response.data; // Kategóriák feltöltése
+      });
+    } catch (e) {
+      // Hiba kezelése, pl. Snackbar megjelenítése
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Failed to load quantity units: $e')),
+      );
+    } finally {
+      setState(() {
+        isLoading = false;
+      });
+    }
+  }
+
+  Future<void> _loadData() async {
+    setState(() {
+      isLoading = true;
+    });
+
+    await Future.wait([
+      _fetchCategories(),
+      _fetchQuantityUnits()
+    ]);
+
+    setState(() {
+      isLoading = false;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -257,6 +319,7 @@ class _ProductCreateFormState extends State<ProductCreateForm> {
             ),
             const SizedBox(height: 16),
 
+/*
             //description
             Text(
               'Description',
@@ -280,7 +343,8 @@ class _ProductCreateFormState extends State<ProductCreateForm> {
               style: TextStyle(color: darkGreen)
             ),
             const SizedBox(height: 16),
-            
+*/
+
             //saving button
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
