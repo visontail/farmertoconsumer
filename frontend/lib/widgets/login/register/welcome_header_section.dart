@@ -2,15 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 import '../../../styles/colors.dart';
-import '../../../utils/routes.dart';
 
 class WelcomeHeaderSection extends StatelessWidget {
   final String secondText;
 
   const WelcomeHeaderSection({
-    Key? key,
-    this.secondText = "Sign in to continue", // Default text
-  }) : super(key: key);
+    super.key,
+    this.secondText = "Sign in to continue",
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -18,17 +17,12 @@ class WelcomeHeaderSection extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        const SizedBox(height: 60),
-        GestureDetector(
-          onTap: () {
-            Navigator.pushNamed(context, Routes.feed);
-          },
-          child: SvgPicture.asset(
-            'assets/icons/icon.svg',
-            width: 48,
-            height: 48,
-            color: mainGreen,
-          ),
+        const SizedBox(height: 40),
+        SvgPicture.asset(
+          'assets/icons/icon.svg',
+          width: 48,
+          height: 48,
+          color: mainGreen,
         ),
         const SizedBox(height: 5),
         const Text(
@@ -36,7 +30,7 @@ class WelcomeHeaderSection extends StatelessWidget {
           style: TextStyle(color: darkGreen, fontSize: 35),
         ),
         Text(
-          secondText, // Using the dynamic secondText value
+          secondText,
           style: const TextStyle(
             color: paleGreen,
             fontSize: 25,

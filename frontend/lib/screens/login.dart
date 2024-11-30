@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import '../styles/colors.dart';
 import '../utils/snack_bar.dart';
 
+import '../widgets/login/register/reg_workflow_app_bar.dart';
 import '../widgets/login/register/welcome_header_section.dart';
 import '../widgets/login/register/email_field.dart';
 import '../widgets/login/register/pass_field.dart';
@@ -33,6 +34,12 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: white,
+      appBar: RegWfAppBar(
+        onBackPressed: () {
+          Navigator.of(context).pop();
+        },
+      ),
       resizeToAvoidBottomInset: true,
       body: SafeArea(
         bottom: false,
@@ -42,7 +49,7 @@ class _LoginScreenState extends State<LoginScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const SizedBox(height: 70),
+                const SizedBox(height: 30),
                 const WelcomeHeaderSection(
                   secondText: "Sign in to continue",
                 ),
@@ -155,7 +162,7 @@ class _LoginScreenState extends State<LoginScreen> {
     final authService = Provider.of<AuthService>(context, listen: false);
     User? user = await authService.login(email, password);
 
-    passwordController.clear(); // Clear password field
+    passwordController.clear();
 
     if (user != null) {
       showSnackBar(
