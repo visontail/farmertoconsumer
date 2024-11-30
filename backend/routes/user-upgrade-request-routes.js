@@ -34,9 +34,11 @@ module.exports = (fastify, _, next) => {
         schema: {
             body: {
                 type: 'object',
-                required: ['description'],
+                required: ['description', 'contact'],
                 properties: {
-                    description: { type: 'string' },
+                    description: { type: 'string', minLength: 1 },
+                    contact: { type: 'string', minLength: 1 },
+                    profileDescription: { type: 'string', minLength: 1 },
                 },
             }
         }

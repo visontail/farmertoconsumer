@@ -35,14 +35,24 @@ module.exports = {
         name: faker.person.fullName(),
         password
       });
+      const contact = faker.helpers.arrayElement([
+        faker.phone.number(),
+        faker.internet.email(),
+      ]);
       await UserUpgradeRequest.create({
         UserId: producer.id,
         description: faker.lorem.paragraph(),
+        profileDescription: faker.helpers.arrayElement([
+          faker.lorem.paragraph(),
+          null
+        ]),
+        contact,
         approved: true,
       });
       await ProducerData.create({
         UserId: producer.id,
         description: faker.lorem.paragraph(),
+        contact        
       });
       producers.push(producer);
     }
@@ -77,6 +87,7 @@ module.exports = {
           name: `${capitalize(faker.lorem.word())} ${capitalize(category.name)}`,
           quantity: faker.helpers.rangeToNumber({ min: 5, max: 40 }),
           price: faker.helpers.rangeToNumber({ min: 300, max: 2000 }),
+          description: faker.lorem.paragraph(),
           ProducerDataId,
           QuantityUnitId: faker.helpers.arrayElement(quantityUnits).id,
           ProductCategoryId: category.id,
