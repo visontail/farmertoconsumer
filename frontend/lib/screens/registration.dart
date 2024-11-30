@@ -183,8 +183,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
   Widget _buildGetStartedButton(BuildContext context) {
     return GetStartedButton(
       elementsOpacity: 1.0,
-      // onTap: () => _handleRegister(context),
-      onTap: () => Navigator.pushNamed(context, Routes.userUpgrade),
+      onTap: () => _handleRegister(context),
     );
   }
 
