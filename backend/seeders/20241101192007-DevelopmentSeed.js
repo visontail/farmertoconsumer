@@ -64,7 +64,7 @@ module.exports = {
 
     console.log("Seeding product categories");
     const productCategories = [];
-    for (const name of ["apple", "peach", "melon", "wheat", "potato", "carrot"]) {
+    for (const name of ["fruits", "vegetables", "eggs", "dairy"]) {
       productCategories.push(await ProductCategory.create({ name }));
     }
 
@@ -72,7 +72,7 @@ module.exports = {
     const products = [];
     for (const producer of producers) {
       const ProducerDataId = (await producer.getProducerData()).id;
-      for (const category of faker.helpers.arrayElements(productCategories, { min: 1, max: 4 })) {
+      for (const category of faker.helpers.arrayElements(productCategories, { min: 2, max: 6 })) {
         products.push(await Product.create({
           name: `${capitalize(faker.lorem.word())} ${capitalize(category.name)}`,
           quantity: faker.helpers.rangeToNumber({ min: 5, max: 40 }),

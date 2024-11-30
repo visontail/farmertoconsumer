@@ -1,4 +1,4 @@
-import 'package:farmertoconsumer/models/producerData.dart';
+import '../models/producerData.dart';
 
 class User {
   final int _id;
