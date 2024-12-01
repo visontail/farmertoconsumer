@@ -3,6 +3,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import '../screens/next_page.dart'; // Make sure to import NextPage class
 import 'package:farmertoconsumer/screens/product.dart';
 import 'package:farmertoconsumer/services/product_service.dart';
+import '../styles/colors.dart';
 
 class ProductSection extends StatelessWidget {
   final String title;
@@ -20,6 +21,37 @@ class ProductSection extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
+        SizedBox(height: 6),
+        Center(child: ElevatedButton.icon(
+            onPressed: () {
+              // Action when button is pressed
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => NextPage()),
+              );
+            },
+            icon: SvgPicture.asset(
+              'assets/icons/plus-icon.svg', // Your SVG icon asset
+              color: white, // Icon color
+              height: 20, // Adjust the icon size
+            ),
+            label: Text(
+              'Add Product',
+              style: TextStyle(
+                color: white, // Text color
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: mainGreen, // Button color
+              foregroundColor: white, // Text and icon color
+              padding: EdgeInsets.symmetric(vertical: 12, horizontal: 20),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8),
+              ),
+            ),
+          )
+        ),
         SizedBox(height: 6),
         Expanded(
           child: products.length == 0 ?
