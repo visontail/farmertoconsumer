@@ -1,6 +1,6 @@
 module.exports = (fastify, _, next) => {
     fastify.get('/', {
-        onRequest: fastify.authenticateAdmin,
+        onRequest: fastify.authenticate,
         schema: {
             query: {
                 type: 'object',
