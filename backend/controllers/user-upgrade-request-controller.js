@@ -7,6 +7,11 @@ class UserUpgradeRequestController extends ControllerBase {
         const { query } = req;
         const { UserUpgradeRequestShaper } = this.fastify;
 
+        const actingUser = await User.findByPk(req.user.id)
+        if (!actingUser.isAdmin && actingUser.id !== query.userId) {
+            return res.status(401).send({ message: 'Unauthenticated' })
+        }
+
         let whereTemp = {
             '$User.id$': query.userId,
         }
