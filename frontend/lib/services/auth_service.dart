@@ -32,7 +32,7 @@ class AuthService extends ChangeNotifier {
         String token = responseBody['token'];
         print('Token: $token');
         // TODO: Store the token securely
-        return User(id: 1, name: 'Test User', email: email);
+        return User(id: 1, name: 'Test User');
       } else {
         throw Exception('Token not found in response.');
       }
@@ -70,7 +70,6 @@ class AuthService extends ChangeNotifier {
         return User(
           id: responseBody['id'],
           name: name,
-          email: email,
         );
       } else {
         throw Exception("Unexpected response structure: 'id' not found");
