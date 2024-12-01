@@ -348,16 +348,11 @@ class _ProductCreateFormState extends State<ProductCreateForm> {
               onPressed: () async {
                 if (_formKey.currentState!.validate()) {
                   final productData = {
-                    /*name: string;
-                    categoryId: number;
-                    quantity: number;
-                    quantityUnitId: number;
-                    price: number;*/
-
+                 
                     'name': nameController.text,
-                    'category': selectedCategory?.id,
+                    'categoryId': selectedCategory?.id,
                     'quantity': quantity,
-                    'quantityUnit': selectedQuantityUnit?.id,                    
+                    'quantityUnitId': selectedQuantityUnit?.id,                    
                     'price': int.tryParse(priceController.text) ?? 0,
                   };
 

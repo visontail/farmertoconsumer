@@ -80,7 +80,7 @@ class ProductService extends ChangeNotifier {
         body: json.encode(productData),
       );
 
-      if (response.statusCode != 201) {
+      if (response.statusCode != 200) {
         throw Exception('Failed to create product');
       }
     } catch (e) {
