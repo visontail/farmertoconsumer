@@ -44,7 +44,7 @@ class _UpgradeFormScreenState extends State<UpgradeFormScreen> {
 
       // Specify the API endpoint
       String apiUrl = 'http://10.0.2.2:3000/user-upgrade-requests'; // Replace with the correct API URL
-      String token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NiwiaWF0IjoxNzMyMDQ4MTY5fQ.X7Zfqx6MbHyDAOucSGjJ9r5pDnot0D5f4-mAOJBmM5o';
+      String token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NSwiaWF0IjoxNzMyNTI1NjMxfQ.4JK2-zTkqICtoyTnPTk22hT8sSdxPed7vIbEWk2XPQA';
 
       try {
         // Send the POST request with the JSON payload
@@ -133,7 +133,7 @@ class _UpgradeFormScreenState extends State<UpgradeFormScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar(title: 'Become a Producer', customGreen: customGreen),
+      appBar: CustomAppBar(title: 'Become a Producer', color: customGreen),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 75),
         child: Form(

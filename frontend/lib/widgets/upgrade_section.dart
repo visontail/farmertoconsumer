@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 class UpgradeSection extends StatefulWidget {
   final bool isProducer; // Accepting isProducer as a parameter
   final bool hasPendingUserUpgradeRequest;
-  final Function(bool) onUpgradeRequestChanged; // Callback to notify parent about the upgrade request
+  final Function(bool, bool) onUpgradeRequestChanged; // Callback to notify parent about the upgrade request
 
   // Constructor to accept the isProducer and onUpgradeRequestChanged
   UpgradeSection({
@@ -45,11 +45,11 @@ class _UpgradeSectionState extends State<UpgradeSection> {
                   padding: const EdgeInsets.only(left: 16.0, right: 0.0),
                   child: Text(
                     // Change the text based on the upgrade request status
-                    !widget.isProducer
-                        ? "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor."
+                    widget.isProducer
+                        ? ""
                         : (widget.hasPendingUserUpgradeRequest
                             ? "Your upgrade request has already been submitted and is waiting for approval."
-                            : ""),
+                            : "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor."),
                     style: TextStyle(fontSize: 13, color: Colors.black),
                     textAlign: TextAlign.left,
                   ),
@@ -87,7 +87,7 @@ class _UpgradeSectionState extends State<UpgradeSection> {
                                     setState(() {
                                       _isLoading = false;
                                     });
-                                    //widget.onUpgradeRequestChanged(false); // Notify parent about the request
+                                    //widget.onUpgradeRequestChanged(false, false); // Notify parent about the request
                                     Navigator.push(
                                       context,
                                       MaterialPageRoute(

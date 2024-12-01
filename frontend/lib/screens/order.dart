@@ -13,8 +13,8 @@ class OrderScreen extends StatefulWidget {
 }
 
 class OrderScreenState extends State<OrderScreen> {
-  final String userId = '6';
-  final String token = 'your-token-here';
+  final String userId = '5';
+  final String token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NSwiaWF0IjoxNzMyNTI1NjMxfQ.4JK2-zTkqICtoyTnPTk22hT8sSdxPed7vIbEWk2XPQA';
 
   final Color customGreen = Color(0xFF48872B);
   final Color loremIpsumColor = Color(0xFF39542C);
@@ -103,7 +103,7 @@ class OrderScreenState extends State<OrderScreen> {
 
     return Scaffold(
       backgroundColor: customGreen,
-      appBar: CustomAppBar(title: title, customGreen: customGreen),
+      appBar: CustomAppBar(title: title, color: customGreen),
       body: Container(
         padding: const EdgeInsets.all(6.0),
         width: MediaQuery.of(context).size.width,

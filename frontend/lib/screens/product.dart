@@ -51,7 +51,7 @@ class _ProductScreenState extends State<ProductScreen> {
 
     return Scaffold(
       backgroundColor: customGreen, // Use customGreen for background
-      appBar: CustomAppBar(title: 'Product Page', customGreen: customGreen),
+      appBar: CustomAppBar(title: 'Product Page', color: customGreen),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Container(

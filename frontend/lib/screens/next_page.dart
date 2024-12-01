@@ -8,7 +8,7 @@ class NextPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar(title: 'Next Page', customGreen: customGreen),
+      appBar: CustomAppBar(title: 'Next Page', color: customGreen),
       body: Center(
         child: Text("Welcome to the next page!"),
       ),
