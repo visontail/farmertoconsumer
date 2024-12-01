@@ -18,7 +18,7 @@ class ProductService extends ChangeNotifier {
   };
 
   Future<Product?> getProduct(String id) async {
-    const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTIsImlhdCI6MTczMjUzNzU2M30.YVz8QuwqywAg75M7cA3TQJvuQBYuVw6WIYaKZB23mYU";
+    const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTIsImlhdCI6MTczMjk3NDExM30.iORY93QJ6XKVt4AUMq6dDApxusT8EJ08HjBsqeuWGVM";
     //TODO: final token = await authProvider.getToken();
     try {
       final Map<String, String> headersWithAuth = {

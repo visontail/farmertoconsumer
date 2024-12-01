@@ -13,12 +13,12 @@ class OrderService extends ChangeNotifier {
     'Content-Type': 'application/json',
   };
 
-  Future<Order?> postOrder(Product product) async {
-    const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTIsImlhdCI6MTczMTc2NTcxMn0.RQERtf98QOLVfjYORRBOVGgCGMmlqXeTR_q7r5duZBA";
+  Future<Order?> postOrder(Product product, int quantity) async {
+    const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTIsImlhdCI6MTczMjk3NDExM30.iORY93QJ6XKVt4AUMq6dDApxusT8EJ08HjBsqeuWGVM";
     //TODO: final token = await authProvider.getToken();
     final jsonBody = json.encode({
       'productId': product.id,
-      'quantity': product.quantity,
+      'quantity': quantity,
     });
 
     try {
