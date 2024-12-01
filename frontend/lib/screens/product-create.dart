@@ -24,11 +24,9 @@ class _ProductCreateFormState extends State<ProductCreateForm> {
   QuantityUnit? selectedQuantityUnit;
   List<QuantityUnit> quantityUnits = [];
   bool isLoading = true;
-
-  final TextEditingController nameController = TextEditingController();
-  final TextEditingController typeController = TextEditingController();
-  final TextEditingController categoryController = TextEditingController();
   int quantity = 1;
+  
+  final TextEditingController nameController = TextEditingController();
   final TextEditingController priceController = TextEditingController();
   final TextEditingController descriptionController = TextEditingController();
 
@@ -44,14 +42,13 @@ class _ProductCreateFormState extends State<ProductCreateForm> {
     });
 
     try {
-      final categoryService = CategoryService(); // Ha nem Provider, akkor manuálisan példányosítjuk.
+      final categoryService = CategoryService();
       final response = await categoryService.getAll();
 
       setState(() {
-        categories = response.data; // Kategóriák feltöltése
+        categories = response.data;
       });
     } catch (e) {
-      // Hiba kezelése, pl. Snackbar megjelenítése
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Failed to load categories: $e')),
       );
@@ -68,14 +65,13 @@ class _ProductCreateFormState extends State<ProductCreateForm> {
     });
 
     try {
-      final quantityUnitService = QuantityUnitService(); // Ha nem Provider, akkor manuálisan példányosítjuk.
+      final quantityUnitService = QuantityUnitService();
       final response = await quantityUnitService.getAll();
 
       setState(() {
-        quantityUnits = response.data; // Kategóriák feltöltése
+        quantityUnits = response.data;
       });
     } catch (e) {
-      // Hiba kezelése, pl. Snackbar megjelenítése
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Failed to load quantity units: $e')),
       );

@@ -18,7 +18,8 @@ class ProductService extends ChangeNotifier {
   };
 
   Future<Product?> getProduct(String id) async {
-    const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTIsImlhdCI6MTczMTc2NTcxMn0.RQERtf98QOLVfjYORRBOVGgCGMmlqXeTR_q7r5duZBA";
+    //const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTIsImlhdCI6MTczMTc2NTcxMn0.RQERtf98QOLVfjYORRBOVGgCGMmlqXeTR_q7r5duZBA";
+    const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NiwiaWF0IjoxNzMzMDU1MDE2fQ.wRp-7H9wRl8pJSBkp6nKjTPJwfqygRhhaHrdVkwrs78";
     //TODO: final token = await authProvider.getToken();
     try {
       final Map<String, String> headersWithAuth = {
@@ -64,7 +65,7 @@ class ProductService extends ChangeNotifier {
   // Create Product
   Future<void> createProduct(Map<String, dynamic> productData) async {
     //const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NiwiaWF0IjoxNzMyNzkwMjI2fQ.nK9euTGcEf5LW7fkRBhLqliVbNBlsZgYF6bNwhbfoCs";
-    const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTAsImlhdCI6MTczMjg3NTc3N30.xSJTfHrZhyutX7-8Ai7q1AxXS282_eXzVi7C-U_HOQ4";
+    const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NiwiaWF0IjoxNzMzMDU1MDE2fQ.wRp-7H9wRl8pJSBkp6nKjTPJwfqygRhhaHrdVkwrs78";
     // TODO: final token = await authProvider.getToken();
 
     final Map<String, String> headersWithAuth = {
@@ -91,7 +92,8 @@ class ProductService extends ChangeNotifier {
   /// Update Product
   Future<void> updateProduct(String id, Map<String, dynamic> productData) async {
     //const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NiwiaWF0IjoxNzMyNzkwMjI2fQ.nK9euTGcEf5LW7fkRBhLqliVbNBlsZgYF6bNwhbfoCs";
-    const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTAsImlhdCI6MTczMjg3NTc3N30.xSJTfHrZhyutX7-8Ai7q1AxXS282_eXzVi7C-U_HOQ4";
+    const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NiwiaWF0IjoxNzMzMDU1MDE2fQ.wRp-7H9wRl8pJSBkp6nKjTPJwfqygRhhaHrdVkwrs78";
+    
     //TODO: final token = await authProvider.getToken();
     final Map<String, String> headersWithAuth = {
       ...headers,
@@ -117,7 +119,8 @@ class ProductService extends ChangeNotifier {
   // Delete Product
   Future<void> deleteProduct(String id) async {
     //const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NiwiaWF0IjoxNzMyNzkwMjI2fQ.nK9euTGcEf5LW7fkRBhLqliVbNBlsZgYF6bNwhbfoCs";
-    const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTAsImlhdCI6MTczMjg3NTc3N30.xSJTfHrZhyutX7-8Ai7q1AxXS282_eXzVi7C-U_HOQ4";
+    //const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTAsImlhdCI6MTczMjg3NTc3N30.xSJTfHrZhyutX7-8Ai7q1AxXS282_eXzVi7C-U_HOQ4";
+    const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NiwiaWF0IjoxNzMzMDU1MDE2fQ.wRp-7H9wRl8pJSBkp6nKjTPJwfqygRhhaHrdVkwrs78";
     //TODO: final token = await authProvider.getToken();
     final Map<String, String> headersWithAuth = {
       ...headers,
