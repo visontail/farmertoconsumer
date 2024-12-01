@@ -54,7 +54,7 @@ class AuthService {
   }
 
   /// Returns (id, token)
-  Future<(String, String)> register(String email, String name, String password,
+  Future<(int, String)> register(String email, String name, String password,
       String confirmPassword) async {
     final jsonBody = json.encode({
       'email': email,
@@ -74,7 +74,7 @@ class AuthService {
       print('Register Response: $responseBody');
 
       if (response.statusCode == 200) {
-        final String id = responseBody['id'];
+        final int id = responseBody['id'];
         final String token = responseBody['token'];
         return (id, token);
       } else {

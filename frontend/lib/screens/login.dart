@@ -159,7 +159,7 @@ class _LoginScreenState extends State<LoginScreen> {
     }
 
     try {
-      final authProvider = Provider.of<AuthProvider>(context);
+      final authProvider = Provider.of<AuthProvider>(context, listen: false);
       AuthenticatedUser user = await authProvider.login(email, password);
 
       passwordController.clear();

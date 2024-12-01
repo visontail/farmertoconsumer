@@ -6,6 +6,7 @@ import '../services/auth_service.dart';
 
 class AuthProvider extends ChangeNotifier {
   final UserStorage _userStorage = UserStorage();
+  final WriteableUserStorage _writeableUserStorage = WriteableUserStorage();
   final AuthService _authService = AuthService();
 
   AuthenticatedUser? get user => _userStorage.user.get();
@@ -14,10 +15,10 @@ class AuthProvider extends ChangeNotifier {
   Future<AuthenticatedUser> login(String email, String password) async {
     try {
       final token = await _authService.login(email, password);
-      _userStorage.token.set(token);
+      _writeableUserStorage.token.set(token);
 
       final user = await _authService.profile();
-      _userStorage.user.set(user);
+      _writeableUserStorage.user.set(user);
 
       notifyListeners();
 
@@ -33,10 +34,10 @@ class AuthProvider extends ChangeNotifier {
     try {
       final rec =
           await _authService.register(email, name, password, confirmPassword);
-      _userStorage.token.set(rec.$2);
+      _writeableUserStorage.token.set(rec.$2);
 
       final user = await _authService.profile();
-      _userStorage.user.set(user);
+      _writeableUserStorage.user.set(user);
 
       notifyListeners();
 
@@ -48,8 +49,8 @@ class AuthProvider extends ChangeNotifier {
   }
 
   void logout() {
-    _userStorage.token.set(null);
-    _userStorage.user.set(null);
+    _writeableUserStorage.token.set(null);
+    _writeableUserStorage.user.set(null);
     notifyListeners();
   }
 }

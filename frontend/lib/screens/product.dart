@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import '../models/product.dart';
 import '../services/product_service.dart';
-import '../widgets/custom_button.dart';
 import 'counter.dart';
 
 class ProductScreen extends StatefulWidget {

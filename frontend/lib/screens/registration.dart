@@ -203,7 +203,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
     }
 
     try {
-      final authProvider = Provider.of<AuthProvider>(context);
+      final authProvider = Provider.of<AuthProvider>(context, listen: false);
       await authProvider.register(
         emailController.text.trim(),
         nameController.text.trim(),
