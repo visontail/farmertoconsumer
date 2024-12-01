@@ -14,8 +14,6 @@ import '../screens/registration.dart';
 import '../screens/user_upgrade_form.dart';
 import '../screens/user_upgrade.dart';
 
-import '../services/auth_service.dart';
-import '../services/product_service.dart';
 import '../screens/feed/feed_data_provider.dart';
 import '../utils/routes.dart';
 
@@ -30,9 +28,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (context) => AuthService()),
         ChangeNotifierProvider(create: (context) => FeedDataProvider()),
-        ChangeNotifierProvider(create: (context) => ProductService()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

@@ -159,7 +159,7 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   try {
-    final authService = Provider.of<AuthService>(context, listen: false);
+    final authService = AuthService();
     User? user = await authService.login(email, password);
 
     passwordController.clear();

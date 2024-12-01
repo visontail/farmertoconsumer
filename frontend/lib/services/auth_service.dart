@@ -1,11 +1,20 @@
 import 'dart:convert';
-import 'package:flutter/material.dart';
+import 'package:farmertoconsumer/storages/user_storage.dart';
 import 'package:http/http.dart' as http;
 
 import '../models/user.dart';
 import '../utils/api_endpoints.dart';
 
-class AuthService extends ChangeNotifier {
+class AuthService {
+  static final AuthService _singleton = AuthService._internal();
+  AuthService._internal();
+
+  factory AuthService() {
+    return _singleton;
+  }
+  
+  final UserStorage _userStorage = UserStorage();
+
   static const Map<String, String> headers = {
     'Accept': 'application/json',
     'Content-Type': 'application/json',
@@ -31,8 +40,8 @@ class AuthService extends ChangeNotifier {
       if (responseBody.containsKey('token')) {
         String token = responseBody['token'];
         print('Token: $token');
-        // TODO: Store the token securely
-        return User(id: 1, name: 'Test User', email: email);
+        _userStorage.token.set(token);
+        return User(id: 1, name: 'Test User');
       } else {
         throw Exception('Token not found in response.');
       }
@@ -70,7 +79,6 @@ class AuthService extends ChangeNotifier {
         return User(
           id: responseBody['id'],
           name: name,
-          email: email,
         );
       } else {
         throw Exception("Unexpected response structure: 'id' not found");

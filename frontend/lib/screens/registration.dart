@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 import '../styles/colors.dart';
 import '../utils/snack_bar.dart';
@@ -204,7 +203,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
     }
 
     try {
-      final authService = Provider.of<AuthService>(context, listen: false);
+      final authService =  AuthService();
       User? user = await authService.register(
         emailController.text.trim(),
         nameController.text.trim(),
