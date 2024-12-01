@@ -1,5 +1,6 @@
 import 'package:farmertoconsumer/screens/upgrade_form.dart';
 import 'package:flutter/material.dart';
+import '../styles/colors.dart';
 
 class UpgradeSection extends StatefulWidget {
   final bool isProducer; // Accepting isProducer as a parameter
@@ -19,10 +20,37 @@ class UpgradeSection extends StatefulWidget {
 
 class _UpgradeSectionState extends State<UpgradeSection> {
   bool _isLoading = false; // Tracks the loading state
-
+  
   String contact_information = 'Some Contact Information';
-  String description = 'Some Description';
 
+  String description = 'My Description';
+  TextEditingController _descriptionController = TextEditingController();
+
+  String userEmail = 'valami@email.com';
+  TextEditingController _userEmailtextController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    // Set the initial value
+    _userEmailtextController.text = this.userEmail;  // Initial value for TextField
+    _userEmailtextController.addListener(() {
+      print("Email value: ${_userEmailtextController.text}");
+    });
+
+    _descriptionController.text = this.description;
+    _descriptionController.addListener(() {
+      print("Description value: ${_descriptionController.text}");
+    });
+  }
+
+  @override
+  void dispose() {
+    // Dispose the controller when done to avoid memory leaks
+    _userEmailtextController.dispose();
+    _descriptionController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -147,49 +175,64 @@ class _UpgradeSectionState extends State<UpgradeSection> {
             ),
           )
         : Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Container(
-              padding: EdgeInsets.all(16),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(8),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.grey.withOpacity(0.2),
-                    blurRadius: 8,
-                    spreadRadius: 2,
-                  ),
-                ],
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  // Contact Information Text Field
-                  TextField(
-                    decoration: InputDecoration(
-                      labelText: 'Contact Information',
-                      hintText: 'big.business.mari@gmail.com',  // Placeholder for the input field
-                      border: OutlineInputBorder(),
-                      contentPadding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-                    ),
-                  ),
-                  SizedBox(height: 16), // Space between the text fields
-
-                  // Description Text Area (multi-line input field)
-                  TextFormField(
-                    initialValue: description,
-                    maxLines: 3,  // Makes this a multi-line field (textarea)
-                    decoration: InputDecoration(
-                      labelText: 'Description',
-                      hintText: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
-                      border: OutlineInputBorder(),
-                      contentPadding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-                    ),
-                  ),
-                ],
-              ),
+          padding: const EdgeInsets.all(16.0),
+          child: Container(
+            padding: EdgeInsets.all(16),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(8),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.grey.withOpacity(0.2),
+                  blurRadius: 8,
+                  spreadRadius: 2,
+                ),
+              ],
             ),
-          );
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // Contact Information Text Field
+                TextField(
+                  controller: _userEmailtextController,  
+                  style: TextStyle(color: mainGreen),  // Set text (value) color to green
+                  decoration: InputDecoration(
+                    labelText: 'Contact Information',
+                    labelStyle: TextStyle(color: mainGreen),  // Set label text color to green
+                    hintText: 'big.business.mari@gmail.com',  // Placeholder for the input field
+                    hintStyle: TextStyle(color: lightGreen),   // Set hint text (placeholder) color to green
+                    border: OutlineInputBorder(),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: mainGreen),  // Set outline color when focused
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    contentPadding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                  ),
+                ),
+                SizedBox(height: 16), // Space between the text fields
+
+                // Description Text Area (multi-line input field)
+                TextFormField(
+                  controller: _descriptionController,
+                  maxLines: 3,  // Makes this a multi-line field (textarea)
+                  decoration: InputDecoration(
+                    labelText: 'Description',
+                    labelStyle: TextStyle(color: mainGreen),  // Set label text color to green
+                    hintText: 'Describe your products and business here',
+                    hintStyle: TextStyle(color: lightGreen),   // Set hint text (placeholder) color to green
+                    border: OutlineInputBorder(),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: mainGreen),  // Set outline color when focused
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    contentPadding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                  ),
+                  style: TextStyle(color: mainGreen),  // Set the text color to green
+                ),
+              ],
+            ),
+          ),
+        );
  // Return an empty widget if the condition is false
   }
 }

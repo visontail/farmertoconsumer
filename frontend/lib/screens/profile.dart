@@ -159,7 +159,7 @@ class ProfileScreenState extends State<ProfileScreen> {
     List<dynamic> history = [];
 
     for (var orderJson in orderData) {
-      if (orderJson['approved'] == null || !orderJson['approved']) {
+      if (orderJson['approved'] == null) {
         // If the order is not approved or doesn't have an approval status, consider it "current"
         current.add(orderJson);
       } else {
@@ -216,7 +216,7 @@ class ProfileScreenState extends State<ProfileScreen> {
       backgroundColor: mainGreen,
       appBar: CustomAppBar(title: 'Profile', color: mainGreen),
       body: Container(
-        padding: const EdgeInsets.all(6.0),
+        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 0),
         decoration: BoxDecoration(
           border: Border.all(color: mainGreen, width: 5.0),
           borderRadius: BorderRadius.circular(12),
@@ -245,13 +245,13 @@ class ProfileScreenState extends State<ProfileScreen> {
               ),
               textAlign: TextAlign.center,
             ),
-            SizedBox(height: 12),
+            SizedBox(height: 0),
             UpgradeSection(
               isProducer: this.isProducer,
               hasPendingUserUpgradeRequest: this.hasPendingUserUpgradeRequest,
               onUpgradeRequestChanged: updateUpgradeRequestStatus,
             ),
-            SizedBox(height: 12),
+            SizedBox(height: 0),
             _buildTabSection(),
             SizedBox(height: 12),
           ],
@@ -268,8 +268,9 @@ class ProfileScreenState extends State<ProfileScreen> {
           TabBar(
             isScrollable: true, 
             labelColor: mainGreen,
-            unselectedLabelColor: black,
-            indicatorColor: mainGreen,
+            unselectedLabelColor: paleGreen,
+            indicatorColor: loremIpsumColor,
+            indicatorSize: TabBarIndicatorSize.tab,
             tabs: this.isProducer ? [
               Tab(text: 'Purchases'),
               Tab(text: 'Purchase History'),

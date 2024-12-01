@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import '../screens/next_page.dart'; // Make sure to import NextPage class
+import '../screens/order.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
@@ -21,7 +21,7 @@ class OrderSection extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         // Section title
-        SizedBox(height: 6),
+        SizedBox(height: 0),
         // Wrap the ListView in an Expanded widget to take the remaining space
         Expanded(
           child: orders.length == 0 ? 
@@ -31,12 +31,13 @@ class OrderSection extends StatelessWidget {
             itemBuilder: (context, index) {
               // Extract order data
               var order = orders[index];
+              var orderId = order['id'];
               var productName = order['product']['name']; // Product name
               var productCategory = order['product']['category']['name']; // Product category
               var quantity = order['quantity']; // Order quantity
               //var status = order['approved'] != null && order['approved'] 
               //             ? 'Approved' : 'In Progress'; // Order status
-              var status = order['approved'] == null ? 'Pending' : (order['approved'] ? 'Approved' : 'In Progress');
+              var status = order['approved'] == null ? 'Pending' : (order['approved'] ? 'Approved' : 'Declined');
               var price = order['price']; // Order price
               var imgSrc = 'assets/images/product.jpg'; // TODO
 
@@ -45,7 +46,7 @@ class OrderSection extends StatelessWidget {
                   // Navigate to NextPage when the card is tapped
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => NextPage()),
+                    MaterialPageRoute(builder: (context) => OrderScreen(orderId: orderId.toString())),
                   );
                 },
                 child: Card(
@@ -130,7 +131,7 @@ class OrderSection extends StatelessWidget {
                                       // Navigate to the next page when the button is clicked
                                       Navigator.push(
                                         context,
-                                        MaterialPageRoute(builder: (context) => NextPage()),
+                                        MaterialPageRoute(builder: (context) => OrderScreen(orderId: orderId.toString())),
                                       );
                                     },
                                     style: TextButton.styleFrom(
