@@ -1,3 +1,4 @@
+import 'package:farmertoconsumer/models/authenticated_user.dart';
 import 'package:farmertoconsumer/storages/common/storage_item.dart';
 
 class UserStorage {
@@ -8,5 +9,6 @@ class UserStorage {
     return _instance;
   }
 
-  StorageItem<String> token = StorageItem<String>();
+  StorageItem<String?> token = StorageItem<String?>();
+  StorageItem<AuthenticatedUser?> user = StorageItem<AuthenticatedUser?>();
 }
