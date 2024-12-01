@@ -1,4 +1,7 @@
 import 'package:farmertoconsumer/utils/routes.dart';
+import 'package:farmertoconsumer/widgets/feed/product_card.dart';
+import 'package:farmertoconsumer/widgets/feed/category_card.dart';
+import 'package:farmertoconsumer/widgets/feed/search_text_field.dart';
 import 'package:farmertoconsumer/widgets/nav_button_simple.dart';
 import 'package:farmertoconsumer/models/product.dart';
 import 'package:farmertoconsumer/models/productCategory.dart';
@@ -29,7 +32,9 @@ class _FeedScreenState extends State<FeedScreen> {
             child: Column(
               children: [
                 appBarWidget(),
-                searchWidget(context),
+                SearchTextField(
+                    search: provider.searchProduct,
+                    controller: searchController),
                 const Padding(
                     padding: EdgeInsets.all(15),
                     child: Align(
@@ -101,48 +106,8 @@ class _FeedScreenState extends State<FeedScreen> {
         ]));
   }
 
-  Widget searchWidget(BuildContext context) {
-    final provider = Provider.of<FeedDataProvider>(context);
-    return Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-      SizedBox(
-          width: 200,
-          child: TextField(
-            controller: searchController,
-            onSubmitted: provider.searchProduct,
-            decoration: const InputDecoration(
-              hintText: 'Search',
-              prefixIcon: Padding(
-                  padding: EdgeInsets.fromLTRB(0, 0, 0, 5),
-                  child: Icon(
-                    Icons.search,
-                    color: mainGreen,
-                    opticalSize: 15,
-                  )),
-              focusedBorder: UnderlineInputBorder(
-                  borderSide: BorderSide(color: mainGreen, width: 2.0)),
-            ),
-          )),
-      if (searchController.text != "")
-        TextButton(
-            onPressed: () {
-              provider.searchProduct(null);
-              searchController.text = "";
-            },
-            child: const Icon(
-              Icons.clear,
-              color: mainGreen,
-              size: 15,
-            ))
-    ]);
-  }
-
   Widget categoriesWidget(BuildContext context) {
     final provider = Provider.of<FeedDataProvider>(context);
-
-    capitalizeFirstChar(String text) {
-      if (text.isEmpty) return text;
-      return text[0].toUpperCase() + text.substring(1);
-    }
 
     return SingleChildScrollView(
         scrollDirection: Axis.horizontal,
@@ -150,51 +115,10 @@ class _FeedScreenState extends State<FeedScreen> {
             children: provider.categoriesLoading && provider.categories.isEmpty
                 ? [const CircularProgressIndicator()]
                 : provider.categories.map((ProductCategory category) {
-                    return GestureDetector(
-                      onTap: () {
-                        if (provider.selectedCategoryId == category.id) {
-                          provider.selectCategory(null);
-                        } else {
-                          provider.selectCategory(category.id);
-                        }
-                      },
-                      child: Container(
-                        margin: const EdgeInsets.all(7),
-                        width: 80,
-                        height: 80,
-                        decoration: BoxDecoration(
-                            color: category.id == provider.selectedCategoryId
-                                ? lightGreen
-                                : mainGreen,
-                            borderRadius: BorderRadius.circular(10),
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.black.withOpacity(0.2),
-                                offset: const Offset(0, 4),
-                                blurRadius: 4,
-                                spreadRadius: 2,
-                              ),
-                            ]),
-                        child: Center(
-                            child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            // TODO - fallback svg
-                            SvgPicture.asset(
-                              'assets/icons/${category.name}.svg',
-                              width: 30,
-                              color: Colors.white,
-                            ),
-                            Text(capitalizeFirstChar(category.name),
-                                style: const TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.white),
-                                overflow: TextOverflow.clip,
-                                softWrap: false),
-                          ],
-                        )),
-                      ),
-                    );
+                    return CategoryCard(
+                        category: category,
+                        selectCategory: (id) => provider.selectCategory(id),
+                        selectedCategoryId: provider.selectedCategoryId);
                   }).toList()));
   }
 
@@ -206,72 +130,7 @@ class _FeedScreenState extends State<FeedScreen> {
             scrollDirection: Axis.vertical,
             child: Column(children: [
               ...provider.products.map((Product product) {
-                return Padding(
-                    padding: const EdgeInsets.fromLTRB(40, 15, 40, 15),
-                    child: Container(
-                        decoration: BoxDecoration(
-                            color: mainGreen,
-                            borderRadius: BorderRadius.circular(10)),
-                        child: Padding(
-                            padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
-                            child: Column(
-                              children: [
-                                Row(
-                                  children: [
-                                    ClipRRect(
-                                        borderRadius: BorderRadius.circular(5),
-                                        child: Image.asset(
-                                            'assets/images/prod-placeholder.jpg',
-                                            width: 180,
-                                            fit: BoxFit.cover)),
-                                    Expanded(
-                                        child: Center(
-                                            child: Column(children: [
-                                      Text("#${product.category.name}",
-                                          style: const TextStyle(
-                                            color: Colors.white,
-                                          )),
-                                      Text("${product.price} Ft",
-                                          style: const TextStyle(
-                                            color: Colors.white,
-                                          )),
-                                    ]))),
-                                  ],
-                                ),
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Text(product.name,
-                                        style: const TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          color: Colors.white,
-                                        )),
-                                    TextButton(
-                                      onPressed: () {
-                                        Navigator.pushNamed(
-                                            context, Routes.product,
-                                            arguments: {'id': '${product.id}'});
-                                      },
-                                      child: const Row(
-                                        children: [
-                                          Text(
-                                            "View ",
-                                            style:
-                                                TextStyle(color: Colors.white),
-                                          ),
-                                          Icon(
-                                            Icons.arrow_forward,
-                                            color: Colors.white,
-                                            size: 15,
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ],
-                                )
-                              ],
-                            ))));
+                return ProductCard(product: product);
               }),
               if (provider.productsLoading) const CircularProgressIndicator(),
               if (!provider.productsLoading && provider.products.isEmpty)
