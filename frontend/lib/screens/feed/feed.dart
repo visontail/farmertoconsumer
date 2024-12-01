@@ -24,6 +24,7 @@ class _FeedScreenState extends State<FeedScreen> {
 
     return Scaffold(
         body: RefreshIndicator(
+            triggerMode: RefreshIndicatorTriggerMode.anywhere,
             onRefresh: provider.refresh,
             child: Column(
               children: [
@@ -146,52 +147,55 @@ class _FeedScreenState extends State<FeedScreen> {
     return SingleChildScrollView(
         scrollDirection: Axis.horizontal,
         child: Row(
-            children: provider.categories.map((ProductCategory category) {
-          return GestureDetector(
-            onTap: () {
-              if (provider.selectedCategoryId == category.id) {
-                provider.selectCategory(null);
-              } else {
-                provider.selectCategory(category.id);
-              }
-            },
-            child: Container(
-              margin: const EdgeInsets.all(7),
-              width: 80,
-              height: 80,
-              decoration: BoxDecoration(
-                  color: category.id == provider.selectedCategoryId
-                      ? lightGreen
-                      : mainGreen,
-                  borderRadius: BorderRadius.circular(10),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withOpacity(0.2),
-                      offset: const Offset(0, 4),
-                      blurRadius: 4,
-                      spreadRadius: 2,
-                    ),
-                  ]),
-              child: Center(
-                  child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  // TODO - fallback svg
-                  SvgPicture.asset(
-                    'assets/icons/${category.name}.svg',
-                    width: 30,
-                    color: Colors.white,
-                  ),
-                  Text(capitalizeFirstChar(category.name),
-                      style: const TextStyle(
-                          fontWeight: FontWeight.bold, color: Colors.white),
-                      overflow: TextOverflow.clip,
-                      softWrap: false),
-                ],
-              )),
-            ),
-          );
-        }).toList()));
+            children: provider.categoriesLoading && provider.categories.isEmpty
+                ? [const CircularProgressIndicator()]
+                : provider.categories.map((ProductCategory category) {
+                    return GestureDetector(
+                      onTap: () {
+                        if (provider.selectedCategoryId == category.id) {
+                          provider.selectCategory(null);
+                        } else {
+                          provider.selectCategory(category.id);
+                        }
+                      },
+                      child: Container(
+                        margin: const EdgeInsets.all(7),
+                        width: 80,
+                        height: 80,
+                        decoration: BoxDecoration(
+                            color: category.id == provider.selectedCategoryId
+                                ? lightGreen
+                                : mainGreen,
+                            borderRadius: BorderRadius.circular(10),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black.withOpacity(0.2),
+                                offset: const Offset(0, 4),
+                                blurRadius: 4,
+                                spreadRadius: 2,
+                              ),
+                            ]),
+                        child: Center(
+                            child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            // TODO - fallback svg
+                            SvgPicture.asset(
+                              'assets/icons/${category.name}.svg',
+                              width: 30,
+                              color: Colors.white,
+                            ),
+                            Text(capitalizeFirstChar(category.name),
+                                style: const TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.white),
+                                overflow: TextOverflow.clip,
+                                softWrap: false),
+                          ],
+                        )),
+                      ),
+                    );
+                  }).toList()));
   }
 
   Widget productsWidget(BuildContext context) {
@@ -244,7 +248,11 @@ class _FeedScreenState extends State<FeedScreen> {
                                           color: Colors.white,
                                         )),
                                     TextButton(
-                                      onPressed: () {},
+                                      onPressed: () {
+                                        Navigator.pushNamed(
+                                            context, Routes.product,
+                                            arguments: {'id': '${product.id}'});
+                                      },
                                       child: const Row(
                                         children: [
                                           Text(
