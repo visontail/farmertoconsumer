@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import '../styles/colors.dart';
 import '../utils/snack_bar.dart';
 
+import '../widgets/login/register/reg_workflow_app_bar.dart';
 import '../widgets/login/register/welcome_header_section.dart';
 import '../widgets/login/register/name_field.dart';
 import '../widgets/login/register/email_field.dart';
@@ -41,6 +42,12 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: white,
+      appBar: RegWfAppBar(
+        onBackPressed: () {
+          Navigator.of(context).pop();
+        },
+      ),
       resizeToAvoidBottomInset: true,
       body: SafeArea(
         bottom: false,
@@ -50,7 +57,6 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const SizedBox(height: 10),
                 const WelcomeHeaderSection(
                   secondText: "Register to continue",
                 ),
