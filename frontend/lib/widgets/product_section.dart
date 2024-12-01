@@ -7,12 +7,12 @@ import 'package:farmertoconsumer/services/product_service.dart';
 class ProductSection extends StatelessWidget {
   final String title;
   final List<dynamic> products;
-  final Color customGreen;
+  final Color color;
 
   ProductSection({
     required this.title,
     required this.products,
-    required this.customGreen,
+    required this.color,
   });
 
   @override
@@ -44,7 +44,7 @@ class ProductSection extends StatelessWidget {
                   );
                 },
                 child: Card(
-                  color: customGreen, // Green background for the card
+                  color: color, // Green background for the card
                   margin: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(6),
@@ -55,7 +55,7 @@ class ProductSection extends StatelessWidget {
                       // Card content
                       Container(
                         decoration: BoxDecoration(
-                          color: customGreen,
+                          color: color,
                           borderRadius: BorderRadius.circular(6),
                           boxShadow: [
                             BoxShadow(

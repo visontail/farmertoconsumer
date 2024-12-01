@@ -6,6 +6,7 @@ import '../widgets/custom_app_bar.dart';
 import '../widgets/upgrade_section.dart';
 import '../widgets/order_section.dart';
 import '../widgets/product_section.dart';
+import '../styles/colors.dart';
 
 class ProfileScreen extends StatefulWidget {
   @override
@@ -19,9 +20,6 @@ class ProfileScreenState extends State<ProfileScreen> {
   //final String token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiaWF0IjoxNzMyNTI1MjQ5fQ.CtgMkPZz9d66vQHmvTk66jJXtLAcYEfrMwxjGZv1os4';
   //final String userId = '5';
   //final String token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NSwiaWF0IjoxNzMyNTI1NjMxfQ.4JK2-zTkqICtoyTnPTk22hT8sSdxPed7vIbEWk2XPQA';
-
-
-  final Color customGreen = Color(0xFF48872B);
 
   String userName = "John Doe";
   List<dynamic> currentPurchases = [];
@@ -262,14 +260,14 @@ class ProfileScreenState extends State<ProfileScreen> {
   Widget build(BuildContext context) {
 
     return Scaffold(
-      backgroundColor: customGreen,
-      appBar: CustomAppBar(title: 'Profile', customGreen: customGreen),
+      backgroundColor: mainGreen,
+      appBar: CustomAppBar(title: 'Profile', color: mainGreen),
       body: Container(
         padding: const EdgeInsets.all(6.0),
         decoration: BoxDecoration(
-          border: Border.all(color: customGreen, width: 5.0),
+          border: Border.all(color: mainGreen, width: 5.0),
           borderRadius: BorderRadius.circular(12),
-          color: Colors.white,
+          color: white,
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -280,7 +278,7 @@ class ProfileScreenState extends State<ProfileScreen> {
               style: TextStyle(
                 fontSize: 28,
                 fontWeight: FontWeight.bold,
-                color: customGreen,
+                color: mainGreen,
               ),
               textAlign: TextAlign.center,
             ),
@@ -290,7 +288,7 @@ class ProfileScreenState extends State<ProfileScreen> {
               style: TextStyle(
                 fontSize: 12,
                 fontWeight: FontWeight.w300,
-                color: customGreen,
+                color: mainGreen,
               ),
               textAlign: TextAlign.center,
             ),
@@ -316,9 +314,9 @@ class ProfileScreenState extends State<ProfileScreen> {
         children: [
           TabBar(
             isScrollable: true, 
-            labelColor: customGreen,
-            unselectedLabelColor: Colors.black,
-            indicatorColor: customGreen,
+            labelColor: mainGreen,
+            unselectedLabelColor: black,
+            indicatorColor: mainGreen,
             tabs: this.isProducer ? [
               Tab(text: 'Purchases'),
               Tab(text: 'Purchase History'),
@@ -338,14 +336,14 @@ class ProfileScreenState extends State<ProfileScreen> {
                 : TabBarView(
                     children: this.isProducer ? 
                       [
-                        OrderSection(title: "Purchases", orders: currentPurchases, customGreen: customGreen),
-                        OrderSection(title: "Purchase History", orders: purchaseHistory, customGreen: customGreen),
-                        OrderSection(title: "Orders", orders: orders, customGreen: customGreen),
-                        ProductSection(title: "Product Management", products: products, customGreen: customGreen),
+                        OrderSection(title: "Purchases", orders: currentPurchases, color: mainGreen),
+                        OrderSection(title: "Purchase History", orders: purchaseHistory, color: mainGreen),
+                        OrderSection(title: "Orders", orders: orders, color: mainGreen),
+                        ProductSection(title: "Product Management", products: products, color: mainGreen),
                       ] :
                       [
-                        OrderSection(title: "Purchases", orders: currentPurchases, customGreen: customGreen),
-                        OrderSection(title: "Purchase History", orders: purchaseHistory, customGreen: customGreen),
+                        OrderSection(title: "Purchases", orders: currentPurchases, color: mainGreen),
+                        OrderSection(title: "Purchase History", orders: purchaseHistory, color: mainGreen),
                       ],
                   ),
           ),

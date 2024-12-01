@@ -3,14 +3,14 @@ import 'package:flutter_svg/flutter_svg.dart';
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String title;
-  final Color customGreen;
+  final Color color;
 
-  CustomAppBar({required this.title, required this.customGreen});
+  CustomAppBar({required this.title, required this.color});
 
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      backgroundColor: customGreen,
+      backgroundColor: color,
       iconTheme: IconThemeData(color: Colors.white),
       leading: IconButton(
         icon: SvgPicture.asset(

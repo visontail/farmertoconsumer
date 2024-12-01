@@ -7,12 +7,12 @@ import 'dart:convert';
 class OrderSection extends StatelessWidget {
   final String title;
   final List<dynamic> orders;
-  final Color customGreen;
+  final Color color;
   
   OrderSection({
     required this.title, 
     required this.orders, 
-    required this.customGreen
+    required this.color
   });
 
   @override
@@ -49,7 +49,7 @@ class OrderSection extends StatelessWidget {
                   );
                 },
                 child: Card(
-                  color: customGreen,  // Green background for the card
+                  color: color,  // Green background for the card
                   margin: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(6), // Set the border radius here
@@ -57,7 +57,7 @@ class OrderSection extends StatelessWidget {
                   elevation: 0, // Remove the default elevation to use custom shadow
                   child: Container(
                     decoration: BoxDecoration(
-                      color: customGreen, // Keep the card background green
+                      color: color, // Keep the card background green
                       borderRadius: BorderRadius.circular(6), // Border radius same as card's
                       boxShadow: [
                         BoxShadow(
