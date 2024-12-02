@@ -9,9 +9,9 @@ class ProducerDataShaper extends ModelShaperBase {
             return {
                 id: producerData.id,
                 description: producerData.description,
+                contact: producerData.contact,
                 user: {
                     id: user.id,
-                    email: user.email,
                     name: user.name
                 }
             }

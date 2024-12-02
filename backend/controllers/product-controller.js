@@ -9,6 +9,7 @@ class ProductController extends ControllerBase {
 
         const where = this.fastify.ObjectSimplifier.simplify({
             name: { [Op.like]: `%${req.query.search ?? ""}%` },
+            quantity: query.hideUnavailable ? { [Op.gt]: 0 } : undefined,
             ProductCategoryId: query.categoryId,
             ProducerDataId: query.producerDataId,
             '$ProducerData.User.id$': query.producerId,
@@ -48,7 +49,7 @@ class ProductController extends ControllerBase {
         const user = await User.findByPk(req.user.id);
         const producerData = await user.getProducerData();
 
-        const { name, categoryId, quantity, quantityUnitId, price } = req.body;
+        const { name, categoryId, quantity, quantityUnitId, price, description } = req.body;
 
         const product = await Product.create({
             name,
@@ -56,6 +57,7 @@ class ProductController extends ControllerBase {
             quantity,
             QuantityUnitId: quantityUnitId,
             price,
+            description,
             ProducerDataId: producerData.id,
         })
         
@@ -73,7 +75,7 @@ class ProductController extends ControllerBase {
             return res.status(401).send({ message: 'Unauthorized' });
         }
 
-        const { name, categoryId, quantity, quantityUnitId, price } = req.body;
+        const { name, categoryId, quantity, quantityUnitId, price, description } = req.body;
 
         await product.update(this.fastify.ObjectSimplifier.simplify({
             name,
@@ -81,6 +83,7 @@ class ProductController extends ControllerBase {
             quantity,
             QuantityUnitId: quantityUnitId,
             price,
+            description,
             ProducerDataId: producerData.id,
         }));
 
