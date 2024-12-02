@@ -16,6 +16,7 @@ class ProfileScreen extends StatefulWidget {
 
 class ProfileScreenState extends State<ProfileScreen> {
   bool isLoading = true;
+  bool isInitialized = false;
 
   final String userId = '6';
   final String token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NiwiaWF0IjoxNzMyMDQ4MTY5fQ.X7Zfqx6MbHyDAOucSGjJ9r5pDnot0D5f4-mAOJBmM5o';
@@ -56,6 +57,9 @@ class ProfileScreenState extends State<ProfileScreen> {
     super.initState();
     _fetchUser(this.userId, this.token); // Fetch orders when the screen is initialized
     _fetchPurchases(this.userId, this.token, this.isProducer ? 'producer' : 'customer'); // Fetch orders when the screen is initialized
+    setState(() {
+      isInitialized = true;
+    });
   }
 
 
@@ -246,12 +250,14 @@ class ProfileScreenState extends State<ProfileScreen> {
               textAlign: TextAlign.center,
             ),
             SizedBox(height: 0),
+            !this.isInitialized ? SizedBox(height: 120) :
             UpgradeSection(
               isProducer: this.isProducer,
               hasPendingUserUpgradeRequest: this.hasPendingUserUpgradeRequest,
               onUpgradeRequestChanged: updateUpgradeRequestStatus,
             ),
             SizedBox(height: 0),
+            !this.isInitialized ? CircularProgressIndicator() :
             _buildTabSection(),
             SizedBox(height: 12),
           ],
