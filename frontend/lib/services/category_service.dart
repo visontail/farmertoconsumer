@@ -1,12 +1,18 @@
 import 'dart:convert';
 import 'package:farmertoconsumer/models/productCategory.dart';
 import 'package:farmertoconsumer/services/common/get_all_return_value.dart';
-import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
 import '../utils/api_endpoints.dart';
 
-class CategoryService extends ChangeNotifier {
+class CategoryService {
+  static final CategoryService _singleton = CategoryService._internal();
+  CategoryService._internal();
+
+  factory CategoryService() {
+    return _singleton;
+  }
+
   static const Map<String, String> headers = {
     'Accept': 'application/json',
     'Content-Type': 'application/json',

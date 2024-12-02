@@ -29,6 +29,7 @@ body: {
 
 response: {
     id: number;
+    token: string;
 }
 ```
 
@@ -42,8 +43,13 @@ GET /auth/profile
 
 response: {
     id: number;
-    email: string;
     name: string;
+    email: string;
+    producerData: {
+        id: number;
+        description: string;
+        contact: string;
+    }?
 }
 ```
 

@@ -15,8 +15,9 @@ class AuthController extends ControllerBase {
         const password = await bcrypt.hash(req.body.password, 10)
 
         const { id } = await User.create({ email, name, password })
+        const token = this.fastify.jwt.sign({ id });
 
-        return res.status(200).send({ id })
+        return res.status(200).send({ id, token });
     }
 
     async login(req, res) {
@@ -30,8 +31,8 @@ class AuthController extends ControllerBase {
 
     async profile(req, res) {
         const user = await User.findByPk(req.user.id);
-        const { id, email, name } = user;
-        res.send({ id, email, name })
+
+        return await this.fastify.UserShaper.profile.shape(user)
     }
 }
 
