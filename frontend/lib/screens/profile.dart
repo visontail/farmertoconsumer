@@ -64,11 +64,18 @@ class ProfileScreenState extends State<ProfileScreen> {
 
 
   Future<void> _fetchThings(url, token, callback) async {
+    print('_fetchThings');
+    print('url');
+    print(url);
     try {
       final response = await http.get(url, headers: {
         'Authorization': 'Bearer $token',
         'Content-Type': 'application/json',
       });
+      print('response.statusCode');
+      print(response.statusCode);
+      print('response.body');
+      print(response.body);
 
       if (response.statusCode == 200) {
         callback(response);
@@ -80,6 +87,7 @@ class ProfileScreenState extends State<ProfileScreen> {
       print('Error fetching: $e');
       updateIsLoadingStatus(false);
     }    
+    print('END _fetchThings');
 
   }
 
@@ -119,12 +127,14 @@ class ProfileScreenState extends State<ProfileScreen> {
   }
 
   Future<void> _recieveUser(response) async {
+    print('response');
+    print(response);
     bool _isProducer = false; 
     final data = json.decode(response.body);
 
     // Extract user information from the response
     String userName = data['name']; // Name of the user
-    String userEmail = data['email']; // Email of the user
+    //String userEmail = data['email']; // Email of the user
     //int userId = data['id']; // ID of the user
     var producerData = data['producerData']; // producerData (could be null)
 
@@ -249,7 +259,7 @@ class ProfileScreenState extends State<ProfileScreen> {
               ),
               textAlign: TextAlign.center,
             ),
-            SizedBox(height: 0),
+            !this.isInitialized ? SizedBox(width: 360) : SizedBox(height: 0),
             !this.isInitialized ? SizedBox(height: 120) :
             UpgradeSection(
               isProducer: this.isProducer,

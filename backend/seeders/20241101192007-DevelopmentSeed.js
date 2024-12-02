@@ -35,14 +35,24 @@ module.exports = {
         name: faker.person.fullName(),
         password
       });
+      const contact = faker.helpers.arrayElement([
+        faker.phone.number(),
+        faker.internet.email(),
+      ]);
       await UserUpgradeRequest.create({
         UserId: producer.id,
         description: faker.lorem.paragraph(),
+        profileDescription: faker.helpers.arrayElement([
+          faker.lorem.paragraph(),
+          null
+        ]),
+        contact,
         approved: true,
       });
       await ProducerData.create({
         UserId: producer.id,
         description: faker.lorem.paragraph(),
+        contact        
       });
       producers.push(producer);
     }
@@ -64,7 +74,7 @@ module.exports = {
 
     console.log("Seeding product categories");
     const productCategories = [];
-    for (const name of ["apple", "peach", "melon", "wheat", "potato", "carrot"]) {
+    for (const name of ["fruits", "vegetables", "eggs", "dairy"]) {
       productCategories.push(await ProductCategory.create({ name }));
     }
 
@@ -72,11 +82,12 @@ module.exports = {
     const products = [];
     for (const producer of producers) {
       const ProducerDataId = (await producer.getProducerData()).id;
-      for (const category of faker.helpers.arrayElements(productCategories, { min: 1, max: 4 })) {
+      for (const category of faker.helpers.arrayElements(productCategories, { min: 2, max: 6 })) {
         products.push(await Product.create({
           name: `${capitalize(faker.lorem.word())} ${capitalize(category.name)}`,
           quantity: faker.helpers.rangeToNumber({ min: 5, max: 40 }),
           price: faker.helpers.rangeToNumber({ min: 300, max: 2000 }),
+          description: faker.lorem.paragraph(),
           ProducerDataId,
           QuantityUnitId: faker.helpers.arrayElement(quantityUnits).id,
           ProductCategoryId: category.id,

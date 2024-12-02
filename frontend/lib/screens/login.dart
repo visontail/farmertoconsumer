@@ -1,26 +1,45 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 
 import '../styles/colors.dart';
-import '../widgets/email_field.dart';
-import '../widgets/get_started_button.dart';
-import '../widgets/pass_field.dart';
+import '../utils/snack_bar.dart';
 
+import '../widgets/login/register/reg_workflow_app_bar.dart';
+import '../widgets/login/register/welcome_header_section.dart';
+import '../widgets/login/register/email_field.dart';
+import '../widgets/login/register/pass_field.dart';
+import '../widgets/login/register/get_started_button.dart';
+import '../widgets/login/register/nav_link.dart';
+
+import '../models/user.dart';
 import '../services/auth_service.dart';
+import '../utils/routes.dart';
 
-class LoginScreen extends StatelessWidget {
-  LoginScreen({super.key});
+class LoginScreen extends StatefulWidget {
+  const LoginScreen({super.key});
 
+  @override
+  _LoginScreenState createState() => _LoginScreenState();
+}
+
+class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
 
   final FocusNode emailFocusNode = FocusNode();
   final FocusNode passwordFocusNode = FocusNode();
 
+  bool _obscurePassword = true; // To control password visibility
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: white,
+      appBar: RegWfAppBar(
+        onBackPressed: () {
+          Navigator.of(context).pop();
+        },
+      ),
       resizeToAvoidBottomInset: true,
       body: SafeArea(
         bottom: false,
@@ -30,103 +49,14 @@ class LoginScreen extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const SizedBox(height: 70),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const SizedBox(height: 60), // To make sure every content is centered
-                    SvgPicture.asset(
-                      'assets/icons/icon.svg', // Make sure the path matches exactly
-                      width: 48,
-                      height: 48,
-                      color: mainGreen,
-                    ),
-                    const SizedBox(height: 5),
-                    const Text(
-                      "Welcome,",
-                      style: TextStyle(color: darkGreen, fontSize: 35),
-                    ),
-                    const Text(
-                      "Sign in to continue",
-                      style: TextStyle(
-                        color: paleGreen,
-                        fontSize: 25,
-                      ),
-                    ),
-                  ],
+                const SizedBox(height: 30),
+                const WelcomeHeaderSection(
+                  secondText: "Sign in to continue",
                 ),
                 const SizedBox(height: 50),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                  child: Column(
-                    children: [
-                      EmailField(
-                        fadeEmail: false,
-                        emailController: emailController,
-                        node: emailFocusNode,
-                        bottomAnimationValue: 0.8, // Example value
-                        opacityAnimationValue: 1.0,
-                        paddingAnimationValue: const EdgeInsets.all(0),
-                        animationColor: Colors.green, // Example color
-                        onChanged: (value) {
-                          print("Email changed: $value");
-                        },
-                      ),
-                      const SizedBox(height: 40),
-                      PasswordField(
-                        hintText: "Password",
-                        fadePassword: false,
-                        passwordController: passwordController,
-                        obscure: true,
-                        node: passwordFocusNode,
-                        bottomAnimationValue: 0.8, // Example value
-                        opacityAnimationValue: 1.0,
-                        onToggleObscure: (isObscure) {
-                          print("Obscure toggled: $isObscure");
-                        },
-                        onPasswordChanged: (value) {
-                          print("Password changed: $value");
-                        },
-                      ),
-                      const SizedBox(height: 90),
-                      GetStartedButton(
-                        elementsOpacity: 1.0,
-                        onTap: () {
-                          print("Get Started tapped!");
-                          print('Login: ${emailController.text} ${passwordController.text}'); // debug log, remove in prod
-                          
-                          Provider.of<AuthService>(context, listen: false).login(
-                            emailController.text,
-                            passwordController.text,
-                          ).then((value) {
-                            if (value == 'success') {
-                              const Text('Login successful');
-                              //Navigator.pushNamed(context, '/home');
-                            } else {
-                              //String errorMessage = value['message'] ?? 'An error occurred';
-                              //print('Login failed: $errorMessage');
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar( // TODO: Create a custom snackbar widget
-                                  content: Text('Invalid credentials'),
-                                  backgroundColor: Colors.red,
-                                  duration: const Duration(seconds: 3),
-                                  behavior: SnackBarBehavior.floating,
-                                  margin: const EdgeInsets.all(20),
-                                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)
-                                ),
-                              ));
-                              
-                            }
-                          });
-                        },
-                        onAnimationEnd: () {
-                          print("Animation ended");
-                        },
-                      ),
-                    ],
-                  ),
-                ),
+                _buildFormFields(),
+                const SizedBox(height: 90),
+                _buildFooter(context),
               ],
             ),
           ),
@@ -134,4 +64,128 @@ class LoginScreen extends StatelessWidget {
       ),
     );
   }
+
+  Widget _buildFormFields() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+      child: Column(
+        children: [
+          _buildEmailField(),
+          const SizedBox(height: 40),
+          _buildPasswordField(),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildEmailField() {
+    return EmailField(
+      emailController: emailController,
+      node: emailFocusNode,
+      onChanged: (value) {
+        print("Email changed: $value");
+      },
+    );
+  }
+
+  Widget _buildPasswordField() {
+    return PasswordField(
+      hintText: "Password",
+      passwordController: passwordController,
+      obscure: _obscurePassword,
+      node: passwordFocusNode,
+      onToggleObscure: _togglePasswordVisibility,
+      onPasswordChanged: (value) {
+        print("Password changed: $value");
+      },
+      border: const UnderlineInputBorder(
+        borderSide: BorderSide(
+          color: Colors.green,
+          width: 2.0,
+        ),
+      ),
+      focusedBorder: const UnderlineInputBorder(
+        borderSide: BorderSide(
+          color: mainGreen,
+          width: 3.0,
+        ),
+      ),
+    );
+  }
+
+  void _togglePasswordVisibility() {
+    setState(() {
+      _obscurePassword = !_obscurePassword;
+    });
+  }
+
+  Widget _buildFooter(BuildContext context) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        _buildGetStartedButton(context),
+        const SizedBox(height: 10),
+        _buildNavLink(),
+      ],
+    );
+  }
+
+  Widget _buildGetStartedButton(BuildContext context) {
+    return GetStartedButton(
+      elementsOpacity: 1.0,
+      onTap: () => _handleLogin(context),
+    );
+  }
+
+  Widget _buildNavLink() {
+    return NavLink(
+      label: "Haven't got an account yet? Register.",
+      route: Routes.registration,
+    );
+  }
+
+  Future<void> _handleLogin(BuildContext context) async {
+  String email = emailController.text.trim();
+  String password = passwordController.text.trim();
+
+  if (email.isEmpty || password.isEmpty) {
+    showSnackBar(
+      context: context,
+      message: "Please fill in both fields",
+      backgroundColor: red
+    );
+    return;
+  }
+
+  try {
+    final authService = Provider.of<AuthService>(context, listen: false);
+    User? user = await authService.login(email, password);
+
+    passwordController.clear();
+
+    if (user != null) {
+      showSnackBar(
+        context: context,
+        message: "Welcome, ${user.name}!",
+        backgroundColor: mainGreen
+      );
+      print("Navigate to ${Routes.feed}");
+      Navigator.pushReplacementNamed(context, Routes.feed);
+    } else {
+      showSnackBar(
+        context: context,
+        message: "Login failed. Please try again.",
+        backgroundColor: red
+      );
+    }
+  } catch (e) {
+    showSnackBar(
+      context: context,
+      message: "Login failed: ${e.toString()}",
+      backgroundColor: red
+    );
+  }
+}
+
 }

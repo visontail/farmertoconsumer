@@ -44,10 +44,10 @@ class ProductShaper extends ModelShaperBase {
                 producer: {
                     id: producer.id,
                     name: producer.name,
-                    email: producer.email,
                     producerData: {
                         id: producerData.id,
                         description: producerData.description,
+                        contact: producerData.contact,
                     }
                 },
                 category: {
@@ -59,7 +59,8 @@ class ProductShaper extends ModelShaperBase {
                     id: quantityUnit.id,
                     name: quantityUnit.name,
                 },
-                price: product.price
+                price: product.price,
+                description: product.description,
             }
         };
         return new ModelShape(shaperCallback, includes, associationSetup);

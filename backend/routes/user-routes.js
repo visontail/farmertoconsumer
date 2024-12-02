@@ -33,7 +33,8 @@ module.exports = (fastify, _, next) => {
             body: {
                 type: 'object',
                 properties: {
-                    description: { type: 'string', minLength: 1 }
+                    description: { type: 'string', minLength: 1 },
+                    contact: { type: 'string', minLength: 1 }
                 }
             }
         }

@@ -1,16 +1,14 @@
 import 'package:flutter/material.dart';
 
-import '../styles/colors.dart';
+import '../../../styles/colors.dart';
 
 class GetStartedButton extends StatelessWidget {
   final Function onTap;
-  final Function onAnimationEnd;
   final double elementsOpacity;
 
   const GetStartedButton({
     super.key,
     required this.onTap,
-    required this.onAnimationEnd,
     required this.elementsOpacity
     });
 
@@ -19,9 +17,6 @@ class GetStartedButton extends StatelessWidget {
     return TweenAnimationBuilder<double>(
       duration: const Duration(milliseconds: 300),
       tween: Tween(begin: 1, end: elementsOpacity),
-      onEnd: () async {
-        onAnimationEnd();
-      },
       builder: (_, value, __) => GestureDetector(
         onTap: () {
           onTap();

@@ -7,6 +7,11 @@ class UserUpgradeRequestController extends ControllerBase {
         const { query } = req;
         const { UserUpgradeRequestShaper } = this.fastify;
 
+        const actingUser = await User.findByPk(req.user.id)
+        if (!actingUser.isAdmin && actingUser.id !== query.userId) {
+            return res.status(401).send({ message: 'Unauthenticated' })
+        }
+
         let whereTemp = {
             '$User.id$': query.userId,
         }
@@ -85,6 +90,8 @@ class UserUpgradeRequestController extends ControllerBase {
         const userUpgradeRequest = await UserUpgradeRequest.create({
             UserId: req.user.id,
             description: req.body.description,
+            contact: req.body.contact,
+            profileDescription: req.body.profileDescription ?? null,
             approved: null
         })
 
@@ -111,7 +118,11 @@ class UserUpgradeRequestController extends ControllerBase {
         }
 
         if (req.body.approve && !(await userUpgradeRequest.User.getProducerData())) {
-            await ProducerData.create({ UserId: userUpgradeRequest.User.id })
+            await ProducerData.create({
+                description: userUpgradeRequest.profileDescription,
+                contact: userUpgradeRequest.contact,
+                UserId: userUpgradeRequest.User.id
+            })
         }
 
         await userUpgradeRequest.update({ approved: req.body.approve })

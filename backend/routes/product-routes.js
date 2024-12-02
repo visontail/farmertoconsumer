@@ -5,6 +5,7 @@ module.exports = (fastify, _, next) => {
                 type: 'object',
                 properties: {
                     search: { type: 'string' },
+                    hideUnavailable: { type: 'boolean' },
                     categoryId: { type: 'number' },
                     producerId: { type: 'number' },
                     producerDataId: { type: 'number' },
@@ -31,13 +32,14 @@ module.exports = (fastify, _, next) => {
         schema: {
             body: {
                 type: 'object',
-                required: ['name', 'categoryId', 'quantity', 'quantityUnitId', 'price'],
+                required: ['name', 'categoryId', 'quantity', 'quantityUnitId', 'price', 'description'],
                 properties: {
                     name: { type: 'string' },
                     categoryId: { type: 'integer' },
                     quantity: { type: 'integer' },
                     quantityUnitId: { type: 'integer' },
                     price: { type: 'integer' },
+                    description: { type: 'string' },
                 },
             }
         }
@@ -54,6 +56,7 @@ module.exports = (fastify, _, next) => {
                     quantity: { type: 'integer' },
                     quantityUnitId: { type: 'integer' },
                     price: { type: 'integer' },
+                    description: { type: 'string' },
                 },
             }
         }

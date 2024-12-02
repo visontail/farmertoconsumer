@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import '../screens/next_page.dart'; // Make sure to import NextPage class
+import '../screens/product-create.dart';
+import '../screens/product-modify.dart';
 import 'package:farmertoconsumer/screens/product.dart';
 import 'package:farmertoconsumer/services/product_service.dart';
 import '../styles/colors.dart';
@@ -27,7 +29,7 @@ class ProductSection extends StatelessWidget {
               // Action when button is pressed
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => NextPage()),
+                MaterialPageRoute(builder: (context) => ProductCreateForm()),
               );
             },
             icon: SvgPicture.asset(
