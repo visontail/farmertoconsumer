@@ -5,6 +5,7 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import '../screens/profile.dart';
 import '../widgets/animated_button.dart'; // Import the AnimatedButton widget
+import '../styles/colors.dart';
 
 class UpgradeFormScreen extends StatefulWidget {
   @override
@@ -12,8 +13,6 @@ class UpgradeFormScreen extends StatefulWidget {
 }
 
 class _UpgradeFormScreenState extends State<UpgradeFormScreen> {
-  final Color customGreen = Color(0xFF48872B); // Custom green color for button
-
   // Create a global key to identify the Form widget
   final _formKey = GlobalKey<FormState>();
 
@@ -133,7 +132,7 @@ class _UpgradeFormScreenState extends State<UpgradeFormScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar(title: 'Become a Producer', color: customGreen),
+      appBar: CustomAppBar(title: 'Become a Producer', color: mainGreen),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 75),
         child: Form(
@@ -146,7 +145,7 @@ class _UpgradeFormScreenState extends State<UpgradeFormScreen> {
                 'assets/icons/logo.svg', // Replace with the correct path to your logo
                 width: 60.0,
                 height: 60.0,
-                color: customGreen,
+                color: mainGreen,
               ),
               SizedBox(height: 20), // Space after logo
 
@@ -161,11 +160,11 @@ class _UpgradeFormScreenState extends State<UpgradeFormScreen> {
                     ),
                     TextSpan(
                       text: '\nto become a ',
-                      style: TextStyle(color: customGreen), // Make "producer" green
+                      style: TextStyle(color: mainGreen), // Make "producer" green
                     ),
                     TextSpan(
                       text: 'producer',
-                      style: TextStyle(color: customGreen), // Make "producer" green
+                      style: TextStyle(color: mainGreen), // Make "producer" green
                     ),
                   ],
                 ),
