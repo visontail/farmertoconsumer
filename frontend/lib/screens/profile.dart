@@ -18,6 +18,8 @@ class ProfileScreenState extends State<ProfileScreen> {
   bool isLoading = true;
   bool isInitialized = false;
 
+  final String adminToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTEsImlhdCI6MTczMjA5Njk2MX0.qwb27xKI6XtMAIbjZIneRHeDMWyCK2NrKIAaq1uMifQ";
+
   final String userId = '6';
   final String token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NiwiaWF0IjoxNzMyMDQ4MTY5fQ.X7Zfqx6MbHyDAOucSGjJ9r5pDnot0D5f4-mAOJBmM5o';
   //final String userId = '2';
@@ -28,6 +30,8 @@ class ProfileScreenState extends State<ProfileScreen> {
   String userName = "";
   bool isProducer = false; // Initial state: upgrade not requested
   bool hasPendingUserUpgradeRequest = false;
+
+  String subHeading = "Profile";
 
   List<dynamic> currentPurchases = [];
   List<dynamic> purchaseHistory = [];
@@ -65,18 +69,11 @@ class ProfileScreenState extends State<ProfileScreen> {
 
 
   Future<void> _fetchThings(url, token, callback) async {
-    print('_fetchThings');
-    print('url');
-    print(url);
     try {
       final response = await http.get(url, headers: {
         'Authorization': 'Bearer $token',
         'Content-Type': 'application/json',
       });
-      print('response.statusCode');
-      print(response.statusCode);
-      print('response.body');
-      print(response.body);
 
       if (response.statusCode == 200) {
         callback(response);
@@ -88,8 +85,6 @@ class ProfileScreenState extends State<ProfileScreen> {
       print('Error fetching: $e');
       updateIsLoadingStatus(false);
     }    
-    print('END _fetchThings');
-
   }
 
   Future<void> _recieveOrders(response) async {
@@ -128,8 +123,6 @@ class ProfileScreenState extends State<ProfileScreen> {
   }
 
   Future<void> _recieveUser(response) async {
-    print('response');
-    print(response);
     bool _isProducer = false; 
     final user = json.decode(response.body);
 
@@ -143,6 +136,8 @@ class ProfileScreenState extends State<ProfileScreen> {
     String? producerDescription = producerData != null ? producerData['description'] : null;
 
     // If successful, update the state with the user data
+    print('user');
+    print(user);
     setState(() {
       this.user = user;
       this.userName = userName; // Update userName
@@ -153,10 +148,16 @@ class ProfileScreenState extends State<ProfileScreen> {
 
     if(producerData == null) {
       this.updateUpgradeRequestStatus(false, hasPendingUserUpgradeRequest);
-      this._fetchUserUpgradeRequests(userId, "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTEsImlhdCI6MTczMjA5Njk2MX0.qwb27xKI6XtMAIbjZIneRHeDMWyCK2NrKIAaq1uMifQ");
+      this._fetchUserUpgradeRequests(userId, adminToken);
+      setState(() {
+        subHeading = "Consumer Profile";
+      });
     } else {
       this.updateUpgradeRequestStatus(true, hasPendingUserUpgradeRequest);
       _isProducer = true;
+      setState(() {
+        subHeading = "Producer Profile";
+      });
     }
 
     if(_isProducer) {
@@ -258,7 +259,7 @@ class ProfileScreenState extends State<ProfileScreen> {
                 ),
                 SizedBox(height: 6),
                 Text(
-                  "Consumer Profile",
+                  subHeading,
                   style: TextStyle(
                     fontSize: 12,
                     fontWeight: FontWeight.w300,
@@ -269,6 +270,8 @@ class ProfileScreenState extends State<ProfileScreen> {
                 this.user == null ? SizedBox(width: 360) : SizedBox(height: 0),
                 this.user == null ? SizedBox(height: 120) :
                 UpgradeSection(
+                  user: this.user,
+                  token: this.token,
                   isProducer: this.isProducer,
                   hasPendingUserUpgradeRequest: this.hasPendingUserUpgradeRequest,
                   onUpgradeRequestChanged: updateUpgradeRequestStatus,
@@ -318,7 +321,7 @@ class ProfileScreenState extends State<ProfileScreen> {
                         OrderSection(title: "Purchases", orders: currentPurchases, color: mainGreen),
                         OrderSection(title: "Purchase History", orders: purchaseHistory, color: mainGreen),
                         OrderSection(title: "Orders", orders: orders, color: mainGreen),
-                        ProductSection(title: "Product Management", products: products, color: mainGreen),
+                        ProductSection(title: "Product Management", products: products, color: darkGreen),
                       ] :
                       [
                         OrderSection(title: "Purchases", orders: currentPurchases, color: mainGreen),

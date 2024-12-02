@@ -2,14 +2,20 @@ import 'package:farmertoconsumer/screens/profile_user_upgrade.dart';
 import 'package:flutter/material.dart';
 import '../../styles/colors.dart';
 import 'package:flutter_svg/flutter_svg.dart'; // Make sure you import flutter_svg
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 class UpgradeSection extends StatefulWidget {
+  final dynamic user; // Accepting isProducer as a parameter
+  final String token; // Accepting isProducer as a parameter
   final bool isProducer; // Accepting isProducer as a parameter
   final bool hasPendingUserUpgradeRequest;
   final Function(bool, bool) onUpgradeRequestChanged; // Callback to notify parent about the upgrade request
 
   // Constructor to accept the isProducer and onUpgradeRequestChanged
   UpgradeSection({
+    required this.user,
+    required this.token,
     required this.isProducer,
     required this.hasPendingUserUpgradeRequest,
     required this.onUpgradeRequestChanged,
@@ -32,13 +38,65 @@ class _UpgradeSectionState extends State<UpgradeSection> {
   bool descriptionChanged = false;
 
 
+  Future<void> saveDetails() async {
+    var newContact = _userEmailtextController.text;
+    var newDescription = _descriptionController.text;
+
+    String userId = '6';
+    String apiUrl = 'http://10.0.2.2:3000/users/$userId/producerData'; // Replace with the correct API URL
+    String token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NiwiaWF0IjoxNzMyMDQ4MTY5fQ.X7Zfqx6MbHyDAOucSGjJ9r5pDnot0D5f4-mAOJBmM5o';
+    Map<String, dynamic> payload = {
+      'contact': newContact,
+      'description': newDescription,
+    };
+
+    try {
+      // Send the POST request with the JSON payload
+      final response = await http.patch(
+        Uri.parse(apiUrl),
+        headers: {
+          'Authorization': 'Bearer $token',
+          'Content-Type': 'application/json', // Specify the content type as JSON
+        },
+        body: json.encode(payload), // Encode the payload to JSON
+      );
+
+      Map<String, dynamic> data = json.decode(response.body);
+
+      // Check if the request was successful (status code 200)
+      if (response.statusCode == 200) {
+        // Handle the successful response
+        setState(() {
+          initialDescription = newDescription;
+          initialUserEmail = newContact;
+        });
+        this._descriptionController.text = newDescription;
+        this._userEmailtextController.text = newContact;
+      } else {
+        // Handle the error response
+        this._descriptionController.text = this.initialDescription;
+        this._userEmailtextController.text = this.initialUserEmail;
+      }
+    } catch (error) {
+      print('Error updating Producer Data: $error');
+
+    } finally {
+
+    }
+  }
+
+
   @override
   void initState() {
     super.initState();
+    if(widget.user != null) {
+      this.initialUserEmail = widget.user['producerData']['contact'];
+      this.initialDescription = widget.user['producerData']['description'];
+    }
+
     // Set the initial value
     _userEmailtextController.text = this.initialUserEmail;  // Initial value for TextField
     _userEmailtextController.addListener(() {
-      print("Email value: ${_userEmailtextController.text}");
       var status = this.initialUserEmail != _userEmailtextController.text;
       setState(() {
         contactInformationChanged = status;
@@ -47,7 +105,6 @@ class _UpgradeSectionState extends State<UpgradeSection> {
 
     _descriptionController.text = this.initialDescription;
     _descriptionController.addListener(() {
-      print("Description value: ${_descriptionController.text}");
       var status = this.initialDescription != _descriptionController.text;
       setState(() {
         descriptionChanged = status;
@@ -223,9 +280,7 @@ class _UpgradeSectionState extends State<UpgradeSection> {
               SizedBox(width: 8), // Space between the icon and the button
               !contactInformationChanged ? SizedBox(height: 0) : 
               TextButton(
-                onPressed: () {
-                  // Save button logic here (e.g., save the contact information)
-                },
+                onPressed: saveDetails,
                 style: TextButton.styleFrom(
                   backgroundColor: mainGreen, // Set the button's background color to green
                   padding: EdgeInsets.symmetric(horizontal: 12, vertical: 8), // Adjust padding for the button
@@ -305,9 +360,7 @@ class _UpgradeSectionState extends State<UpgradeSection> {
               SizedBox(width: 8), // Space between the icon and the button
               !descriptionChanged ? SizedBox(height: 0) : 
               TextButton(
-                onPressed: () {
-                  // Save button logic here (e.g., save the contact information)
-                },
+                onPressed: saveDetails,
                 style: TextButton.styleFrom(
                   backgroundColor: mainGreen, // Set the button's background color to green
                   padding: EdgeInsets.symmetric(horizontal: 12, vertical: 8), // Adjust padding for the button

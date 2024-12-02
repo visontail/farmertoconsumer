@@ -1,12 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import '../screens/product-create.dart';
-import '../screens/product-modify.dart';
-import 'package:farmertoconsumer/screens/product.dart';
-import 'package:farmertoconsumer/services/product_service.dart';
-import '../styles/colors.dart';
+import '../screens/product.dart';
 
-// ProductCard Widget: Extracted from ProductSection
 class ProductCard extends StatelessWidget {
   final dynamic product;
   final Color color;
@@ -21,20 +16,23 @@ class ProductCard extends StatelessWidget {
     var productId = product['id'];
     var productName = product['name'];
     var productCategory = product['category']['name'];
-    var quantity = product['quantity'];
-    var price = product['price'];
-    var status = price.toString() + ' Ft/kg'; // TODO
-    var imgSrc = 'assets/images/product.jpg'; // Placeholder image source
+    var productquantityUnit = product['quantityUnit']['name'];
+    var productQuantity = product['quantity'].toString() + " " + productquantityUnit;
+    var productPrice = product['price'].toString() + ' Ft/' + productquantityUnit;
+
+    print('product');
+    print(product);
 
     return GestureDetector(
       onTap: () {
+        // Handle card tap (e.g., navigate to product details)
         Navigator.push(
           context,
           MaterialPageRoute(builder: (context) => ProductScreen(id: productId.toString())),
         );
       },
       child: Card(
-        color: color, // Green background for the card
+        color: color,
         margin: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(6),
@@ -67,7 +65,7 @@ class ProductCard extends StatelessWidget {
                           ClipRRect(
                             borderRadius: BorderRadius.circular(6),
                             child: Image.asset(
-                              imgSrc,
+                              'assets/images/product.jpg', // Example image
                               width: double.infinity,
                               height: 100,
                               fit: BoxFit.cover,
@@ -90,55 +88,21 @@ class ProductCard extends StatelessWidget {
                         children: [
                           Center(
                             child: Text(
-                              '$quantity',
+                              productQuantity, // Example quantity
                               style: TextStyle(fontSize: 18, color: Colors.white),
                             ),
                           ),
                           Center(
                             child: Text(
-                              productCategory,
+                              productCategory, // Example category
                               style: TextStyle(fontSize: 12, color: Colors.white),
                             ),
                           ),
                           SizedBox(height: 6),
                           Center(
                             child: Text(
-                              status,
+                              productPrice, // Example price
                               style: TextStyle(fontSize: 14, color: Colors.white),
-                            ),
-                          ),
-                          SizedBox(height: 0),
-                          Align(
-                            alignment: Alignment.bottomRight,
-                            child: TextButton(
-                              onPressed: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => ProductScreen(id: productId.toString())),
-                                );
-                              },
-                              style: TextButton.styleFrom(
-                                padding: EdgeInsets.zero,
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(6),
-                                ),
-                              ),
-                              child: Row(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  Text(
-                                    'View Details',
-                                    style: TextStyle(color: Colors.white),
-                                  ),
-                                  SvgPicture.asset(
-                                    'assets/icons/right-arrow-2.svg',
-                                    width: 10.0,
-                                    height: 10.0,
-                                    color: Colors.white,
-                                  ),
-                                ],
-                              ),
                             ),
                           ),
                         ],
@@ -148,20 +112,91 @@ class ProductCard extends StatelessWidget {
                 ),
               ),
             ),
-            // SVG Icon on the top-right corner
+            // SVG Deny Icon on the top-right corner
             Positioned(
               top: 8,
               right: 8,
-              child: SvgPicture.asset(
-                'assets/icons/edit-icon.svg', // Your icon path
-                width: 24.0,  // Adjust size as needed
-                height: 24.0, // Adjust size as needed
-                color: Colors.white, // Icon color
+              child: GestureDetector(
+                onTap: () {
+                  // Show confirmation dialog when deny icon is clicked
+                  _showConfirmationDialog(context);
+                },
+                child: SvgPicture.asset(
+                  'assets/icons/deny.svg', // Your deny icon path
+                  width: 16.0,  // 16x16 size for the icon
+                  height: 16.0, // 16x16 size for the icon
+                  color: Colors.white, // Icon color (white)
+                ),
+              ),
+            ),
+            // Edit Button and SVG Icon positioned closer to the bottom-right
+            Positioned(
+              bottom: -4,  // Changed from 8 to 4 for a lower position
+              right: 0,
+              child: TextButton(
+                onPressed: () {
+                  // Handle Edit button click
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => ProductScreen(id: productId.toString())),
+                  );
+                },
+                style: TextButton.styleFrom(
+                  padding: EdgeInsets.zero,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(6),
+                  ),
+                ),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(
+                      'Edit',
+                      style: TextStyle(color: Colors.white),
+                    ),
+                    SizedBox(width: 8),
+                    SvgPicture.asset(
+                      'assets/icons/edit.svg', // Example edit icon
+                      width: 10.0,
+                      height: 10.0,
+                      color: Colors.white,
+                    ),
+                  ],
+                ),
               ),
             ),
           ],
         ),
       ),
+    );
+  }
+
+  // Method to show a confirmation dialog
+  void _showConfirmationDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('delete this product?'),
+          content: Text('This cannot be undone.'),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(); // Close the dialog
+              },
+              child: Text('Cancel'),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(); // Close the dialog
+                // Handle the action to deny the request (e.g., delete or reject)
+                print('Action Denied');
+              },
+              child: Text('Yes, Delete'),
+            ),
+          ],
+        );
+      },
     );
   }
 }
