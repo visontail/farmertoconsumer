@@ -4,9 +4,9 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 //import '../services/profile_service.dart';
 import '../widgets/custom_app_bar.dart';
-import '../widgets/upgrade_section.dart';
-import '../widgets/order_section.dart';
-import '../widgets/product_section.dart';
+import '../widgets/profile/profile_hero.dart';
+import '../widgets/profile/profile_orders.dart';
+import '../widgets/profile/profile_products.dart';
 import '../styles/colors.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -24,7 +24,8 @@ class ProfileScreenState extends State<ProfileScreen> {
   //final String token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiaWF0IjoxNzMyNTI1MjQ5fQ.CtgMkPZz9d66vQHmvTk66jJXtLAcYEfrMwxjGZv1os4';
   //final String userId = '5';
   //final String token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NSwiaWF0IjoxNzMyNTI1NjMxfQ.4JK2-zTkqICtoyTnPTk22hT8sSdxPed7vIbEWk2XPQA';
-  String userName = "John Doe";
+  dynamic user = null;
+  String userName = "";
   bool isProducer = false; // Initial state: upgrade not requested
   bool hasPendingUserUpgradeRequest = false;
 
@@ -130,19 +131,20 @@ class ProfileScreenState extends State<ProfileScreen> {
     print('response');
     print(response);
     bool _isProducer = false; 
-    final data = json.decode(response.body);
+    final user = json.decode(response.body);
 
     // Extract user information from the response
-    String userName = data['name']; // Name of the user
-    //String userEmail = data['email']; // Email of the user
-    //int userId = data['id']; // ID of the user
-    var producerData = data['producerData']; // producerData (could be null)
+    String userName = user['name']; // Name of the user
+    //String userEmail = user['email']; // Email of the user
+    //int userId = user['id']; // ID of the user
+    var producerData = user['producerData']; // producerData (could be null)
 
     // Check if producerData exists and handle accordingly
     String? producerDescription = producerData != null ? producerData['description'] : null;
 
     // If successful, update the state with the user data
     setState(() {
+      this.user = user;
       this.userName = userName; // Update userName
       //this.userEmail = userEmail; // Update email (if you plan to use it)
       //this.producerDescription = producerDescription; // Update producer description if it exists
@@ -227,50 +229,57 @@ class ProfileScreenState extends State<ProfileScreen> {
   Widget build(BuildContext context) {
 
     return Scaffold(
-      backgroundColor: mainGreen,
-      appBar: CustomAppBar(title: 'Profile', color: mainGreen),
-      body: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 0),
-        decoration: BoxDecoration(
-          border: Border.all(color: mainGreen, width: 5.0),
-          borderRadius: BorderRadius.circular(12),
-          color: white,
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            SizedBox(height: 24),
-            Text(
-              userName,
-              style: TextStyle(
-                fontSize: 28,
-                fontWeight: FontWeight.bold,
-                color: mainGreen,
-              ),
-              textAlign: TextAlign.center,
+      backgroundColor: mainGreen, // Change to 'mainGreen' if needed
+      appBar: CustomAppBar(title: 'Profile', color: mainGreen), // Keep your custom AppBar
+      body: SingleChildScrollView(
+        child: ConstrainedBox(
+          constraints: BoxConstraints(
+            minHeight: MediaQuery.of(context).size.height, // Ensure 100% minimum height
+          ),
+          child: Container(
+            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 0),
+            decoration: BoxDecoration(
+              border: Border.all(color: mainGreen, width: 5.0), // Change to 'mainGreen' if needed
+              borderRadius: BorderRadius.circular(12),
+              color: Colors.white, // Change to 'white' if needed
             ),
-            SizedBox(height: 6),
-            Text(
-              "Consumer Profile",
-              style: TextStyle(
-                fontSize: 12,
-                fontWeight: FontWeight.w300,
-                color: mainGreen,
-              ),
-              textAlign: TextAlign.center,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                SizedBox(height: 6),
+                Text(
+                  userName,
+                  style: TextStyle(
+                    fontSize: 28,
+                    fontWeight: FontWeight.bold,
+                    color: mainGreen, // Change to 'mainGreen' if needed
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+                SizedBox(height: 6),
+                Text(
+                  "Consumer Profile",
+                  style: TextStyle(
+                    fontSize: 12,
+                    fontWeight: FontWeight.w300,
+                    color: mainGreen, // Change to 'mainGreen' if needed
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+                this.user == null ? SizedBox(width: 360) : SizedBox(height: 0),
+                this.user == null ? SizedBox(height: 120) :
+                UpgradeSection(
+                  isProducer: this.isProducer,
+                  hasPendingUserUpgradeRequest: this.hasPendingUserUpgradeRequest,
+                  onUpgradeRequestChanged: updateUpgradeRequestStatus,
+                ),
+                SizedBox(height: 0),
+                this.user == null ? CircularProgressIndicator() :
+                _buildTabSection(),
+                SizedBox(height: 12),
+              ],
             ),
-            !this.isInitialized ? SizedBox(width: 360) : SizedBox(height: 0),
-            !this.isInitialized ? SizedBox(height: 120) :
-            UpgradeSection(
-              isProducer: this.isProducer,
-              hasPendingUserUpgradeRequest: this.hasPendingUserUpgradeRequest,
-              onUpgradeRequestChanged: updateUpgradeRequestStatus,
-            ),
-            SizedBox(height: 0),
-            !this.isInitialized ? CircularProgressIndicator() :
-            _buildTabSection(),
-            SizedBox(height: 12),
-          ],
+          ),
         ),
       ),
     );
@@ -300,7 +309,7 @@ class ProfileScreenState extends State<ProfileScreen> {
             labelStyle: TextStyle(fontSize: 12, fontWeight: FontWeight.bold), 
           ),
           Container(
-            height: this.isProducer ? 300 : 360,
+            height: this.isProducer ? 340 : 360,
             child: isLoading
                 ? Center(child: CircularProgressIndicator()) // Show loading spinner while fetching
                 : TabBarView(

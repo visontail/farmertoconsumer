@@ -3,9 +3,9 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import '../widgets/custom_app_bar.dart';
-import '../widgets/upgrade_section.dart';
-import '../widgets/order_section.dart';
-import '../widgets/product_section.dart';
+import '../widgets/profile/profile_hero.dart';
+import '../widgets/profile/profile_orders.dart';
+import '../widgets/profile/profile_products.dart';
 import '../styles/colors.dart';
 import '../models/order.dart'; // assuming QuantityUnit is in this file
 import '../models/product.dart'; // assuming Product is defined in this file
