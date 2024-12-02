@@ -226,7 +226,7 @@ class _ProductScreenState extends State<ProductScreen> {
                                   Padding(
                                     padding: const EdgeInsets.only(left: 50),
                                     child: Text(
-                                      '${product?.user.email}',
+                                      '${'valami'}',
                                       style: const TextStyle(
                                           fontSize: 12,
                                           color: mainGreen
