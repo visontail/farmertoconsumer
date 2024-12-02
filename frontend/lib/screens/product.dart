@@ -22,7 +22,7 @@ class _ProductScreenState extends State<ProductScreen> {
   int quantity = 1;
 
   Future<void> fetchProduct(String id) async {
-    final productService = Provider.of<ProductService>(context, listen: false);
+    final productService = ProductService();
     product = await productService.getProduct(id);
 
     if (product != null) {
@@ -45,6 +45,7 @@ class _ProductScreenState extends State<ProductScreen> {
 
   @override
   Widget build(BuildContext context) {
+    var quantity = 1;
     return Scaffold(
       appBar: AppBar(
         title: Row(
