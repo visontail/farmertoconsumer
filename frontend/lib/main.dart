@@ -1,4 +1,5 @@
 import 'package:farmertoconsumer/providers/auth_provider.dart';
+import 'package:farmertoconsumer/services/oder_service.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -31,6 +32,7 @@ class MyApp extends StatelessWidget {
       providers: [
         ChangeNotifierProvider(create: (context) => AuthProvider()),
         ChangeNotifierProvider(create: (context) => FeedDataProvider()),
+        ChangeNotifierProvider(create: (context) => OrderService())
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
