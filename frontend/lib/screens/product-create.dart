@@ -1,9 +1,14 @@
 import 'package:farmertoconsumer/models/product.dart';
 import 'package:farmertoconsumer/models/productCategory.dart';
+import 'package:farmertoconsumer/models/quantityUnit.dart';
+import 'package:farmertoconsumer/services/category_service.dart';
+import 'package:farmertoconsumer/services/product_service.dart';
+import 'package:farmertoconsumer/services/quantityUnit_service.dart';
 import 'package:farmertoconsumer/styles/colors.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:provider/provider.dart';
 import '../styles/colors.dart';
 
 class ProductCreateForm extends StatefulWidget {
@@ -14,17 +19,83 @@ class ProductCreateForm extends StatefulWidget {
 class _ProductCreateFormState extends State<ProductCreateForm> {
   final _formKey = GlobalKey<FormState>();
 
-  // TODO
-  // product create -> using product, product category, producer data/user data, quantity units
-
-
-  final TextEditingController nameController = TextEditingController();
-  final TextEditingController typeController = TextEditingController();
-  final TextEditingController categoryController = TextEditingController();
-  final TextEditingController metricController = TextEditingController();
+  ProductCategory? selectedCategory;
+  List<ProductCategory> categories = [];
+  QuantityUnit? selectedQuantityUnit;
+  List<QuantityUnit> quantityUnits = [];
+  bool isLoading = true;
   int quantity = 1;
+  
+  final TextEditingController nameController = TextEditingController();
   final TextEditingController priceController = TextEditingController();
   final TextEditingController descriptionController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    _loadData();
+  }
+
+  Future<void> _fetchCategories() async {
+    setState(() {
+      isLoading = true;
+    });
+
+    try {
+      final categoryService = CategoryService();
+      final response = await categoryService.getAll();
+
+      setState(() {
+        categories = response.data;
+      });
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Failed to load categories: $e')),
+      );
+    } finally {
+      setState(() {
+        isLoading = false;
+      });
+    }
+  }
+
+  Future<void> _fetchQuantityUnits() async {
+    setState(() {
+      isLoading = true;
+    });
+
+    try {
+      final quantityUnitService = QuantityUnitService();
+      final response = await quantityUnitService.getAll();
+
+      setState(() {
+        quantityUnits = response.data;
+      });
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Failed to load quantity units: $e')),
+      );
+    } finally {
+      setState(() {
+        isLoading = false;
+      });
+    }
+  }
+
+  Future<void> _loadData() async {
+    setState(() {
+      isLoading = true;
+    });
+
+    await Future.wait([
+      _fetchCategories(),
+      _fetchQuantityUnits()
+    ]);
+
+    setState(() {
+      isLoading = false;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -80,8 +151,7 @@ class _ProductCreateFormState extends State<ProductCreateForm> {
                 ],
               ),
             ),
-            const SizedBox(height: 16),
-            
+            const SizedBox(height: 16),  
              
             //name
             Text(
@@ -107,50 +177,85 @@ class _ProductCreateFormState extends State<ProductCreateForm> {
             const SizedBox(height: 16),
             
             //category
-            Text(
-              'Category',
-              style: TextStyle(color: darkGreen, fontSize: 18, fontWeight: FontWeight.bold)),
-            TextFormField(
-              controller: categoryController,
-              decoration: const InputDecoration(
-                hintText: 'category',
-                border: OutlineInputBorder(),
-                enabledBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: mainGreen, width: 2.0),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // Kategória szöveg
+                Text(
+                  'Category',
+                  style: TextStyle(color: darkGreen, fontSize: 18, fontWeight: FontWeight.bold),
                 ),
-              ),
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return 'Please enter the product category';
-                }
-                return null;
-              },
-              style: TextStyle(color: darkGreen)
-            ),
-            const SizedBox(height: 16),
-            
-            //metric
-            Text(
-              'Metric',
-              style: TextStyle(color: darkGreen, fontSize: 18, fontWeight: FontWeight.bold)),
-            TextFormField(
-              controller: metricController,
-              decoration: const InputDecoration(
-                hintText: 'metric',
-                border: OutlineInputBorder(),
-                enabledBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: mainGreen, width: 2.0), 
+                // DropdownButton a kiválasztáshoz
+                DropdownButtonFormField<ProductCategory>(
+                  value: selectedCategory,
+                  onChanged: (ProductCategory? newValue) {
+                    setState(() {
+                      selectedCategory = newValue;
+                    });
+                  },
+                  decoration: const InputDecoration(
+                    hintText: 'Select a category',
+                    border: OutlineInputBorder(),
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: mainGreen, width: 2.0),
+                    ),
+                  ),
+                  items: categories.map<DropdownMenuItem<ProductCategory>>((ProductCategory category) {
+                    return DropdownMenuItem<ProductCategory>(
+                      value: category,
+                      child: Text(category.name),
+                    );
+                  }).toList(),
+                  validator: (value) {
+                    if (value == null) {
+                      return 'Please select a category';
+                    }
+                    return null;
+                  },
                 ),
-              ),
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return 'Please enter the metric';
-                }
-                return null;
-              },
-              style: TextStyle(color: darkGreen)
+                const SizedBox(height: 16),
+              ],
             ),
-            const SizedBox(height: 16),
+
+            //quantity unit
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Quantity unit',
+                  style: TextStyle(color: darkGreen, fontSize: 18, fontWeight: FontWeight.bold),
+                ),
+                DropdownButtonFormField<QuantityUnit>(
+                  value: selectedQuantityUnit,
+                  onChanged: (QuantityUnit? newValue) {
+                    setState(() {
+                      selectedQuantityUnit = newValue;
+                    });
+                  },
+                  decoration: const InputDecoration(
+                    hintText: 'Select a quantity unit',
+                    border: OutlineInputBorder(),
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: mainGreen, width: 2.0),
+                    ),
+                  ),
+
+                  items: quantityUnits.map<DropdownMenuItem<QuantityUnit>>((QuantityUnit quantityUnit){
+                    return DropdownMenuItem<QuantityUnit>(
+                      value: quantityUnit,
+                      child: Text(quantityUnit.name),
+                    );
+                  }).toList(),
+                  validator: (value) {
+                    if (value == null) {
+                      return 'Please select a quantity unit';
+                    }
+                    return null;
+                  },
+                ),
+                const SizedBox(height: 16),
+              ],
+            ),
 
             //quantity            
             Row(
@@ -210,6 +315,7 @@ class _ProductCreateFormState extends State<ProductCreateForm> {
             ),
             const SizedBox(height: 16),
 
+/*
             //description
             Text(
               'Description',
@@ -233,24 +339,39 @@ class _ProductCreateFormState extends State<ProductCreateForm> {
               style: TextStyle(color: darkGreen)
             ),
             const SizedBox(height: 16),
-            
+*/
+
             //saving button
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [ElevatedButton(
-              onPressed: () {
+              onPressed: () async {
                 if (_formKey.currentState!.validate()) {
-                  
-                  print('Product name: ${nameController.text}');
-                  print('Product type: ${typeController.text}');
-                  print('Product category: ${categoryController.text}');
-                  print('Product metric: ${metricController.text}');
-                  print('Product quantity: ${quantity}');
-                  print('Product description: ${descriptionController.text}');
-                  print('Price: ${priceController.text}');
+                  final productData = {
+                 
+                    'name': nameController.text,
+                    'categoryId': selectedCategory?.id,
+                    'quantity': quantity,
+                    'quantityUnitId': selectedQuantityUnit?.id,                    
+                    'price': int.tryParse(priceController.text) ?? 0,
+                  };
 
-                  
-                  Navigator.pop(context); //navigate back 
+                  try {
+                    final productService = Provider.of<ProductService>(context, listen: false);
+                    await productService.createProduct(productData);
+
+                    // Sikeres mentés
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text('Product added successfully!')),
+                    );
+
+                    //Navigator.pop(context); //navigate back 
+                  } catch (e) {
+                    // Hiba kezelése
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text('Failed to add product: $e')),
+                    );
+                  }
                 }
               },
               style: ElevatedButton.styleFrom(
@@ -265,5 +386,5 @@ class _ProductCreateFormState extends State<ProductCreateForm> {
       ),
     ),
   );
-  }
+  } 
 }
