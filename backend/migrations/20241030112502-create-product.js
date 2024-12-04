@@ -21,6 +21,10 @@ module.exports = {
         allowNull: false,
         type: Sequelize.NUMBER
       },
+      description: {
+        allowNull: false,
+        type: Sequelize.STRING
+      },
       ProducerDataId: {
         allowNull: false,
         type: Sequelize.NUMBER

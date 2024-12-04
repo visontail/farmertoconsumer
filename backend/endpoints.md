@@ -29,6 +29,7 @@ body: {
 
 response: {
     id: number;
+    token: string;
 }
 ```
 
@@ -42,8 +43,13 @@ GET /auth/profile
 
 response: {
     id: number;
-    email: string;
     name: string;
+    email: string;
+    producerData: {
+        id: number;
+        description: string;
+        contact: string;
+    }?
 }
 ```
 
@@ -56,11 +62,11 @@ GET /users/{id}
 
 response: {
     id: number;
-    email: string;
     name: string;
     producerData: {
         id: number;
         description: string;
+        contact: string;
     }?
 }
 ```
@@ -75,7 +81,6 @@ response: {
     description: string;
     user: {
         id: number;
-        email: string;
         name: string;
     }
 }
@@ -98,7 +103,6 @@ response: {
     description: string;
     user: {
         id: number;
-        email: string;
         name: string;
     }
 }
@@ -130,6 +134,8 @@ response: {
             email: string;
         },
         description: string;
+        contact: string;
+        profileDescription: string?;
         approved: boolean?;
     }[];
     total: number;
@@ -154,6 +160,8 @@ response: {
         email: string;
     },
     description: string;
+    contact: string;
+    profileDescription: string?;
     approved: boolean?;
 }
 ```
@@ -167,6 +175,8 @@ POST /user-upgrade-requests
 
 body: {
     description: string;
+    contact: string;
+    profileDescription?: string;
 }
 
 response: {
@@ -194,6 +204,7 @@ GET /products
 
 queryParams: {
     search:? string;
+    hideUnavailable:? boolean;
     categoryId:? number;
     producerId:? number;
     producerDataId:? number;
@@ -208,10 +219,10 @@ response: {
         producer: {
             id: number;
             name: string;
-            email: string;
             producerData: {
                 id: number;
                 description: string;
+                contact: string;
             }
         }
         category: {
@@ -224,6 +235,7 @@ response: {
             name: string;
         }
         price: number;
+        description: string;
     }[],
     total: number;
     current: number;
@@ -241,10 +253,10 @@ response: {
     producer: {
         id: number;
         name: string;
-        email: string;
         producerData: {
             id: number;
             description: string;
+            contact: string;
         }
     }
     category: {
@@ -257,6 +269,7 @@ response: {
         name: string;
     }
     price: number;
+    description: string;
 }
 ```
 
@@ -274,6 +287,7 @@ body: {
     quantity: number;
     quantityUnitId: number;
     price: number;
+    description: string;
 }
 
 response: {
@@ -295,6 +309,7 @@ body: {
     quantity:? number;
     quantityUnitId:? number;
     price:? number;
+    description?: string;
 }
 
 response: {
@@ -303,10 +318,10 @@ response: {
     producer: {
         id: number;
         name: string;
-        email: string;
         producerData: {
             id: number;
             description: string;
+            contact: string;
         }
     }
     category: {
@@ -319,6 +334,7 @@ response: {
         name: string;
     }
     price: number;
+    description: string;
 }
 ```
 
@@ -346,7 +362,6 @@ response: {
         customer: {
             id: number;
             name: string;
-            email: string;
         };
         product: {
             id: number;
@@ -354,10 +369,10 @@ response: {
             producer: {
                 id: number;
                 name: string;
-                email: string;
                 producerData: {
                     id: number;
                     description: string;
+                    contact: string;
                 };
             };
             category: {
@@ -396,7 +411,6 @@ response: {
     customer: {
         id: number;
         name: string;
-        email: string;
     };
     product: {
         id: number;
@@ -404,10 +418,10 @@ response: {
         producer: {
             id: number;
             name: string;
-            email: string;
             producerData: {
                 id: number;
                 description: string;
+                contact: string;
             };
         };
         category: {
@@ -447,7 +461,6 @@ response: {
     customer: {
         id: number;
         name: string;
-        email: string;
     };
     product: {
         id: number;
@@ -455,7 +468,6 @@ response: {
         user: {
             id: number;
             name: string;
-            email: string;
             producer: {
                 id: number;
                 description: string;

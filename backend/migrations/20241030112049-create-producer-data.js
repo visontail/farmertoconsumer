@@ -13,6 +13,10 @@ module.exports = {
         allowNull: true,
         type: Sequelize.STRING
       },
+      contact: {
+        allowNull: false,
+        type: Sequelize.STRING
+      },
       UserId: {
         allowNull: false,
         type: Sequelize.INTEGER

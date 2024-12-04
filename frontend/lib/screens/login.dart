@@ -1,16 +1,18 @@
+import 'package:farmertoconsumer/models/authenticated_user.dart';
+import 'package:farmertoconsumer/providers/auth_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../styles/colors.dart';
 import '../utils/snack_bar.dart';
 
+import '../widgets/login/register/reg_workflow_app_bar.dart';
 import '../widgets/login/register/welcome_header_section.dart';
 import '../widgets/login/register/email_field.dart';
 import '../widgets/login/register/pass_field.dart';
 import '../widgets/login/register/get_started_button.dart';
 import '../widgets/login/register/nav_link.dart';
 
-import '../models/user.dart';
 import '../services/auth_service.dart';
 import '../utils/routes.dart';
 
@@ -33,6 +35,12 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: white,
+      appBar: RegWfAppBar(
+        onBackPressed: () {
+          Navigator.of(context).pop();
+        },
+      ),
       resizeToAvoidBottomInset: true,
       body: SafeArea(
         bottom: false,
@@ -42,7 +50,7 @@ class _LoginScreenState extends State<LoginScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const SizedBox(height: 70),
+                const SizedBox(height: 30),
                 const WelcomeHeaderSection(
                   secondText: "Sign in to continue",
                 ),
@@ -139,46 +147,35 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   Future<void> _handleLogin(BuildContext context) async {
-  String email = emailController.text.trim();
-  String password = passwordController.text.trim();
+    String email = emailController.text.trim();
+    String password = passwordController.text.trim();
 
-  if (email.isEmpty || password.isEmpty) {
-    showSnackBar(
-      context: context,
-      message: "Please fill in both fields",
-      backgroundColor: red
-    );
-    return;
-  }
-
-  try {
-    final authService = Provider.of<AuthService>(context, listen: false);
-    User? user = await authService.login(email, password);
-
-    passwordController.clear(); // Clear password field
-
-    if (user != null) {
+    if (email.isEmpty || password.isEmpty) {
       showSnackBar(
-        context: context,
-        message: "Welcome, ${user.name}!",
-        backgroundColor: mainGreen
-      );
+          context: context,
+          message: "Please fill in both fields",
+          backgroundColor: red);
+      return;
+    }
+
+    try {
+      final authProvider = Provider.of<AuthProvider>(context, listen: false);
+      AuthenticatedUser user = await authProvider.login(email, password);
+
+      passwordController.clear();
+
+      showSnackBar(
+          context: context,
+          message: "Welcome, ${user.name}!",
+          backgroundColor: mainGreen);
+
       print("Navigate to ${Routes.feed}");
       Navigator.pushReplacementNamed(context, Routes.feed);
-    } else {
+    } catch (e) {
       showSnackBar(
-        context: context,
-        message: "Login failed. Please try again.",
-        backgroundColor: red
-      );
+          context: context,
+          message: "Login failed: ${e.toString()}",
+          backgroundColor: red);
     }
-  } catch (e) {
-    showSnackBar(
-      context: context,
-      message: "Login failed: ${e.toString()}",
-      backgroundColor: red
-    );
   }
-}
-
 }

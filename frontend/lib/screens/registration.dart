@@ -1,9 +1,11 @@
+import 'package:farmertoconsumer/providers/auth_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../styles/colors.dart';
 import '../utils/snack_bar.dart';
 
+import '../widgets/login/register/reg_workflow_app_bar.dart';
 import '../widgets/login/register/welcome_header_section.dart';
 import '../widgets/login/register/name_field.dart';
 import '../widgets/login/register/email_field.dart';
@@ -12,8 +14,6 @@ import '../widgets/login/register/pass_field.dart';
 import '../widgets/login/register/confirm_pass_field.dart';
 import '../widgets/login/register/nav_link.dart';
 
-import '../models/user.dart';
-import '../services/auth_service.dart';
 import '../utils/routes.dart';
 
 class RegistrationScreen extends StatefulWidget {
@@ -41,6 +41,12 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: white,
+      appBar: RegWfAppBar(
+        onBackPressed: () {
+          Navigator.of(context).pop();
+        },
+      ),
       resizeToAvoidBottomInset: true,
       body: SafeArea(
         bottom: false,
@@ -50,7 +56,6 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const SizedBox(height: 10),
                 const WelcomeHeaderSection(
                   secondText: "Register to continue",
                 ),
@@ -198,8 +203,8 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
     }
 
     try {
-      final authService = Provider.of<AuthService>(context, listen: false);
-      User? user = await authService.register(
+      final authProvider = Provider.of<AuthProvider>(context, listen: false);
+      await authProvider.register(
         emailController.text.trim(),
         nameController.text.trim(),
         passwordController.text.trim(),
@@ -209,15 +214,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
       passwordController.clear();
       confirmPasswordController.clear();
 
-      if (user != null) {
-        Navigator.pushNamed(context, Routes.userUpgrade);
-      } else {
-        showSnackBar(
-          context: context,
-          message: 'Registration failed. Please check your details.',
-          backgroundColor: red,
-        );
-      }
+      Navigator.pushNamed(context, Routes.userUpgrade);
     } catch (e) {
       showSnackBar(
         context: context,

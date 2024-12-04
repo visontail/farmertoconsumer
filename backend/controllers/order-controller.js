@@ -86,8 +86,13 @@ class OrderController extends ControllerBase {
     async create(req, res) {
         const product = await Product.findByPk(req.body.productId);
         if (!product) {
-            res.status(404).send({ message: 'Product with the given id could not be found.' })
+            return res.status(404).send({ message: 'Product with the given id could not be found.' })
         }
+
+        if (product.quantity < req.body.quantity) {
+            return res.status(400).send({ message: 'Requested quantity can\'t be higher than the available one.' });
+        }
+
         const user = await User.findByPk(req.user.id);
 
         const order = await Order.create({
@@ -98,6 +103,12 @@ class OrderController extends ControllerBase {
             ProductId: product.id,
             UserId: user.id,
         })
+
+        const newQuantity = product.quantity - req.body.quantity;
+
+        await product.update({
+            quantity: newQuantity,
+        });
 
         return this.fastify.OrderShaper.single.shape(order);
     }
@@ -132,6 +143,14 @@ class OrderController extends ControllerBase {
 
         if (order.approved !== null) {
             return res.status(400).send({ message: 'Order has already been replied to.' })
+        }
+
+        if (!req.body.approve) {
+            const newQuantity = order.Product.quantity + order.quantity;
+
+            await order.Product.update({
+                quantity: newQuantity,
+            });
         }
 
         await order.update({ approved: req.body.approve })

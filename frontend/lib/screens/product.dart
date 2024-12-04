@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import '../models/product.dart';
 import '../services/product_service.dart';
-import '../widgets/custom_button.dart';
 import 'counter.dart';
 
 class ProductScreen extends StatefulWidget {
@@ -18,7 +16,7 @@ class _ProductScreenState extends State<ProductScreen> {
   String? errorMessage;
 
   Future<void> fetchProduct(String id) async {
-    final productService = Provider.of<ProductService>(context, listen: false);
+    final productService = ProductService();
     product = await productService.getProduct(id);
 
     if (product != null) {

@@ -1,36 +1,37 @@
 import 'dart:async';
 import 'dart:convert';
-import 'package:farmertoconsumer/providers/auth_provider.dart';
+import 'package:farmertoconsumer/storages/user_storage.dart';
 import 'package:farmertoconsumer/utils/api_endpoints.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 import 'package:farmertoconsumer/models/product.dart';
 import 'package:farmertoconsumer/services/common/get_all_return_value.dart';
-import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
-import '../utils/api_endpoints.dart';
 
-class ProductService extends ChangeNotifier {
-  AuthProvider authProvider = AuthProvider();
+class ProductService {
+  static final ProductService _singleton = ProductService._internal();
+  ProductService._internal();
+
+  factory ProductService() {
+    return _singleton;
+  }
+
+  final UserStorage _userStorage = UserStorage();
+
   static const Map<String, String> headers = {
     'Accept': 'application/json',
     'Content-Type': 'application/json',
   };
 
   Future<Product?> getProduct(String id) async {
-    //const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTIsImlhdCI6MTczMTc2NTcxMn0.RQERtf98QOLVfjYORRBOVGgCGMmlqXeTR_q7r5duZBA";
-    const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NiwiaWF0IjoxNzMzMDU1MDE2fQ.wRp-7H9wRl8pJSBkp6nKjTPJwfqygRhhaHrdVkwrs78";
-    //TODO: final token = await authProvider.getToken();
+    final token = _userStorage.token.get() ?? "";
+
     try {
       final Map<String, String> headersWithAuth = {
         ...headers,
         'Authorization': 'Bearer $token'
       };
 
-      final response = await http.get(
-        Uri.parse(productEndPoint + id),
-        headers: headersWithAuth
-      );
+      final response = await http.get(Uri.parse(productEndPoint + id),
+          headers: headersWithAuth);
 
       final responseBody = json.decode(response.body);
       print('Response: $responseBody'); // debug log, remove in prod
@@ -53,6 +54,9 @@ class ProductService extends ChangeNotifier {
       headers: headers,
     );
     final responseBody = json.decode(response.body);
+
+    final token = _userStorage.token.get() ?? "";
+    print(token);
 
     return GetAllReturnValue(
         total: responseBody["total"],
@@ -142,4 +146,3 @@ class ProductService extends ChangeNotifier {
     }
   }
 }
-

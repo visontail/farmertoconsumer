@@ -49,6 +49,9 @@ class FeedDataProvider extends ChangeNotifier {
   }
 
   void reloadCategories() {
+    _categoriesLoading = true;
+    notifyListeners();
+
     _categoryService.getAll().then((v) {
       _categories = v.data;
       _categoriesLoading = false;

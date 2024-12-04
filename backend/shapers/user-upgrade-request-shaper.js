@@ -22,9 +22,11 @@ class UserUpgradeRequestShaper extends ModelShaperBase {
                 user: {
                     id: user.id,
                     name: user.name,
-                    emaiL: user.email
+                    email: user.email
                 },
                 description: userUpgradeRequest.description,
+                contact: userUpgradeRequest.contact,
+                profileDescription: userUpgradeRequest.profileDescription,
                 approved: userUpgradeRequest.approved
             }
         };
