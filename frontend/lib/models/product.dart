@@ -11,6 +11,7 @@ class Product {
   final User _user;
   final int _quantity;
   final QuantityUnit _quantityUnit;
+  final String _description;
 
   Product({
     required int id,
@@ -20,13 +21,15 @@ class Product {
     required QuantityUnit quantityUnit,
     required User user,
     required int quantity,
+    required String description,
   })  : _id = id,
         _name = name,
         _category = category,
         _price = price,
         _quantityUnit = quantityUnit,
         _user = user,
-        _quantity = quantity;
+        _quantity = quantity,
+        _description = description;
 
   factory Product.fromJson(Map<String, dynamic> json) {
     return Product(
@@ -37,6 +40,7 @@ class Product {
       quantityUnit: QuantityUnit.fromJson(json['quantityUnit']),
       quantity: json['quantity'],
       user: User.fromJson(json['producer']),
+      description: json['description']
     );
   }
 
@@ -47,4 +51,5 @@ class Product {
   User get user => _user;
   int get quantity => _quantity;
   QuantityUnit get quantityUnit => _quantityUnit;
+  String get description => _description;
 }
