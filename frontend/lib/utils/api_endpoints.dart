@@ -7,6 +7,7 @@ const String productsEndPoint = '$baseUrl/products';
 const String productEndPoint = '$baseUrl/products/';
 
 const String getAllCategoryEndpoint = '$baseUrl/categories';
+const String getAllQuantityUnitEndpoint = '$baseUrl/quantity-units';
 
 const String ordersEndPoint = '$baseUrl/orders';
 
