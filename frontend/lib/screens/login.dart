@@ -13,7 +13,6 @@ import '../widgets/login/register/pass_field.dart';
 import '../widgets/login/register/get_started_button.dart';
 import '../widgets/login/register/nav_link.dart';
 
-import '../services/auth_service.dart';
 import '../utils/routes.dart';
 
 class LoginScreen extends StatefulWidget {
