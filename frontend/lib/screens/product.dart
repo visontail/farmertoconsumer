@@ -1,9 +1,12 @@
+import 'package:farmertoconsumer/providers/auth_provider.dart';
 import 'package:farmertoconsumer/services/oder_service.dart';
 import 'package:farmertoconsumer/styles/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
+import '../models/order.dart';
 import '../models/product.dart';
+import '../services/auth_service.dart';
 import '../services/product_service.dart';
 import '../widgets/counter.dart';
 
@@ -20,6 +23,7 @@ class _ProductScreenState extends State<ProductScreen> {
   String? errorMessage;
   late OrderService orderService;
   int quantity = 1;
+  AuthProvider authProvider = AuthProvider();
 
   Future<void> fetchProduct(String id) async {
     final productService = ProductService();
@@ -45,7 +49,6 @@ class _ProductScreenState extends State<ProductScreen> {
 
   @override
   Widget build(BuildContext context) {
-    var quantity = 1;
     return Scaffold(
       appBar: AppBar(
         title: Row(
@@ -148,7 +151,7 @@ class _ProductScreenState extends State<ProductScreen> {
 
                                   // 6. Product Description
                                   Text(
-                                    'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation. Information about the destination, producer, etc.',
+                                    product!.description,
                                     style: const TextStyle(
                                       fontSize: 12,
                                       color: paleGreen,
@@ -157,7 +160,7 @@ class _ProductScreenState extends State<ProductScreen> {
                                   const SizedBox(height: 32),
 
                                   // 7. Order Button
-                                  Row(
+                                  authProvider.isAuthenticated ? Row(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
                                       SizedBox(
@@ -174,15 +177,34 @@ class _ProductScreenState extends State<ProductScreen> {
                                               borderRadius: BorderRadius.circular(6), // Border-radius
                                             ),
                                           ),
-                                          onPressed: () {
-                                            orderService.postOrder(product!, quantity);
+                                          onPressed: () async {
+                                            Order? order = await orderService.postOrder(product!, quantity);
+                                            if(order != null) {
+                                              showDialog(
+                                                context: context,
+                                                builder: (BuildContext context) {
+                                                  return AlertDialog(
+                                                    title: Text("Successful Order"),
+                                                    content: Text('${order.quantity} ${order.quantityUnit.name} of ${order.product.name}: ${order.price * order.quantity} Ft'),
+                                                    actions: [
+                                                      TextButton(
+                                                        onPressed: () {
+                                                          Navigator.of(context).pop();
+                                                        },
+                                                        child: Text("OK"),
+                                                      ),
+                                                    ],
+                                                  );
+                                                },
+                                              );
+                                            }
                                           },
                                           child: const Text('Order'),
                                         ),
                                       )
                                     ]
-                                  ),
-                                  const SizedBox(height: 32),
+                                  ) : const SizedBox.shrink(),
+                                  authProvider.isAuthenticated ? const SizedBox(height: 32) : const SizedBox.shrink(),
 
                                   // 8. Learn about the producer
                                   const Text(
@@ -227,7 +249,7 @@ class _ProductScreenState extends State<ProductScreen> {
                                   Padding(
                                     padding: const EdgeInsets.only(left: 50),
                                     child: Text(
-                                      '${'valami'}',
+                                      product!.user.producerData!.contact,
                                       style: const TextStyle(
                                           fontSize: 12,
                                           color: mainGreen
@@ -240,7 +262,7 @@ class _ProductScreenState extends State<ProductScreen> {
                                   Padding(
                                     padding: const EdgeInsets.only(left: 20),
                                     child: Text(
-                                      '${product?.user.producerData?.description}',
+                                      product!.user.producerData!.description,
                                       style: const TextStyle(
                                         fontSize: 12,
                                         color: paleGreen,

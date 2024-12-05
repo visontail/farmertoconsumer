@@ -35,7 +35,7 @@ class Order {
       price: json['price'],
       quantity: json['quantity'],
       quantityUnit: QuantityUnit.fromJson(json['quantityUnit']),
-      approved: json['approved'],
+      approved: json['approved'] == null ? null : json['approved'] as bool,
     );
   }
 
