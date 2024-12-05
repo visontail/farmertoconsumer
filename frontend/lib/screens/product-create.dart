@@ -315,7 +315,6 @@ class _ProductCreateFormState extends State<ProductCreateForm> {
             ),
             const SizedBox(height: 16),
 
-/*
             //description
             Text(
               'Description',
@@ -339,7 +338,6 @@ class _ProductCreateFormState extends State<ProductCreateForm> {
               style: TextStyle(color: darkGreen)
             ),
             const SizedBox(height: 16),
-*/
 
             //saving button
             Row(
@@ -348,12 +346,12 @@ class _ProductCreateFormState extends State<ProductCreateForm> {
               onPressed: () async {
                 if (_formKey.currentState!.validate()) {
                   final productData = {
-                 
                     'name': nameController.text,
                     'categoryId': selectedCategory?.id,
                     'quantity': quantity,
                     'quantityUnitId': selectedQuantityUnit?.id,                    
                     'price': int.tryParse(priceController.text) ?? 0,
+                    'description': descriptionController.text
                   };
 
                   try {
