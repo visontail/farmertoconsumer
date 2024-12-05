@@ -6,7 +6,6 @@ import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
 import '../models/order.dart';
 import '../models/product.dart';
-import '../services/auth_service.dart';
 import '../services/product_service.dart';
 import '../widgets/counter.dart';
 
@@ -54,7 +53,7 @@ class _ProductScreenState extends State<ProductScreen> {
         title: Row(
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
-            SvgPicture.asset('assets/icons/icon.svg', width: 30, height: 30, color: white,)
+            SvgPicture.asset('assets/icons/icon.svg', width: 30, height: 30, color: white)
           ],
         ),
         leading: IconButton(
@@ -65,236 +64,241 @@ class _ProductScreenState extends State<ProductScreen> {
         ),
         backgroundColor: mainGreen,
       ),
-      body: Container(
-        color: mainGreen,
-        child: Padding(
-          padding: const EdgeInsets.all(15),
-          child: Column(
-            children: [
-              // 1. Picture
-              Stack(
-                alignment: Alignment.topCenter,
-                children: [
-                  Column(
-                    children: [
-                      // Green box
-                      Container(
-                        height: 117,
-                        color: mainGreen,
-                      ),
-                      // White box
-                      Container(
-                        decoration: BoxDecoration(
-                          color: white,
-                          borderRadius: BorderRadius.circular(6)
+      body: SingleChildScrollView(
+        scrollDirection: Axis.vertical,
+        child: Container(
+          color: mainGreen,
+          constraints: BoxConstraints(
+            minHeight: MediaQuery.of(context).size.height - 80
+          ),
+          child: Padding(
+            padding: const EdgeInsets.all(15),
+            child: Column(
+              children: [
+                // 1. Picture
+                Stack(
+                  alignment: Alignment.topCenter,
+                  children: [
+                    Column(
+                      children: [
+                        // Green box
+                        Container(
+                          height: 100,
+                          color: mainGreen,
                         ),
-                        child: Padding(
-                          padding: const EdgeInsets.fromLTRB(24.0, 117.0, 24.0, 24.0),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              if (errorMessage != null)
-                                Text(
-                                  errorMessage!,
-                                  style: const TextStyle(color: Colors.red, fontSize: 16),
-                                ),
-                              if (product != null)
-                                ...[
-                                  SizedBox(height: 16),
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                    // 2. Product Name
-                                    children: [
-                                      Text(
-                                        product!.name,
-                                        style: const TextStyle(
-                                          fontSize: 20,
-                                          fontWeight: FontWeight.w800,
-                                          color: mainGreen,
-                                        ),
-                                      ),
-
-                                      // 3. Product Counter (Quantity management)
-                                      Counter(
-                                        initialValue: quantity,
-                                        maxValue: product!.quantity,
-                                        onChanged: (newQuantity) {
-                                          setState(() {
-                                            quantity = newQuantity; // Update state
-                                          });
-                                        },
-                                      ),
-                                    ],
-                                  ),
-                                  const SizedBox(height: 8),
-
-                                  // 4. Price and QuantityUnit
+                        // White box
+                        Container(
+                          decoration: BoxDecoration(
+                            color: white,
+                            borderRadius: BorderRadius.circular(6)
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.fromLTRB(24.0, 100.0, 24.0, 24.0),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                if (errorMessage != null)
                                   Text(
-                                    '${product?.price} Ft / ${product?.quantityUnit.name}',
-                                    style: const TextStyle(
-                                      fontSize: 12,
-                                      color: paleGreen
-                                    ),
+                                    errorMessage!,
+                                    style: const TextStyle(color: Colors.red, fontSize: 16),
                                   ),
-                                  const SizedBox(height: 8),
-
-                                  // 5. Type - Category
-                                  Text(
-                                    'Type - ${product?.category.name}',
-                                    style: const TextStyle(
-                                      fontSize: 14,
-                                      color: mainGreen,
-                                      fontWeight: FontWeight.w700
-                                    ),
-                                  ),
-                                  const SizedBox(height: 8),
-
-                                  // 6. Product Description
-                                  Text(
-                                    product!.description,
-                                    style: const TextStyle(
-                                      fontSize: 12,
-                                      color: paleGreen,
-                                    ),
-                                  ),
-                                  const SizedBox(height: 32),
-
-                                  // 7. Order Button
-                                  authProvider.isAuthenticated ? Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      SizedBox(
-                                        width: 225,
-                                        height: 50,
-                                        child: ElevatedButton(
-                                          style: ElevatedButton.styleFrom(
-                                            backgroundColor: mainGreen,
-                                            foregroundColor: white,
-                                            textStyle: const TextStyle(
-                                              fontSize: 14,
-                                            ),
-                                            shape: RoundedRectangleBorder(
-                                              borderRadius: BorderRadius.circular(6), // Border-radius
-                                            ),
+                                if (product != null)
+                                  ...[
+                                    SizedBox(height: 16),
+                                    Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      // 2. Product Name
+                                      children: [
+                                        Text(
+                                          product!.name,
+                                          style: const TextStyle(
+                                            fontSize: 20,
+                                            fontWeight: FontWeight.w800,
+                                            color: mainGreen,
                                           ),
-                                          onPressed: () async {
-                                            Order? order = await orderService.postOrder(product!, quantity);
-                                            if(order != null) {
-                                              showDialog(
-                                                context: context,
-                                                builder: (BuildContext context) {
-                                                  return AlertDialog(
-                                                    title: Text("Successful Order"),
-                                                    content: Text('${order.quantity} ${order.quantityUnit.name} of ${order.product.name}: ${order.price * order.quantity} Ft'),
-                                                    actions: [
-                                                      TextButton(
-                                                        onPressed: () {
-                                                          Navigator.of(context).pop();
-                                                        },
-                                                        child: Text("OK"),
-                                                      ),
-                                                    ],
-                                                  );
-                                                },
-                                              );
-                                            }
-                                          },
-                                          child: const Text('Order'),
                                         ),
-                                      )
-                                    ]
-                                  ) : const SizedBox.shrink(),
-                                  authProvider.isAuthenticated ? const SizedBox(height: 32) : const SizedBox.shrink(),
 
-                                  // 8. Learn about the producer
-                                  const Text(
-                                    'Learn about the producer',
-                                    style: TextStyle(
-                                      fontSize: 14,
-                                      color: mainGreen,
-                                      fontWeight: FontWeight.w600,
+                                        // 3. Product Counter (Quantity management)
+                                        Counter(
+                                          initialValue: quantity,
+                                          maxValue: product!.quantity,
+                                          onChanged: (newQuantity) {
+                                            setState(() {
+                                              quantity = newQuantity; // Update state
+                                            });
+                                          },
+                                        ),
+                                      ],
                                     ),
-                                  ),
-                                  const SizedBox(height: 8),
+                                    const SizedBox(height: 8),
 
-                                  // 9. Producer Name
-                                  Padding(
-                                    padding: const EdgeInsets.only(left: 20),
-                                    child: Text(
-                                      '${product?.user.name}',
+                                    // 4. Price and QuantityUnit
+                                    Text(
+                                      '${product?.price} Ft / ${product?.quantityUnit.name}',
                                       style: const TextStyle(
-                                          fontSize: 12,
-                                          fontWeight: FontWeight.w700,
-                                          color: mainGreen
+                                        fontSize: 12,
+                                        color: paleGreen
                                       ),
                                     ),
-                                  ),
-                                  const SizedBox(height: 8),
+                                    const SizedBox(height: 8),
 
-                                  // 10. Contact Information
-                                  Padding(
-                                    padding: const EdgeInsets.only(left: 20),
-                                    child: Text(
-                                      'Contact Information',
+                                    // 5. Type - Category
+                                    Text(
+                                      'Type - ${product?.category.name}',
                                       style: const TextStyle(
-                                          fontSize: 12,
-                                          fontWeight: FontWeight.w700,
-                                          color: mainGreen
+                                        fontSize: 14,
+                                        color: mainGreen,
+                                        fontWeight: FontWeight.w700
                                       ),
                                     ),
-                                  ),
-                                  const SizedBox(height: 4),
+                                    const SizedBox(height: 8),
 
-                                  // 11. Producer Contact
-                                  Padding(
-                                    padding: const EdgeInsets.only(left: 50),
-                                    child: Text(
-                                      product!.user.producerData!.contact,
-                                      style: const TextStyle(
-                                          fontSize: 12,
-                                          color: mainGreen
-                                      ),
-                                    ),
-                                  ),
-                                  const SizedBox(height: 4),
-
-                                  // 12. Producer Description
-                                  Padding(
-                                    padding: const EdgeInsets.only(left: 20),
-                                    child: Text(
-                                      product!.user.producerData!.description,
+                                    // 6. Product Description
+                                    Text(
+                                      product!.description,
                                       style: const TextStyle(
                                         fontSize: 12,
                                         color: paleGreen,
-
                                       ),
                                     ),
-                                  ),
-                                  const SizedBox(height: 8),
-                                ]
-                            ],
+                                    const SizedBox(height: 32),
+
+                                    // 7. Order Button
+                                    authProvider.isAuthenticated ? Row(
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      children: [
+                                        SizedBox(
+                                          width: 225,
+                                          height: 50,
+                                          child: ElevatedButton(
+                                            style: ElevatedButton.styleFrom(
+                                              backgroundColor: mainGreen,
+                                              foregroundColor: white,
+                                              textStyle: const TextStyle(
+                                                fontSize: 14,
+                                              ),
+                                              shape: RoundedRectangleBorder(
+                                                borderRadius: BorderRadius.circular(6), // Border-radius
+                                              ),
+                                            ),
+                                            onPressed: () async {
+                                              Order? order = await orderService.postOrder(product!, quantity);
+                                              if(order != null) {
+                                                showDialog(
+                                                  context: context,
+                                                  builder: (BuildContext context) {
+                                                    return AlertDialog(
+                                                      title: Text("Successful Order"),
+                                                      content: Text('${order.quantity} ${order.quantityUnit.name} of ${order.product.name}: ${order.price * order.quantity} Ft'),
+                                                      actions: [
+                                                        TextButton(
+                                                          onPressed: () {
+                                                            Navigator.of(context).pop();
+                                                          },
+                                                          child: Text("OK"),
+                                                        ),
+                                                      ],
+                                                    );
+                                                  },
+                                                );
+                                              }
+                                            },
+                                            child: const Text('Order'),
+                                          ),
+                                        )
+                                      ]
+                                    ) : const SizedBox.shrink(),
+                                    authProvider.isAuthenticated ? const SizedBox(height: 32) : const SizedBox.shrink(),
+
+                                    // 8. Learn about the producer
+                                    const Text(
+                                      'Learn about the producer',
+                                      style: TextStyle(
+                                        fontSize: 14,
+                                        color: mainGreen,
+                                        fontWeight: FontWeight.w600,
+                                      ),
+                                    ),
+                                    const SizedBox(height: 8),
+
+                                    // 9. Producer Name
+                                    Padding(
+                                      padding: const EdgeInsets.only(left: 20),
+                                      child: Text(
+                                        '${product?.user.name}',
+                                        style: const TextStyle(
+                                            fontSize: 12,
+                                            fontWeight: FontWeight.w700,
+                                            color: mainGreen
+                                        ),
+                                      ),
+                                    ),
+                                    const SizedBox(height: 8),
+
+                                    // 10. Contact Information
+                                    Padding(
+                                      padding: const EdgeInsets.only(left: 20),
+                                      child: Text(
+                                        'Contact Information',
+                                        style: const TextStyle(
+                                            fontSize: 12,
+                                            fontWeight: FontWeight.w700,
+                                            color: mainGreen
+                                        ),
+                                      ),
+                                    ),
+                                    const SizedBox(height: 4),
+
+                                    // 11. Producer Contact
+                                    Padding(
+                                      padding: const EdgeInsets.only(left: 50),
+                                      child: Text(
+                                        product!.user.producerData!.contact,
+                                        style: const TextStyle(
+                                            fontSize: 12,
+                                            color: mainGreen
+                                        ),
+                                      ),
+                                    ),
+                                    const SizedBox(height: 4),
+
+                                    // 12. Producer Description
+                                    Padding(
+                                      padding: const EdgeInsets.only(left: 20),
+                                      child: Text(
+                                        product!.user.producerData!.description,
+                                        style: const TextStyle(
+                                          fontSize: 12,
+                                          color: paleGreen,
+
+                                        ),
+                                      ),
+                                    ),
+                                    const SizedBox(height: 8),
+                                  ]
+                              ],
+                            ),
                           ),
                         ),
+                      ],
+                    ),
+                    Container(
+                      alignment: Alignment.center,
+                      width: 353,
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(6),
+                        child: Image.asset(
+                          'assets/images/prod-placeholder.jpg',
+                          fit: BoxFit.fill,
+                        )
                       ),
-                    ],
-                  ),
-                  Container(
-                    alignment: Alignment.center,
-                    height: 235,
-                    width: 353,
-                    decoration: BoxDecoration(
-                        color: gray,
-                        borderRadius: BorderRadius.circular(6)
-                    ),
-                    child: const Center(
-                      child: Icon(Icons.image, size: 50, color: Colors.grey),
-                    ),
-                  ),
-                ]
-              ),
-            ],
+                    )
+                  ]
+                ),
+              ],
+            ),
           ),
-        )
+        ),
       ),
     );
   }
