@@ -1,17 +1,16 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
-//import '../services/profile_service.dart';
-import '../../widgets/custom_app_bar.dart';
-import '../../widgets/profile/profile_hero.dart';
-import '../../widgets/profile/profile_orders.dart';
-import '../../widgets/profile/profile_products.dart';
-import '../../styles/colors.dart';
+import 'package:farmertoconsumer/widgets/custom_app_bar.dart';
+import 'package:farmertoconsumer/widgets/profile/profile_hero.dart';
+import 'package:farmertoconsumer/widgets/profile/profile_orders.dart';
+import 'package:farmertoconsumer/widgets/profile/profile_products.dart';
+import 'package:farmertoconsumer/styles/colors.dart';
 import 'package:farmertoconsumer/storages/user_storage.dart';
 
 import 'package:farmertoconsumer/screens/profile/profile_data_provider.dart';
 
+import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 class ProfileScreen extends StatefulWidget {
   @override
@@ -23,10 +22,10 @@ class ProfileScreenState extends State<ProfileScreen> {
 
   bool isLoading = true;
 
-  //final String adminToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTEsImlhdCI6MTczMjA5Njk2MX0.qwb27xKI6XtMAIbjZIneRHeDMWyCK2NrKIAaq1uMifQ";
 
 
-  //final String userId =_userStorage.id.get() ?? "";
+  //final String user =_userStorage.user.get() ?? "";
+  //final String userId =user.id ?? "";
   //final String token = _userStorage.token.get() ?? "";
 
   //final String userId = '6';
@@ -39,6 +38,7 @@ class ProfileScreenState extends State<ProfileScreen> {
   //final String token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiaWF0IjoxNzMyNTI1MjQ5fQ.CtgMkPZz9d66vQHmvTk66jJXtLAcYEfrMwxjGZv1os4';
   //final String userId = '5';
   //final String token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NSwiaWF0IjoxNzMyNTI1NjMxfQ.4JK2-zTkqICtoyTnPTk22hT8sSdxPed7vIbEWk2XPQA';
+
   dynamic user = null;
   String userName = "";
   bool isProducer = false; // Initial state: upgrade not requested
@@ -52,10 +52,6 @@ class ProfileScreenState extends State<ProfileScreen> {
   List<dynamic> products = [];
 
 
-  //final profileService = ProfileService();
-
-
-  // Function to update the upgrade request status
   void updateUpgradeRequestStatus(bool status1, bool status2) {
     setState(() {
       isProducer = status1;
@@ -73,10 +69,12 @@ class ProfileScreenState extends State<ProfileScreen> {
   @override
   void initState() {
     super.initState();
-    _fetchUser(this.userId, this.token); // Fetch orders when the screen is initialized
-    //_fetchPurchases(this.userId, this.token, this.isProducer ? 'producer' : 'customer'); // Fetch orders when the screen is initialized
+    _fetchData(this.userId, this.token);
   }
 
+  Future<void> _fetchData(userId, token) async {
+    _fetchUser(this.userId, this.token); // Fetch user 
+  }
 
   Future<void> _fetchThings(url, token, callback) async {
     try {
@@ -136,10 +134,7 @@ class ProfileScreenState extends State<ProfileScreen> {
     bool _isProducer = false; 
     final user = json.decode(response.body);
 
-    // Extract user information from the response
     String userName = user['name']; // Name of the user
-    //String userEmail = user['email']; // Email of the user
-    //int userId = user['id']; // ID of the user
     var producerData = user['producerData']; // producerData (could be null)
 
     // Check if producerData exists and handle accordingly
@@ -149,14 +144,10 @@ class ProfileScreenState extends State<ProfileScreen> {
     setState(() {
       this.user = user;
       this.userName = userName; // Update userName
-      //this.userEmail = userEmail; // Update email (if you plan to use it)
-      //this.producerDescription = producerDescription; // Update producer description if it exists
-      //isLoading = false; // Stop loading after fetching user data
     });
 
     if(producerData == null) {
       this.updateUpgradeRequestStatus(false, hasPendingUserUpgradeRequest);
-      //await this._fetchUserUpgradeRequests(userId, adminToken);
       await this._fetchUserUpgradeRequests(userId, token);
       setState(() {
         subHeading = "Consumer Profile";
@@ -178,10 +169,8 @@ class ProfileScreenState extends State<ProfileScreen> {
   
   Future<void> _recievePurchases(response) async {
     final data = json.decode(response.body);
-    //final data = json.decode(response.body);
     List<dynamic> orderData = data['orders'];
 
-    // Split orders into current and history based on their approval status
     List<dynamic> current = [];
     List<dynamic> history = [];
 
@@ -222,6 +211,7 @@ class ProfileScreenState extends State<ProfileScreen> {
     var url = Uri.parse('http://10.0.2.2:3000/users/$userId'); // Replace 6 with dynamic user ID if needed
     _fetchThings(url, token, _recieveUser);
   }
+
 
   // Fetch products from the API and store it
   Future<void> _fetchProducts(producerId, token) async {
