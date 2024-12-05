@@ -32,7 +32,7 @@ class _ProductModifyFormState extends State<ProductModifyForm> {
   int quantity = 1;
   final TextEditingController nameController = TextEditingController();
   final TextEditingController priceController = TextEditingController();
-  //final TextEditingController descriptionController = TextEditingController();
+  final TextEditingController descriptionController = TextEditingController();
 
   @override
   void initState() {
@@ -55,6 +55,7 @@ class _ProductModifyFormState extends State<ProductModifyForm> {
         selectedQuantityUnit = product!.quantityUnit;
         quantity = product!.quantity;
         priceController.text = product!.price.toString();
+        descriptionController.text = product!.description;
       }
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -346,7 +347,6 @@ class _ProductModifyFormState extends State<ProductModifyForm> {
             ),
             const SizedBox(height: 16),
 
-/*
             //description
             Text(
               'Description',
@@ -370,7 +370,6 @@ class _ProductModifyFormState extends State<ProductModifyForm> {
               style: TextStyle(color: darkGreen)
             ),
             const SizedBox(height: 16),
-*/
 
             //update $ delete button
             Row(
@@ -386,6 +385,7 @@ class _ProductModifyFormState extends State<ProductModifyForm> {
                             'quantity': quantity,
                             'quantityUnitId': selectedQuantityUnit?.id,
                             'price': double.tryParse(priceController.text),
+                            'description': descriptionController.text
                           };
 
                           final productService = ProductService();
