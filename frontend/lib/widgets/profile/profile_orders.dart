@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import '../../screens/order.dart';
+import '../../screens/order/order.dart';
 import '../order_card.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';

@@ -1,4 +1,4 @@
-import 'package:farmertoconsumer/screens/profile_user_upgrade.dart';
+import 'package:farmertoconsumer/screens/profile/profile_user_upgrade.dart';
 import 'package:flutter/material.dart';
 import '../../styles/colors.dart';
 import 'package:flutter_svg/flutter_svg.dart'; // Make sure you import flutter_svg

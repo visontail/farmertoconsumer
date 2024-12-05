@@ -3,12 +3,15 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 //import '../services/profile_service.dart';
-import '../widgets/custom_app_bar.dart';
-import '../widgets/profile/profile_hero.dart';
-import '../widgets/profile/profile_orders.dart';
-import '../widgets/profile/profile_products.dart';
-import '../styles/colors.dart';
+import '../../widgets/custom_app_bar.dart';
+import '../../widgets/profile/profile_hero.dart';
+import '../../widgets/profile/profile_orders.dart';
+import '../../widgets/profile/profile_products.dart';
+import '../../styles/colors.dart';
 import 'package:farmertoconsumer/storages/user_storage.dart';
+
+import 'package:farmertoconsumer/screens/profile/profile_data_provider.dart';
+
 
 class ProfileScreen extends StatefulWidget {
   @override
@@ -108,8 +111,6 @@ class ProfileScreenState extends State<ProfileScreen> {
 
   Future<void> _recieveUserUpgradeRequests(response) async {
     final data = json.decode(response.body);
-    print("data");
-    print(data);
     for (var i = 0; i < data["userUpgradeRequests"].length; i++) {
       var userUpgradeRequest = data["userUpgradeRequests"][i];
       if(userUpgradeRequest["approved"] == null) {

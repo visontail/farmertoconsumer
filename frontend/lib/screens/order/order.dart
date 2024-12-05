@@ -2,17 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-import '../widgets/custom_app_bar.dart';
-import '../widgets/profile/profile_hero.dart';
-import '../widgets/profile/profile_orders.dart';
-import '../widgets/profile/profile_products.dart';
-import '../styles/colors.dart';
-import '../models/order.dart'; // assuming QuantityUnit is in this file
-import '../models/product.dart'; // assuming Product is defined in this file
-import '../models/quantityUnit.dart'; // assuming QuantityUnit is in this file
-import '../models/user.dart'; // using the new User model
-import '../models/producerData.dart'; // assuming ProducerData is in this file
-import '../models/productCategory.dart'; // assuming ProductCategory is in this file
+import '../../widgets/custom_app_bar.dart';
+import '../../widgets/profile/profile_hero.dart';
+import '../../widgets/profile/profile_orders.dart';
+import '../../widgets/profile/profile_products.dart';
+import '../../styles/colors.dart';
+import '../../models/order.dart'; // assuming QuantityUnit is in this file
+import '../../models/product.dart'; // assuming Product is defined in this file
+import '../../models/quantityUnit.dart'; // assuming QuantityUnit is in this file
+import '../../models/user.dart'; // using the new User model
+import '../../models/producerData.dart'; // assuming ProducerData is in this file
+import '../../models/productCategory.dart'; // assuming ProductCategory is in this file
 
 class OrderScreen extends StatefulWidget {
   final String orderId;

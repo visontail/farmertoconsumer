@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart'; // For loading SVG icons (if needed)
-import '../widgets/custom_app_bar.dart';
+import '../../widgets/custom_app_bar.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-import '../screens/profile.dart';
-import '../widgets/profile/animated_button.dart'; // Import the AnimatedButton widget
-import '../styles/colors.dart';
+import 'profile.dart';
+import '../../widgets/profile/animated_button.dart'; // Import the AnimatedButton widget
+import '../../styles/colors.dart';
 
 class UpgradeFormScreen extends StatefulWidget {
   @override

@@ -4,17 +4,17 @@ import 'package:provider/provider.dart';
 import 'package:farmertoconsumer/services/product_service.dart';
 
 import '../screens/feed/feed.dart';
-import '../screens/profile.dart';
+import 'screens/profile/profile.dart';
 //import '../screens/consumer_profile.dart';
 import '../screens/login.dart';
-import '../screens/order_confirmation.dart';
-import '../screens/order.dart';
+//import '../screens/order_confirmation.dart';
+import 'screens/order/order.dart';
 //import '../screens/producer_profile.dart';
 import '../screens/product_management.dart';
 import '../screens/product_upload.dart';
 import '../screens/product.dart';
 import '../screens/registration.dart';
-import '../screens/user_upgrade_form.dart';
+//import '../screens/user_upgrade_form.dart';
 import '../screens/user_upgrade.dart';
 
 import '../screens/feed/feed_data_provider.dart';
@@ -44,14 +44,14 @@ class MyApp extends StatelessWidget {
           Routes.login: (context) => LoginScreen(),
           Routes.registration: (context) => RegistrationScreen(),
           Routes.order: (context) => OrderScreen(orderId: '1'),
-          Routes.orderConfirmation: (context) => OrderConfirmationScreen(),
+          //Routes.orderConfirmation: (context) => OrderConfirmationScreen(),
           Routes.profile: (context) => ProfileScreen(),
           //Routes.consumerProfile: (context) => ConsumerProfileScreen(),
           //Routes.producerProfile: (context) => ProducerProfileScreen(),
           Routes.productManagement: (context) => ProductManagementScreen(),
           Routes.productUpload: (context) => ProductUploadScreen(),
           Routes.userUpgrade: (context) => UserUpgradeScreen(),
-          Routes.userUpgradeForm: (context) => UserUpgradeFormScreen(),
+          //Routes.userUpgradeForm: (context) => UserUpgradeFormScreen(),
         },
         onGenerateRoute: (settings) {
           if (settings.name == Routes.product) {
