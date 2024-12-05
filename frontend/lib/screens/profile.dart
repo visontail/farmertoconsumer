@@ -8,6 +8,7 @@ import '../widgets/profile/profile_hero.dart';
 import '../widgets/profile/profile_orders.dart';
 import '../widgets/profile/profile_products.dart';
 import '../styles/colors.dart';
+import 'package:farmertoconsumer/storages/user_storage.dart';
 
 class ProfileScreen extends StatefulWidget {
   @override
@@ -15,13 +16,22 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class ProfileScreenState extends State<ProfileScreen> {
+  final UserStorage _userStorage = UserStorage();
+
   bool isLoading = true;
-  bool isInitialized = false;
 
-  final String adminToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTEsImlhdCI6MTczMjA5Njk2MX0.qwb27xKI6XtMAIbjZIneRHeDMWyCK2NrKIAaq1uMifQ";
+  //final String adminToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTEsImlhdCI6MTczMjA5Njk2MX0.qwb27xKI6XtMAIbjZIneRHeDMWyCK2NrKIAaq1uMifQ";
 
-  final String userId = '6';
-  final String token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NiwiaWF0IjoxNzMyMDQ4MTY5fQ.X7Zfqx6MbHyDAOucSGjJ9r5pDnot0D5f4-mAOJBmM5o';
+
+  //final String userId =_userStorage.id.get() ?? "";
+  //final String token = _userStorage.token.get() ?? "";
+
+  //final String userId = '6';
+  //final String token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NiwiaWF0IjoxNzMyMDQ4MTY5fQ.X7Zfqx6MbHyDAOucSGjJ9r5pDnot0D5f4-mAOJBmM5o';
+  final String userId = '1';
+  final String token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNzMzNDIwMTg0fQ._n1lBDUpNHjiDaHNN_T4LmoxWcq82EKMZ5w8e5owo2o';  
+  //final String userId = '2';
+  //final String token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiaWF0IjoxNzMzNDIxNjcxfQ.Jw8B7ABRfk0NyZGLOyPD7x9W9IZwHmgsWXzJfcDXLb0';  
   //final String userId = '2';
   //final String token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiaWF0IjoxNzMyNTI1MjQ5fQ.CtgMkPZz9d66vQHmvTk66jJXtLAcYEfrMwxjGZv1os4';
   //final String userId = '5';
@@ -61,10 +71,7 @@ class ProfileScreenState extends State<ProfileScreen> {
   void initState() {
     super.initState();
     _fetchUser(this.userId, this.token); // Fetch orders when the screen is initialized
-    _fetchPurchases(this.userId, this.token, this.isProducer ? 'producer' : 'customer'); // Fetch orders when the screen is initialized
-    setState(() {
-      isInitialized = true;
-    });
+    //_fetchPurchases(this.userId, this.token, this.isProducer ? 'producer' : 'customer'); // Fetch orders when the screen is initialized
   }
 
 
@@ -101,6 +108,8 @@ class ProfileScreenState extends State<ProfileScreen> {
 
   Future<void> _recieveUserUpgradeRequests(response) async {
     final data = json.decode(response.body);
+    print("data");
+    print(data);
     for (var i = 0; i < data["userUpgradeRequests"].length; i++) {
       var userUpgradeRequest = data["userUpgradeRequests"][i];
       if(userUpgradeRequest["approved"] == null) {
@@ -136,8 +145,6 @@ class ProfileScreenState extends State<ProfileScreen> {
     String? producerDescription = producerData != null ? producerData['description'] : null;
 
     // If successful, update the state with the user data
-    print('user');
-    print(user);
     setState(() {
       this.user = user;
       this.userName = userName; // Update userName
@@ -148,7 +155,8 @@ class ProfileScreenState extends State<ProfileScreen> {
 
     if(producerData == null) {
       this.updateUpgradeRequestStatus(false, hasPendingUserUpgradeRequest);
-      this._fetchUserUpgradeRequests(userId, adminToken);
+      //await this._fetchUserUpgradeRequests(userId, adminToken);
+      await this._fetchUserUpgradeRequests(userId, token);
       setState(() {
         subHeading = "Consumer Profile";
       });
@@ -160,9 +168,10 @@ class ProfileScreenState extends State<ProfileScreen> {
       });
     }
 
+    await _fetchPurchases(this.userId, this.token, this.isProducer ? 'producer' : 'customer');
     if(_isProducer) {
-      _fetchOrders(this.userId, this.token); // Fetch orders when the screen is initialized
-      _fetchProducts(this.userId, this.token); // Fetch orders when the screen is initialized
+      await _fetchOrders(this.userId, this.token); // Fetch orders when the screen is initialized
+      await _fetchProducts(this.userId, this.token); // Fetch orders when the screen is initialized
     }
   }
   

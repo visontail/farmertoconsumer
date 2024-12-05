@@ -37,7 +37,7 @@ class MyApp extends StatelessWidget {
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
-        initialRoute: '/',
+        initialRoute: '/profile',
         routes: {
           '/': (context) => const FeedScreen(),
           Routes.feed: (context) => FeedScreen(),

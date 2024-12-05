@@ -42,9 +42,14 @@ class _UpgradeSectionState extends State<UpgradeSection> {
     var newContact = _userEmailtextController.text;
     var newDescription = _descriptionController.text;
 
-    String userId = '6';
+    //String userId = '6';
+    //String token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NiwiaWF0IjoxNzMyMDQ4MTY5fQ.X7Zfqx6MbHyDAOucSGjJ9r5pDnot0D5f4-mAOJBmM5o';
+    String userId = '1';
+    String token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNzMzNDIwMTg0fQ._n1lBDUpNHjiDaHNN_T4LmoxWcq82EKMZ5w8e5owo2o';  
+    //final String userId = '2';
+    //final String token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiaWF0IjoxNzMzNDIxNjcxfQ.Jw8B7ABRfk0NyZGLOyPD7x9W9IZwHmgsWXzJfcDXLb0';  
     String apiUrl = 'http://10.0.2.2:3000/users/$userId/producerData'; // Replace with the correct API URL
-    String token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NiwiaWF0IjoxNzMyMDQ4MTY5fQ.X7Zfqx6MbHyDAOucSGjJ9r5pDnot0D5f4-mAOJBmM5o';
+     
     Map<String, dynamic> payload = {
       'contact': newContact,
       'description': newDescription,
@@ -89,9 +94,13 @@ class _UpgradeSectionState extends State<UpgradeSection> {
   @override
   void initState() {
     super.initState();
-    if(widget.user != null) {
-      this.initialUserEmail = widget.user['producerData']['contact'];
-      this.initialDescription = widget.user['producerData']['description'];
+    if(widget.user != null && widget.user['producerData'] != null) {
+      if(widget.user['producerData']['contact'] != null) {
+        this.initialUserEmail = widget.user['producerData']['contact'];
+      }
+      if(widget.user['producerData']['description'] != null) {
+       this.initialDescription = widget.user['producerData']['description'];
+      }
     }
 
     // Set the initial value
