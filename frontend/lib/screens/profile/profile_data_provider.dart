@@ -2,9 +2,17 @@
 //import 'package:farmertoconsumer/models/productCategory.dart';
 //import 'package:farmertoconsumer/services/category_service.dart';
 //import 'package:farmertoconsumer/services/product_service.dart';
+import 'package:farmertoconsumer/storages/user_storage.dart';
+import 'package:farmertoconsumer/models/authenticated_user.dart';
 import 'package:flutter/material.dart';
 
 class ProfileDataProvider extends ChangeNotifier {
+  final UserStorage _userStorage = UserStorage();
+
+  //final String user =_userStorage.user.get() ?? "";
+  //final String userId = user.id ?? "";
+  //final String token = _userStorage.token.get() ?? "";
+
   //final ProductService _productService = ProductService();
   //final CategoryService _categoryService = CategoryService();
 
@@ -19,6 +27,9 @@ class ProfileDataProvider extends ChangeNotifier {
   //int _loadedPage = 0;
 
   ProfileDataProvider() {
+    final AuthenticatedUser? user = _userStorage.user.get() ?? null;
+    final int? userId = user?.id ?? null;
+    final String token = _userStorage.token.get() ?? "";
     //reloadProducts();
     //reloadCategories();
   }

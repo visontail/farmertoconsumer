@@ -25,7 +25,7 @@ class ProfileScreenState extends State<ProfileScreen> {
 
 
   //final String user =_userStorage.user.get() ?? "";
-  //final String userId =user.id ?? "";
+  //final String userId = user.id ?? "";
   //final String token = _userStorage.token.get() ?? "";
 
   //final String userId = '6';
@@ -69,10 +69,15 @@ class ProfileScreenState extends State<ProfileScreen> {
   @override
   void initState() {
     super.initState();
-    _fetchData(this.userId, this.token);
+    
+    //final String user =_userStorage.user.get() ?? "";
+    final String userId = user.id ?? "";
+    final String token = _userStorage.token.get() ?? "";
+
+    _loadData(this.userId, this.token);
   }
 
-  Future<void> _fetchData(userId, token) async {
+  Future<void> _loadData(userId, token) async {
     _fetchUser(this.userId, this.token); // Fetch user 
   }
 
@@ -91,7 +96,6 @@ class ProfileScreenState extends State<ProfileScreen> {
       }
     } catch (e) {
       print('Error fetching: $e');
-      updateIsLoadingStatus(false);
     }    
   }
 
@@ -165,6 +169,8 @@ class ProfileScreenState extends State<ProfileScreen> {
       await _fetchOrders(this.userId, this.token); // Fetch orders when the screen is initialized
       await _fetchProducts(this.userId, this.token); // Fetch orders when the screen is initialized
     }
+
+    updateIsLoadingStatus(false);
   }
   
   Future<void> _recievePurchases(response) async {
