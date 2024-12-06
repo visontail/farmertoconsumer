@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:farmertoconsumer/screens/profile/profile.dart';
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String title;
@@ -33,13 +34,23 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
         ],
       ),
       actions: [
-        Padding(
-          padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-          child: SvgPicture.asset(
-            'assets/icons/customer-icon.svg',
-            width: 20.0,
-            height: 20.0,
-            color: Colors.white,
+        GestureDetector(
+          onTap: () {
+            // Add your onTap functionality here
+            print('Icon clicked');
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => ProfileScreen()),
+            );
+          },
+          child: Padding(
+            padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+            child: SvgPicture.asset(
+              'assets/icons/customer-icon.svg',
+              width: 20.0,
+              height: 20.0,
+              color: Colors.white,
+            ),
           ),
         ),
       ],

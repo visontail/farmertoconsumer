@@ -1,3 +1,4 @@
+import 'package:farmertoconsumer/models/authenticated_user.dart';
 import 'package:farmertoconsumer/screens/profile/profile_user_upgrade.dart';
 import 'package:flutter/material.dart';
 import '../../styles/colors.dart';
@@ -6,8 +7,8 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 class UpgradeSection extends StatefulWidget {
-  final dynamic user; // Accepting isProducer as a parameter
-  final String token; // Accepting isProducer as a parameter
+  final AuthenticatedUser? user; // Accepting user as a parameter
+  final String token; // Accepting token as a parameter
   final bool isProducer; // Accepting isProducer as a parameter
   final bool hasPendingUserUpgradeRequest;
   final Function(bool, bool) onUpgradeRequestChanged; // Callback to notify parent about the upgrade request
@@ -28,10 +29,10 @@ class UpgradeSection extends StatefulWidget {
 class _UpgradeSectionState extends State<UpgradeSection> {
   bool _isLoading = false; // Tracks the loading state
   
-  String initialDescription = 'My Description'; // TODO
+  String? initialDescription = 'My Description'; // TODO
   TextEditingController _descriptionController = TextEditingController();
 
-  String initialUserEmail = 'valami@email.com'; // TODO
+  String? initialUserEmail = 'valami@email.com'; // TODO
   TextEditingController _userEmailtextController = TextEditingController();
 
   bool contactInformationChanged = false;
@@ -42,8 +43,13 @@ class _UpgradeSectionState extends State<UpgradeSection> {
     var newContact = _userEmailtextController.text;
     var newDescription = _descriptionController.text;
 
-    String userId = '6';
-    String token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NiwiaWF0IjoxNzMyMDQ4MTY5fQ.X7Zfqx6MbHyDAOucSGjJ9r5pDnot0D5f4-mAOJBmM5o';
+    print('widget.user?.id');
+    print(widget.user?.id);
+
+    int? userId = widget.user?.id;
+    String token = widget.token;
+//    String userId = '6';
+//    String token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NiwiaWF0IjoxNzMyMDQ4MTY5fQ.X7Zfqx6MbHyDAOucSGjJ9r5pDnot0D5f4-mAOJBmM5o';
     //String userId = '1';
     //String token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNzMzNDIwMTg0fQ._n1lBDUpNHjiDaHNN_T4LmoxWcq82EKMZ5w8e5owo2o';  
     //final String userId = '2';
@@ -70,6 +76,7 @@ class _UpgradeSectionState extends State<UpgradeSection> {
 
       // Check if the request was successful (status code 200)
       if (response.statusCode == 200) {
+        print('success');
         // Handle the successful response
         setState(() {
           initialDescription = newDescription;
@@ -78,9 +85,10 @@ class _UpgradeSectionState extends State<UpgradeSection> {
         this._descriptionController.text = newDescription;
         this._userEmailtextController.text = newContact;
       } else {
+        print('failed');
         // Handle the error response
-        this._descriptionController.text = this.initialDescription;
-        this._userEmailtextController.text = this.initialUserEmail;
+        this._descriptionController.text = this.initialDescription ?? '';
+        this._userEmailtextController.text = this.initialUserEmail ?? '';
       }
     } catch (error) {
       print('Error updating Producer Data: $error');
@@ -94,17 +102,17 @@ class _UpgradeSectionState extends State<UpgradeSection> {
   @override
   void initState() {
     super.initState();
-    if(widget.user != null && widget.user['producerData'] != null) {
-      if(widget.user['producerData']['contact'] != null) {
-        this.initialUserEmail = widget.user['producerData']['contact'];
+    if(widget.user != null && widget.user?.producerData != null) {
+      if(widget.user?.producerData?.contact != null) {
+        this.initialUserEmail = widget.user?.producerData?.contact;
       }
-      if(widget.user['producerData']['description'] != null) {
-       this.initialDescription = widget.user['producerData']['description'];
+      if(widget.user?.producerData?.description != null) {
+       this.initialDescription = widget.user?.producerData?.description;
       }
     }
 
     // Set the initial value
-    _userEmailtextController.text = this.initialUserEmail;  // Initial value for TextField
+    _userEmailtextController.text = this.initialUserEmail ?? '';  // Initial value for TextField
     _userEmailtextController.addListener(() {
       var status = this.initialUserEmail != _userEmailtextController.text;
       setState(() {
@@ -112,7 +120,7 @@ class _UpgradeSectionState extends State<UpgradeSection> {
       });
     });
 
-    _descriptionController.text = this.initialDescription;
+    _descriptionController.text = this.initialDescription ?? '';
     _descriptionController.addListener(() {
       var status = this.initialDescription != _descriptionController.text;
       setState(() {
@@ -311,7 +319,7 @@ class _UpgradeSectionState extends State<UpgradeSection> {
               TextButton(
                 onPressed: () {
                   // Save button logic here (e.g., save the contact information)
-                  this._userEmailtextController.text = this.initialUserEmail;  // Initial value for TextField
+                  this._userEmailtextController.text = this.initialUserEmail ?? '';  // Initial value for TextField
                 },
                 style: TextButton.styleFrom(
                   backgroundColor: white, // Set the button's background color to green
@@ -391,7 +399,7 @@ class _UpgradeSectionState extends State<UpgradeSection> {
               TextButton(
                 onPressed: () {
                   // Save button logic here (e.g., save the contact information)
-                  this._descriptionController.text = this.initialDescription;  // Initial value for TextField
+                  this._descriptionController.text = this.initialDescription ?? '';  // Initial value for TextField
                 },
                 style: TextButton.styleFrom(
                   backgroundColor: white, // Set the button's background color to green

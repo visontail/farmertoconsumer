@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import '../screens/order/order.dart';
+import '../models/order.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 // OrderCard Widget: Extracted from OrderSection
 class OrderCard extends StatelessWidget {
-  final dynamic order;
+  final Order? order;
   final Color color;
 
   OrderCard({
@@ -16,14 +17,17 @@ class OrderCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var orderId = order['id'];
-    var productName = order['product']['name']; // Product name
-    var productCategory = order['product']['category']['name']; // Product category
-    var quantityUnit = order['product']['quantityUnit']['name'];
-    var quantity = order['quantity'].toString() + ' Ft/' + quantityUnit; // Order quantity
-    var status = order['approved'] == null ? 'Pending' : (order['approved'] ? 'Approved' : 'Declined');
-    var price = order['price'].toString() + ' Ft/'; // Order price
-    var imgSrc = 'assets/images/product.jpg'; // Placeholder image source
+    int? orderId = order?.id ?? null;
+    String productName = order?.product?.name ?? ''; // Product name
+    String productCategory = order?.product?.category?.name ?? ''; // Product category
+    String quantityUnit = order?.product?.quantityUnit?.name ?? '';
+    int q = order?.quantity ?? 1;
+    String quantity = q.toString() + ' ' + quantityUnit; // Order quantity
+    String status = order?.approved == null ? 'Pending' : (order?.approved == true ? 'Approved' : 'Declined');
+    double p = order?.price ?? 0;
+    String price = (p * q).toString() + ' Ft'; // Order price
+    String unitPrice = p.toString() + ' Ft/' + quantityUnit; // Order price
+    String imgSrc = 'assets/images/product.jpg'; // Placeholder image source
 
     return GestureDetector(
       onTap: () {
@@ -89,13 +93,27 @@ class OrderCard extends StatelessWidget {
                       Center(
                         child: Text(
                           '$quantity',
-                          style: TextStyle(fontSize: 18, color: Colors.white),
+                          style: TextStyle(fontSize: 14, color: Colors.white),
                         ),
                       ),
                       Center(
                         child: Text(
                           productCategory,
-                          style: TextStyle(fontSize: 12, color: Colors.white),
+                          style: TextStyle(fontSize: 10, color: Colors.white),
+                        ),
+                      ),
+                      SizedBox(height: 6),
+                      Center(
+                        child: Text(
+                          price,
+                          style: TextStyle(fontSize: 14, color: Colors.white),
+                        ),
+                      ),
+                      SizedBox(height: 0),
+                      Center(
+                        child: Text(
+                          unitPrice,
+                          style: TextStyle(fontSize: 10, color: Colors.white),
                         ),
                       ),
                       SizedBox(height: 6),

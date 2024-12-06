@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import '../../models/order.dart';
 import '../../screens/order/order.dart';
 import '../order_card.dart';
 import 'package:http/http.dart' as http;
@@ -31,7 +32,7 @@ class OrderSection extends StatelessWidget {
               : ListView.builder(
                   itemCount: orders.length,
                   itemBuilder: (context, index) {
-                    var order = orders[index];
+                    var order = Order.fromJson(orders[index]);
                     return OrderCard(
                       order: order,
                       color: color,

@@ -6,10 +6,14 @@ import 'package:farmertoconsumer/widgets/nav_button_simple.dart';
 import 'package:farmertoconsumer/models/product.dart';
 import 'package:farmertoconsumer/models/productCategory.dart';
 import 'package:farmertoconsumer/screens/feed/feed_data_provider.dart';
+import 'package:farmertoconsumer/screens/profile/profile.dart';
+import 'package:farmertoconsumer/screens/login.dart';
 import 'package:farmertoconsumer/styles/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
+
+import 'package:farmertoconsumer/storages/user_storage.dart';
 
 class FeedScreen extends StatefulWidget {
   const FeedScreen({super.key});
@@ -21,9 +25,13 @@ class FeedScreen extends StatefulWidget {
 class _FeedScreenState extends State<FeedScreen> {
   final TextEditingController searchController = TextEditingController();
 
+  final UserStorage _userStorage = UserStorage();
+
   @override
   Widget build(BuildContext context) {
     final provider = Provider.of<FeedDataProvider>(context);
+
+    final token = _userStorage.token.get() ?? "";
 
     return Scaffold(
         body: RefreshIndicator(
@@ -31,7 +39,7 @@ class _FeedScreenState extends State<FeedScreen> {
             onRefresh: provider.refresh,
             child: Column(
               children: [
-                appBarWidget(),
+                appBarWidget(token),
                 SearchTextField(
                     search: provider.searchProduct,
                     controller: searchController),
@@ -71,7 +79,7 @@ class _FeedScreenState extends State<FeedScreen> {
             )));
   }
 
-  Widget appBarWidget() {
+  Widget appBarWidget(token) {
     return Padding(
         padding: const EdgeInsets.fromLTRB(10, 30, 10, 10),
         child:
@@ -96,13 +104,29 @@ class _FeedScreenState extends State<FeedScreen> {
                       ))
                 ],
               )),
-          Padding(
+          GestureDetector(
+            onTap: () {
+              if(token == '') {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => LoginScreen()),
+                );  
+              } else {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => ProfileScreen()),
+                );  
+              }
+            },
+            child: Padding(
               padding: const EdgeInsets.all(5),
               child: SvgPicture.asset(
                 'assets/icons/profile.svg',
                 width: 25,
                 color: mainGreen,
-              ))
+              ),
+            ),
+          )
         ]));
   }
 

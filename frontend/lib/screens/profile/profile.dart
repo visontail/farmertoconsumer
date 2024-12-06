@@ -1,3 +1,5 @@
+import 'package:farmertoconsumer/screens/login.dart';
+import 'package:farmertoconsumer/models/authenticated_user.dart';
 import 'package:farmertoconsumer/widgets/custom_app_bar.dart';
 import 'package:farmertoconsumer/widgets/profile/profile_hero.dart';
 import 'package:farmertoconsumer/widgets/profile/profile_orders.dart';
@@ -7,8 +9,10 @@ import 'package:farmertoconsumer/storages/user_storage.dart';
 
 import 'package:farmertoconsumer/screens/profile/profile_data_provider.dart';
 
+import 'package:farmertoconsumer/providers/auth_provider.dart';
+import 'package:provider/provider.dart';
+
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
@@ -18,28 +22,16 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class ProfileScreenState extends State<ProfileScreen> {
+  final dataProvider = ProfileDataProvider();
+
   final UserStorage _userStorage = UserStorage();
 
   bool isLoading = true;
 
+  int? userId = null;
+  String token = '';
 
-
-  //final String user =_userStorage.user.get() ?? "";
-  //final String userId = user.id ?? "";
-  //final String token = _userStorage.token.get() ?? "";
-
-  final String userId = '6';
-  final String token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NiwiaWF0IjoxNzMyMDQ4MTY5fQ.X7Zfqx6MbHyDAOucSGjJ9r5pDnot0D5f4-mAOJBmM5o';
-  //final String userId = '1';
-  //final String token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNzMzNDIwMTg0fQ._n1lBDUpNHjiDaHNN_T4LmoxWcq82EKMZ5w8e5owo2o';  
-  //final String userId = '2';
-  //final String token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiaWF0IjoxNzMzNDIxNjcxfQ.Jw8B7ABRfk0NyZGLOyPD7x9W9IZwHmgsWXzJfcDXLb0';  
-  //final String userId = '2';
-  //final String token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiaWF0IjoxNzMyNTI1MjQ5fQ.CtgMkPZz9d66vQHmvTk66jJXtLAcYEfrMwxjGZv1os4';
-  //final String userId = '5';
-  //final String token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NSwiaWF0IjoxNzMyNTI1NjMxfQ.4JK2-zTkqICtoyTnPTk22hT8sSdxPed7vIbEWk2XPQA';
-
-  dynamic user = null;
+  AuthenticatedUser? user = null;
   String userName = "";
   bool isProducer = false; // Initial state: upgrade not requested
   bool hasPendingUserUpgradeRequest = false;
@@ -70,11 +62,17 @@ class ProfileScreenState extends State<ProfileScreen> {
   void initState() {
     super.initState();
     
-    //final String user =_userStorage.user.get() ?? "";
-    //final String userId = user.id ?? "";
-    //final String token = _userStorage.token.get() ?? "";
+    final AuthenticatedUser? _user =_userStorage.user.get() ?? null;
+    final int? _userId = _user?.id ?? null;
+    final String _token = _userStorage.token.get() ?? "";
 
-    _loadData(this.userId, this.token);
+    setState(() {
+      userId = _userId;
+      token = _token;
+    });
+
+    //_loadData(this.userId, this.token);
+    _loadData(_userId, _token);
   }
 
   Future<void> _loadData(userId, token) async {
@@ -94,7 +92,7 @@ class ProfileScreenState extends State<ProfileScreen> {
         // Handle failure (non-200 response)
         throw Exception('Failed to fetch');
       }
-    } catch (e) {
+    } catch (e) {      
       print('Error fetching: $e');
     }    
   }
@@ -136,21 +134,21 @@ class ProfileScreenState extends State<ProfileScreen> {
 
   Future<void> _recieveUser(response) async {
     bool _isProducer = false; 
-    final user = json.decode(response.body);
+    final responseBody = json.decode(response.body);
+    AuthenticatedUser? _user = AuthenticatedUser.fromJson(responseBody);
 
-    String userName = user['name']; // Name of the user
-    var producerData = user['producerData']; // producerData (could be null)
+    String? _userName = user?.name; // Name of the user
 
     // Check if producerData exists and handle accordingly
-    String? producerDescription = producerData != null ? producerData['description'] : null;
+    String? producerDescription = user?.producerData != null ? user?.producerData?.description : null;
 
     // If successful, update the state with the user data
     setState(() {
-      this.user = user;
-      this.userName = userName; // Update userName
+      user = _user;
+      userName = _userName ?? ''; // Update userName
     });
 
-    if(producerData == null) {
+    if(user?.producerData == null) {
       this.updateUpgradeRequestStatus(false, hasPendingUserUpgradeRequest);
       await this._fetchUserUpgradeRequests(userId, token);
       setState(() {
@@ -164,7 +162,7 @@ class ProfileScreenState extends State<ProfileScreen> {
       });
     }
 
-    await _fetchPurchases(this.userId, this.token, this.isProducer ? 'producer' : 'customer');
+    await _fetchPurchases(this.userId, this.token);
     if(_isProducer) {
       await _fetchOrders(this.userId, this.token); // Fetch orders when the screen is initialized
       await _fetchProducts(this.userId, this.token); // Fetch orders when the screen is initialized
@@ -199,9 +197,14 @@ class ProfileScreenState extends State<ProfileScreen> {
 
   // Fetch orders from the API and store it
   Future<void> _fetchOrders(userId, token) async {
-    var userType = isProducer ? "producer" : "customer";
-    var url = Uri.parse('http://10.0.2.2:3000/orders?userId=$userId&userType=$userType'); // Replace 6 with dynamic user ID if needed
+    var url = Uri.parse('http://10.0.2.2:3000/orders?userId=$userId&userType=producer'); // Replace 6 with dynamic user ID if needed
     _fetchThings(url, token, _recieveOrders);
+  }
+
+  // Fetch orders from the API and store them in both lists
+  Future<void> _fetchPurchases(userId, token) async {
+    var url = Uri.parse('http://10.0.2.2:3000/orders?userId=$userId&userType=customer');
+    _fetchThings(url, token, _recievePurchases);
   }
 
   // Fetch user from the API and store it
@@ -226,12 +229,6 @@ class ProfileScreenState extends State<ProfileScreen> {
     _fetchThings(url, token, _recieveProducts);
   }
 
-  // Fetch orders from the API and store them in both lists
-  Future<void> _fetchPurchases(userId, token, userType) async {
-    var url = Uri.parse('http://10.0.2.2:3000/orders?userId=$userId&userType=$userType');
-    _fetchThings(url, token, _recievePurchases);
-  }
-
   @override
   Widget build(BuildContext context) {
 
@@ -246,46 +243,72 @@ class ProfileScreenState extends State<ProfileScreen> {
           child: Container(
             padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 0),
             decoration: BoxDecoration(
-              border: Border.all(color: mainGreen, width: 5.0), // Change to 'mainGreen' if needed
+              border: Border.all(color: mainGreen, width: 5.0),
               borderRadius: BorderRadius.circular(12),
-              color: Colors.white, // Change to 'white' if needed
+              color: Colors.white,
             ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
+            child: Stack(
               children: [
-                SizedBox(height: 6),
-                Text(
-                  userName,
-                  style: TextStyle(
-                    fontSize: 28,
-                    fontWeight: FontWeight.bold,
-                    color: mainGreen, // Change to 'mainGreen' if needed
+                // The rest of your existing content inside the container
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    SizedBox(height: 6),
+                    Text(
+                      userName,
+                      style: TextStyle(
+                        fontSize: 28,
+                        fontWeight: FontWeight.bold,
+                        color: mainGreen,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                    SizedBox(height: 6),
+                    Text(
+                      subHeading,
+                      style: TextStyle(
+                        fontSize: 12,
+                        fontWeight: FontWeight.w300,
+                        color: mainGreen,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                    this.user == null ? SizedBox(width: 360) : SizedBox(height: 0),
+                    this.user == null ? SizedBox(height: 120) :
+                    UpgradeSection(
+                      user: this.user,
+                      token: this.token,
+                      isProducer: this.isProducer,
+                      hasPendingUserUpgradeRequest: this.hasPendingUserUpgradeRequest,
+                      onUpgradeRequestChanged: updateUpgradeRequestStatus,
+                    ),
+                    SizedBox(height: 0),
+                    this.user == null ? CircularProgressIndicator() :
+                    _buildTabSection(),
+                    SizedBox(height: 12),
+                  ],
+                ),
+
+                // Log out link in the top right corner
+                Positioned(
+                  top: 8,
+                  right: 12,
+                  child: GestureDetector(
+                    onTap: () {
+                      // Add log out functionality here
+                      print('Log Out clicked');
+                      _showConfirmationDialog(context);
+                    },
+                    child: Text(
+                      'Log Out',
+                      style: TextStyle(
+                        fontSize: 12,
+                        fontWeight: FontWeight.bold,
+                        color: mainGreen, // Make sure to use the appropriate color
+                      ),
+                    ),
                   ),
-                  textAlign: TextAlign.center,
                 ),
-                SizedBox(height: 6),
-                Text(
-                  subHeading,
-                  style: TextStyle(
-                    fontSize: 12,
-                    fontWeight: FontWeight.w300,
-                    color: mainGreen, // Change to 'mainGreen' if needed
-                  ),
-                  textAlign: TextAlign.center,
-                ),
-                this.user == null ? SizedBox(width: 360) : SizedBox(height: 0),
-                this.user == null ? SizedBox(height: 120) :
-                UpgradeSection(
-                  user: this.user,
-                  token: this.token,
-                  isProducer: this.isProducer,
-                  hasPendingUserUpgradeRequest: this.hasPendingUserUpgradeRequest,
-                  onUpgradeRequestChanged: updateUpgradeRequestStatus,
-                ),
-                SizedBox(height: 0),
-                this.user == null ? CircularProgressIndicator() :
-                _buildTabSection(),
-                SizedBox(height: 12),
               ],
             ),
           ),
@@ -339,4 +362,44 @@ class ProfileScreenState extends State<ProfileScreen> {
       ),
     );
   }
+
+  void _showConfirmationDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Log out?'),
+          content: Text('Please confirm to log out.'),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(); // Close the dialog
+                print('CANCEL');
+              },
+              child: Text('Cancel'),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(); // Close the dialog
+                // Handle the action to deny the request (e.g., delete or reject)
+                print('LOG OUT');
+                performLogout();
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => LoginScreen()),
+                );
+              },
+              child: Text('Log out'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void performLogout() {
+      final authProvider = Provider.of<AuthProvider>(context, listen: false);
+      authProvider.logout();
+  }
+
 }

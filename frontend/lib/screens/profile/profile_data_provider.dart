@@ -5,99 +5,170 @@
 import 'package:farmertoconsumer/storages/user_storage.dart';
 import 'package:farmertoconsumer/models/authenticated_user.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 class ProfileDataProvider extends ChangeNotifier {
   final UserStorage _userStorage = UserStorage();
-
-  //final String user =_userStorage.user.get() ?? "";
-  //final String userId = user.id ?? "";
-  //final String token = _userStorage.token.get() ?? "";
-
-  //final ProductService _productService = ProductService();
-  //final CategoryService _categoryService = CategoryService();
-
-  //List<ProductCategory> _categories = [];
-  //List<Product> _products = [];
-  //bool _productsLoading = true;
-  //bool _categoriesLoading = true;
-  //bool _hasMoreProduct = false;
-
-  //String? _productSearchQuery;
-  //int? _selectedCategoryId;
-  //int _loadedPage = 0;
+  int? userId = null;
+  String? token = null;
+  bool isProducer = false;
 
   ProfileDataProvider() {
-    final AuthenticatedUser? user = _userStorage.user.get() ?? null;
-    final int? userId = user?.id ?? null;
-    final String token = _userStorage.token.get() ?? "";
-    //reloadProducts();
-    //reloadCategories();
+    final AuthenticatedUser? _user = _userStorage.user.get() ?? null;
+    final int? _userId = _user?.id ?? null;
+    final String _token = _userStorage.token.get() ?? "";
   }
 
-  //List<ProductCategory> get categories => _categories;
-  //List<Product> get products => _products;
-  //bool get productsLoading => _productsLoading;
-  //bool get categoriesLoading => _categoriesLoading;
-  //bool get hasMoreProduct => _hasMoreProduct;
-  //int? get selectedCategoryId => _selectedCategoryId;
+  Future<void> _fetchThings(url, token, callback) async {
+    try {
+      final response = await http.get(url, headers: {
+        'Authorization': 'Bearer $token',
+        'Content-Type': 'application/json',
+      });
 
-  /*
-  void reloadProducts() {
-    _productsLoading = true;
-    notifyListeners();
-
-    _productService
-        .getAll(_productSearchQuery, _selectedCategoryId, 0, productsPerPage)
-        .then((v) {
-      _products = v.data;
-
-      _productsLoading = false;
-      _loadedPage = 1;
-      _hasMoreProduct = _loadedPage * productsPerPage < v.total;
-      notifyListeners();
-    });
+      if (response.statusCode == 200) {
+        callback(response);
+      } else {
+        // Handle failure (non-200 response)
+        throw Exception('Failed to fetch');
+      }
+    } catch (e) {
+      print('Error fetching: $e');
+    }    
   }
 
-  void reloadCategories() {
-    _categoriesLoading = true;
-    notifyListeners();
-
-    _categoryService.getAll().then((v) {
-      _categories = v.data;
-      _categoriesLoading = false;
-      notifyListeners();
-    });
+  Future<void> _recieveOrders(response) async {
+    var _orders = [];
+    final data = json.decode(response.body);
+    for (var i = 0; i < data["orders"].length; i++) {
+      var prod = data["orders"][i];
+      _orders.add(prod);
+    }
+    //setState(() {
+    //  orders = _orders;
+    //});
   }
 
-  void loadMoreProduct() {
-    _productsLoading = true;
-    notifyListeners();
-
-    _productService
-        .getAll(_productSearchQuery, _selectedCategoryId,
-            _loadedPage * productsPerPage, productsPerPage)
-        .then((v) {
-      _products = [..._products, ...v.data];
-      _productsLoading = false;
-      _loadedPage++;
-      _hasMoreProduct = _loadedPage * productsPerPage < v.total;
-      notifyListeners();
-    });
+  Future<void> _recieveUserUpgradeRequests(response) async {
+    final data = json.decode(response.body);
+    for (var i = 0; i < data["userUpgradeRequests"].length; i++) {
+      var userUpgradeRequest = data["userUpgradeRequests"][i];
+      if(userUpgradeRequest["approved"] == null) {
+        //this.updateUpgradeRequestStatus(false, true);
+        break;
+      }
+    }
   }
 
-  void searchProduct(String? searchQuery) {
-    _productSearchQuery = searchQuery;
-    reloadProducts();
+  Future<void> _recieveProducts(response) async {
+    var _products = [];
+    final data = json.decode(response.body);
+    for (var i = 0; i < data["products"].length; i++) {
+      var prod = data["products"][i];
+      _products.add(prod);
+    }
+    //setState(() {
+    //  products = _products;
+    //});
   }
 
-  void selectCategory(int? categoryId) {
-    _selectedCategoryId = categoryId;
-    reloadProducts();
+  Future<void> _recieveUser(response) async {
+    bool _isProducer = false; 
+    final user = json.decode(response.body);
+
+    String userName = user['name']; // Name of the user
+    var producerData = user['producerData']; // producerData (could be null)
+
+    // Check if producerData exists and handle accordingly
+    String? producerDescription = producerData != null ? producerData['description'] : null;
+
+    // If successful, update the state with the user data
+    //setState(() {
+    //  this.user = user;
+    //  this.userName = userName; // Update userName
+    //});
+
+    if(producerData == null) {
+      //this.updateUpgradeRequestStatus(false, hasPendingUserUpgradeRequest);
+      await this._fetchUserUpgradeRequests(userId, token);
+      //setState(() {
+      //  subHeading = "Consumer Profile";
+      //});
+    } else {
+      //this.updateUpgradeRequestStatus(true, hasPendingUserUpgradeRequest);
+      _isProducer = true;
+      //setState(() {
+      //  subHeading = "Producer Profile";
+      //});
+    }
+
+    await _fetchPurchases(this.userId, this.token, this.isProducer ? 'producer' : 'customer');
+    if(_isProducer) {
+      await _fetchOrders(this.userId, this.token); // Fetch orders when the screen is initialized
+      await _fetchProducts(this.userId, this.token); // Fetch orders when the screen is initialized
+    }
+
+    //updateIsLoadingStatus(false);
+  }
+  
+  Future<void> _recievePurchases(response) async {
+    final data = json.decode(response.body);
+    List<dynamic> orderData = data['orders'];
+
+    List<dynamic> current = [];
+    List<dynamic> history = [];
+
+    for (var orderJson in orderData) {
+      if (orderJson['approved'] == null) {
+        // If the order is not approved or doesn't have an approval status, consider it "current"
+        current.add(orderJson);
+      } else {
+        // If the order is approved, consider it "order history"
+        history.add(orderJson);
+      }
+    }
+    //setState(() {
+    //  currentPurchases = current;
+    //  purchaseHistory = history;
+    //  isLoading = false; // Stop loading when data is fetched
+    //});
   }
 
-  Future<void> refresh() async {
-    reloadProducts();
-    reloadCategories();
+
+  // Fetch orders from the API and store it
+  Future<void> _fetchOrders(userId, token) async {
+    var userType = isProducer ? "producer" : "customer";
+    var url = Uri.parse('http://10.0.2.2:3000/orders?userId=$userId&userType=$userType'); // Replace 6 with dynamic user ID if needed
+    _fetchThings(url, token, _recieveOrders);
   }
-  */
+
+  // Fetch user from the API and store it
+  Future<void> _fetchUserUpgradeRequests(userId, token) async {
+    // Construct the URL for fetching user data by ID
+    var url = Uri.parse('http://10.0.2.2:3000/user-upgrade-requests?userId=$userId'); // Replace 6 with dynamic user ID if needed
+    _fetchThings(url, token, _recieveUserUpgradeRequests);
+  }
+
+  // Fetch user from the API and store it
+  Future<void> _fetchUser(userId, token) async {
+    // Construct the URL for fetching user data by ID
+    var url = Uri.parse('http://10.0.2.2:3000/users/$userId'); // Replace 6 with dynamic user ID if needed
+    _fetchThings(url, token, _recieveUser);
+  }
+
+
+  // Fetch products from the API and store it
+  Future<void> _fetchProducts(producerId, token) async {
+    // Construct the URL for fetching user data by ID
+    var url = Uri.parse('http://10.0.2.2:3000/products?producerId=$userId'); // Replace 6 with dynamic user ID if needed
+    _fetchThings(url, token, _recieveProducts);
+  }
+
+  // Fetch orders from the API and store them in both lists
+  Future<void> _fetchPurchases(userId, token, userType) async {
+    var url = Uri.parse('http://10.0.2.2:3000/orders?userId=$userId&userType=$userType');
+    _fetchThings(url, token, _recievePurchases);
+  }
+
 }

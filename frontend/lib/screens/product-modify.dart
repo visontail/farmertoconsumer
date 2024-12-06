@@ -55,7 +55,7 @@ class _ProductModifyFormState extends State<ProductModifyForm> {
         selectedQuantityUnit = product!.quantityUnit;
         quantity = product!.quantity;
         priceController.text = product!.price.toString();
-        descriptionController.text = product!.description;
+        //descriptionController.text = product!.description;
       }
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(

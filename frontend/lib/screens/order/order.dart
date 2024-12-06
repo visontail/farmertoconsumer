@@ -1,18 +1,12 @@
+import 'package:farmertoconsumer/widgets/custom_app_bar.dart';
+import 'package:farmertoconsumer/styles/colors.dart';
+import 'package:farmertoconsumer/models/order.dart'; // assuming QuantityUnit is in this file
+import 'package:farmertoconsumer/screens/order/order_data_provider.dart';
+import 'package:farmertoconsumer/screens/profile/profile.dart';
+
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-import '../../widgets/custom_app_bar.dart';
-import '../../widgets/profile/profile_hero.dart';
-import '../../widgets/profile/profile_orders.dart';
-import '../../widgets/profile/profile_products.dart';
-import '../../styles/colors.dart';
-import '../../models/order.dart'; // assuming QuantityUnit is in this file
-import '../../models/product.dart'; // assuming Product is defined in this file
-import '../../models/quantityUnit.dart'; // assuming QuantityUnit is in this file
-import '../../models/user.dart'; // using the new User model
-import '../../models/producerData.dart'; // assuming ProducerData is in this file
-import '../../models/productCategory.dart'; // assuming ProductCategory is in this file
 
 class OrderScreen extends StatefulWidget {
   final String orderId;
@@ -23,107 +17,80 @@ class OrderScreen extends StatefulWidget {
 }
 
 class OrderScreenState extends State<OrderScreen> {
+  final dataProvider = OrderDataProvider();
+
   bool isOrderConfirmed = false;
-
-  // TODO
-  //final String userId = '5';
-  //final String token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NSwiaWF0IjoxNzMyNTI1NjMxfQ.4JK2-zTkqICtoyTnPTk22hT8sSdxPed7vIbEWk2XPQA';
-  final String userId = '6';
-  final String token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NiwiaWF0IjoxNzMyMDQ4MTY5fQ.X7Zfqx6MbHyDAOucSGjJ9r5pDnot0D5f4-mAOJBmM5o';
-  //final String userId = '1';
-  //final String token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNzMzNDIwMTg0fQ._n1lBDUpNHjiDaHNN_T4LmoxWcq82EKMZ5w8e5owo2o';  
-  //final String userId = '2';
-  //final String token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiaWF0IjoxNzMzNDIxNjcxfQ.Jw8B7ABRfk0NyZGLOyPD7x9W9IZwHmgsWXzJfcDXLb0';  
-  
-  bool isRelevantProducer = true;
-
-  final String productImage = 'assets/images/product.jpg';
+  bool isRelevantProducer = false;//true;
 
   Order? order; // We will store the fetched order here
+
 
   @override
   void initState() {
     super.initState();
-    fetchOrderDetails(widget.orderId);
-  }
-
-  // Fetch order details from the backend
-  Future<void> fetchOrderDetails(id) async {
-    print('id');
-    print(id);
-    final response = await http.get(
-      Uri.parse('http://10.0.2.2:3000/orders/$id'), // Update URL with actual endpoint
-      headers: {
-        'Authorization': 'Bearer $token',
-        'Content-Type': 'application/json',
-      },
-    );
-
-      final body = json.decode(response.body);
-      print('body');
-      print(body);
-      print('response.statusCodes');
-      print(response.statusCode);
-
-    if (response.statusCode == 200) {
-      print('******TEST----1');
-      final data = json.decode(response.body);
-      print('******TEST----2');
-      final _order = Order.fromJson(data);
-      print('******TEST----3');
-      setState(() {
-        order = _order;
-      });
-      print('******TEST----4');
-      if(_order.approved != null) {
+    Future<Order?> future_order = dataProvider.fetchOrderDetails(widget.orderId);
+    future_order.then((Order? order) {
+      if (order != null) {
+        // Successfully retrieved the order
+        print('Order retrieved: $order');
         setState(() {
-          isOrderConfirmed = true;
+          this.order = order;
         });
+        if(order.approved != null) {
+          setState(() {
+            isOrderConfirmed = true;            
+          });
+        } else {
+          setState(() {
+            isRelevantProducer = dataProvider.isRelevantProducer(order);
+          });
+        }
+      } else {
+        // Handle case when the order is null
+        print('No order found');
       }
-    } else {
-      throw Exception('Failed to load order');
-    }
-    print('VALAMI____________________');
+    }).catchError((e) {
+      // Handle any error that occurred during the fetch
+      print('Error fetching order: $e');
+    });
+
   }
+
 
   Future<void> replyToOrder(id, approve) async {
+    String token = dataProvider.getToken();
+    bool _approve = approve;
     var data = {
       'approve': approve
     };
-  // Send the POST request
-  var _approve = approve;
-  try {
-    var response = await http.post(
-      Uri.parse('http://10.0.2.2:3000/orders/$id/reply'),
-      body: json.encode(data),  // Convert the data to JSON
-      headers: {
-        'Authorization': 'Bearer $token',
-        'Content-Type': 'application/json',  // Set the Content-Type header
-      },
-    );
+    // Send the POST request
+    try {
+      var response = await http.post(
+        Uri.parse('http://10.0.2.2:3000/orders/$id/reply'),
+        body: json.encode(data),  // Convert the data to JSON
+        headers: {
+          'Authorization': 'Bearer $token',
+          'Content-Type': 'application/json',  // Set the Content-Type header
+        },
+      );
 
-    var responseData = json.decode(response.body);  // Decode JSON if needed
-    print('responseData');
-    print(responseData);
-
-    // Check the response status code
-    if (response.statusCode == 200) {
-      print('Request successful');
-      setState(() {
-        isOrderConfirmed = _approve;
-      });
-    } else {
-      print('Request failed with status: ${response.statusCode}');
+      // Check the response status code
+      if (response.statusCode == 200) {
+        print('Request successful');
+        setState(() {
+          isOrderConfirmed = _approve;
+        });
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => ProfileScreen()),
+        );
+      } else {
+        print('Request failed with status: ${response.statusCode}');
+      }
+    } catch (e) {
+      print('Error: $e');
     }
-  } catch (e) {
-    print('Error: $e');
   }
-    
-  }
-
-  
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -133,7 +100,19 @@ class OrderScreenState extends State<OrderScreen> {
       );
     }
 
-    var title = isRelevantProducer && !isOrderConfirmed ? 'Confirm Order' : 'Your order summary';
+    String title = isRelevantProducer && !isOrderConfirmed ? 'Confirm Order' : 'Your order summary';
+
+    int? orderId = order?.id ?? null;
+    String productName = order?.product?.name ?? ''; // Product name
+    String productCategory = order?.product?.category?.name ?? ''; // Product category
+    String quantityUnit = order?.product?.quantityUnit?.name ?? '';
+    int q = order?.quantity ?? 1;
+    String quantity = q.toString() + ' ' + quantityUnit; // Order quantity
+    String status = order?.approved == null ? 'Pending' : (order?.approved == true ? 'Approved' : 'Declined');
+    double p = order?.price ?? 0;
+    String price = (p * q).toString() + ' Ft'; // Order price
+    String unitPrice = p.toString() + ' Ft/' + quantityUnit; // Order price
+    String imgSrc = 'assets/images/product.jpg'; // Placeholder image source
 
     return Scaffold(
       backgroundColor: mainGreen,
@@ -151,7 +130,7 @@ class OrderScreenState extends State<OrderScreen> {
           children: [
             SizedBox(height: 12),
             Text(
-              'Order ID - ${order!.id}',
+              'Order ID - ${orderId}',
               style: TextStyle(
                 fontSize: 14,
                 fontWeight: FontWeight.bold,
@@ -163,7 +142,7 @@ class OrderScreenState extends State<OrderScreen> {
             // Add Image below the Order ID and align to the left
             Row(
               children: [
-                Image.asset(productImage, height: 100),
+                Image.asset(imgSrc, height: 100),
               ],
             ),
             SizedBox(height: 12),
@@ -176,9 +155,9 @@ class OrderScreenState extends State<OrderScreen> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Text('${order!.product.name}', style: TextStyle(fontWeight: FontWeight.bold, color: mainGreen)),
-                      Text('${order!.product.category.name}', style: TextStyle(color: mainGreen)),
-                      Text('Quantity: ${order!.quantity}', style: TextStyle(color: mainGreen)),
+                      Text('${productName}', style: TextStyle(fontWeight: FontWeight.bold, color: mainGreen)),
+                      Text('${productCategory}', style: TextStyle(color: mainGreen)),
+                      Text('Quantity: ${quantity}', style: TextStyle(color: mainGreen)),
                     ],
                   ),
                 ),
@@ -189,7 +168,8 @@ class OrderScreenState extends State<OrderScreen> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Text('\$${order!.price}', style: TextStyle(fontWeight: FontWeight.bold, color: mainGreen)),
+                      Text('\$${price}', style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: mainGreen)),
+                      Text('\$${unitPrice}', style: TextStyle(fontSize: 11, fontWeight: FontWeight.bold, color: mainGreen)),
                     ],
                   ),
                 ),
@@ -199,7 +179,7 @@ class OrderScreenState extends State<OrderScreen> {
               // When isRelevantProducer is false (Customer view)
               SizedBox(height: 12),
               Text(
-                'Order Status: ${order!.approved == null ? "pending" : (order!.approved == true ? "Approved" : "Declined")}',
+                'Order Status: ${status}',
                 style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: mainGreen),
                 textAlign: TextAlign.center,
               ),
