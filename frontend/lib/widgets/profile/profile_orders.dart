@@ -1,10 +1,6 @@
+import 'package:farmertoconsumer/models/order.dart';
+import 'package:farmertoconsumer/widgets/order_card.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import '../../models/order.dart';
-import '../../screens/order/order.dart';
-import '../order_card.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
 
 // OrderSection Widget: Now uses OrderCard
 class OrderSection extends StatelessWidget {

@@ -1,11 +1,9 @@
+import 'package:farmertoconsumer/screens/product-create.dart';
+import 'package:farmertoconsumer/widgets/product_card.dart';
+import 'package:farmertoconsumer/models/product.dart';
+import 'package:farmertoconsumer/styles/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import '../../screens/product-create.dart';
-import '../../screens/product-modify.dart';
-import '../product_card.dart';
-import 'package:farmertoconsumer/screens/product.dart';
-import 'package:farmertoconsumer/services/product_service.dart';
-import '../../styles/colors.dart';
 
 class ProductSection extends StatelessWidget {
   final String title;
@@ -64,7 +62,7 @@ class ProductSection extends StatelessWidget {
                   itemBuilder: (context, index) {
                     var product = products[index];
                     return ProductCard(
-                      product: product,
+                      product: Product.fromJson(product),
                       color: color,
                     );
                   },

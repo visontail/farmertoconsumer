@@ -3,8 +3,6 @@ import 'package:farmertoconsumer/models/order.dart';
 import 'package:farmertoconsumer/styles/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
 
 // OrderCard Widget: Extracted from OrderSection
 class OrderCard extends StatelessWidget {

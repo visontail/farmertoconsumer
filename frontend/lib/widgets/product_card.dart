@@ -1,9 +1,10 @@
+import 'package:farmertoconsumer/screens/product.dart';
+import 'package:farmertoconsumer/models/product.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import '../screens/product.dart';
 
 class ProductCard extends StatelessWidget {
-  final dynamic product;
+  final Product? product;
   final Color color;
 
   ProductCard({
@@ -13,15 +14,14 @@ class ProductCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var productId = product['id'];
-    var productName = product['name'];
-    var productCategory = product['category']['name'];
-    var productquantityUnit = product['quantityUnit']['name'];
-    var productQuantity = product['quantity'].toString() + " " + productquantityUnit;
-    var productPrice = product['price'].toString() + ' Ft/' + productquantityUnit;
-
-    print('product');
-    print(product);
+    int? productId = product?.id;
+    String productName = product?.name ?? '';
+    String productCategory = product?.category?.name ?? '';
+    String productquantityUnit = product?.quantityUnit?.name ?? '';
+    String productQuantity = product?.quantity?.toString() ?? '';
+    productQuantity +=  " " + productquantityUnit;
+    String productPrice = product?.price.toString() ?? '';
+    productPrice += ' Ft/' + productquantityUnit;
 
     return GestureDetector(
       onTap: () {

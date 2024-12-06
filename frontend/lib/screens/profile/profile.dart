@@ -1,3 +1,4 @@
+import 'package:farmertoconsumer/screens/profile/profile_data_provider.dart';
 import 'package:farmertoconsumer/screens/login.dart';
 import 'package:farmertoconsumer/models/authenticated_user.dart';
 import 'package:farmertoconsumer/widgets/custom_app_bar.dart';
@@ -7,7 +8,6 @@ import 'package:farmertoconsumer/widgets/profile/profile_products.dart';
 import 'package:farmertoconsumer/styles/colors.dart';
 import 'package:farmertoconsumer/storages/user_storage.dart';
 
-import 'package:farmertoconsumer/screens/profile/profile_data_provider.dart';
 
 import 'package:farmertoconsumer/providers/auth_provider.dart';
 import 'package:provider/provider.dart';

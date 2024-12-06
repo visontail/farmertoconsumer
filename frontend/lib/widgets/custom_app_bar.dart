@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:farmertoconsumer/screens/profile/profile.dart';
+import 'package:farmertoconsumer/styles/colors.dart';
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String title;
@@ -12,7 +13,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   Widget build(BuildContext context) {
     return AppBar(
       backgroundColor: color,
-      iconTheme: IconThemeData(color: Colors.white),
+      iconTheme: IconThemeData(color: white),
       leading: IconButton(
         icon: SvgPicture.asset(
           'assets/icons/back-arrow-2.svg', // Path to your custom SVG icon
@@ -29,7 +30,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
         children: [
           Text(
             title,
-            style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold, color: Colors.white),
+            style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold, color: white),
           ),
         ],
       ),
@@ -49,7 +50,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
               'assets/icons/customer-icon.svg',
               width: 20.0,
               height: 20.0,
-              color: Colors.white,
+              color: white,
             ),
           ),
         ),

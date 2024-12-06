@@ -1,7 +1,7 @@
 import 'package:farmertoconsumer/models/authenticated_user.dart';
 import 'package:farmertoconsumer/screens/profile/profile_user_upgrade.dart';
+import 'package:farmertoconsumer/styles/colors.dart';
 import 'package:flutter/material.dart';
-import '../../styles/colors.dart';
 import 'package:flutter_svg/flutter_svg.dart'; // Make sure you import flutter_svg
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -43,17 +43,8 @@ class _UpgradeSectionState extends State<UpgradeSection> {
     var newContact = _userEmailtextController.text;
     var newDescription = _descriptionController.text;
 
-    print('widget.user?.id');
-    print(widget.user?.id);
-
     int? userId = widget.user?.id;
     String token = widget.token;
-//    String userId = '6';
-//    String token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NiwiaWF0IjoxNzMyMDQ4MTY5fQ.X7Zfqx6MbHyDAOucSGjJ9r5pDnot0D5f4-mAOJBmM5o';
-    //String userId = '1';
-    //String token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNzMzNDIwMTg0fQ._n1lBDUpNHjiDaHNN_T4LmoxWcq82EKMZ5w8e5owo2o';  
-    //final String userId = '2';
-    //final String token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiaWF0IjoxNzMzNDIxNjcxfQ.Jw8B7ABRfk0NyZGLOyPD7x9W9IZwHmgsWXzJfcDXLb0';  
     String apiUrl = 'http://10.0.2.2:3000/users/$userId/producerData'; // Replace with the correct API URL
      
     Map<String, dynamic> payload = {
@@ -71,8 +62,6 @@ class _UpgradeSectionState extends State<UpgradeSection> {
         },
         body: json.encode(payload), // Encode the payload to JSON
       );
-
-      Map<String, dynamic> data = json.decode(response.body);
 
       // Check if the request was successful (status code 200)
       if (response.statusCode == 200) {
@@ -92,9 +81,6 @@ class _UpgradeSectionState extends State<UpgradeSection> {
       }
     } catch (error) {
       print('Error updating Producer Data: $error');
-
-    } finally {
-
     }
   }
 
