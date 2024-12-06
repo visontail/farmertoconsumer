@@ -1,8 +1,8 @@
+import 'package:farmertoconsumer/providers/auth_provider.dart';
 import 'package:farmertoconsumer/utils/routes.dart';
 import 'package:farmertoconsumer/widgets/feed/product_card.dart';
 import 'package:farmertoconsumer/widgets/feed/category_card.dart';
 import 'package:farmertoconsumer/widgets/feed/search_text_field.dart';
-import 'package:farmertoconsumer/widgets/nav_button_simple.dart';
 import 'package:farmertoconsumer/models/product.dart';
 import 'package:farmertoconsumer/models/productCategory.dart';
 import 'package:farmertoconsumer/screens/feed/feed_data_provider.dart';
@@ -31,7 +31,7 @@ class _FeedScreenState extends State<FeedScreen> {
             onRefresh: provider.refresh,
             child: Column(
               children: [
-                appBarWidget(),
+                appBarWidget(context),
                 SearchTextField(
                     search: provider.searchProduct,
                     controller: searchController),
@@ -58,20 +58,26 @@ class _FeedScreenState extends State<FeedScreen> {
                             fontWeight: FontWeight.bold,
                           ),
                         ))),
-                productsWidget(context),
-                NavigationButton(
-                  routeName: Routes.login,
-                  buttonText: 'Go to Login',
-                ),
-                NavigationButton(
-                  routeName: Routes.registration,
-                  buttonText: 'Go to Registration',
-                )
+                productsWidget(context)
               ],
             )));
   }
 
-  Widget appBarWidget() {
+  Widget appBarWidget(BuildContext context) {
+    final authProvider = Provider.of<AuthProvider>(context);
+
+    onSelectProfile() {
+      if (authProvider.isAuthenticated) {
+        if (authProvider.user!.isProducer) {
+          Navigator.pushNamed(context, Routes.producerProfile);
+        } else {
+          Navigator.pushNamed(context, Routes.consumerProfile);
+        }
+      } else {
+        Navigator.pushNamed(context, Routes.login);
+      }
+    }
+
     return Padding(
         padding: const EdgeInsets.fromLTRB(10, 30, 10, 10),
         child:
@@ -97,12 +103,15 @@ class _FeedScreenState extends State<FeedScreen> {
                 ],
               )),
           Padding(
-              padding: const EdgeInsets.all(5),
-              child: SvgPicture.asset(
-                'assets/icons/profile.svg',
-                width: 25,
-                color: mainGreen,
-              ))
+            padding: const EdgeInsets.all(5),
+            child: InkWell(
+                onTap: onSelectProfile,
+                child: SvgPicture.asset(
+                  'assets/icons/profile.svg',
+                  width: 25,
+                  color: mainGreen,
+                )),
+          )
         ]));
   }
 
