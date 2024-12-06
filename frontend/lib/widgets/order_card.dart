@@ -19,9 +19,10 @@ class OrderCard extends StatelessWidget {
     var orderId = order['id'];
     var productName = order['product']['name']; // Product name
     var productCategory = order['product']['category']['name']; // Product category
-    var quantity = order['quantity']; // Order quantity
+    var quantityUnit = order['product']['quantityUnit']['name'];
+    var quantity = order['quantity'].toString() + ' Ft/' + quantityUnit; // Order quantity
     var status = order['approved'] == null ? 'Pending' : (order['approved'] ? 'Approved' : 'Declined');
-    var price = order['price']; // Order price
+    var price = order['price'].toString() + ' Ft/'; // Order price
     var imgSrc = 'assets/images/product.jpg'; // Placeholder image source
 
     return GestureDetector(
