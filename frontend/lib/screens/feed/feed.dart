@@ -67,14 +67,6 @@ class _FeedScreenState extends State<FeedScreen> {
                           ),
                         ))),
                 productsWidget(context),
-                NavigationButton(
-                  routeName: Routes.login,
-                  buttonText: 'Go to Login',
-                ),
-                NavigationButton(
-                  routeName: Routes.registration,
-                  buttonText: 'Go to Registration',
-                )
               ],
             )));
   }
