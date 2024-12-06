@@ -39,7 +39,7 @@ class Product {
       quantityUnit: QuantityUnit.fromJson(json['quantityUnit']),
       quantity: json['quantity'],
       user: User.fromJson(json['producer']),
-      description: json['description']
+        description: json['description'] ?? ""
     );
   }
 
