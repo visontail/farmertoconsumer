@@ -1,7 +1,8 @@
+import 'package:farmertoconsumer/screens/order/order.dart';
+import 'package:farmertoconsumer/models/order.dart';
+import 'package:farmertoconsumer/styles/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import '../screens/order/order.dart';
-import '../models/order.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
@@ -30,21 +31,24 @@ class OrderCard extends StatelessWidget {
     String imgSrc = 'assets/images/product.jpg'; // Placeholder image source
 
     return GestureDetector(
-      onTap: () {
-        // Navigate to OrderScreen when tapped
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => OrderScreen(orderId: orderId.toString())),
-        );
-      },
-      child: Card(
-        color: color,
-        margin: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(6),
-        ),
-        elevation: 0,
-        child: Container(
+  onTap: () {
+    // Navigate to OrderScreen when tapped
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => OrderScreen(orderId: orderId.toString())),
+    );
+  },
+  child: Card(
+    color: color,
+    margin: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(6),
+    ),
+    elevation: 0,
+    child: Stack(
+      children: [
+        // Main Card content
+        Container(
           decoration: BoxDecoration(
             color: color,
             borderRadius: BorderRadius.circular(6),
@@ -53,7 +57,6 @@ class OrderCard extends StatelessWidget {
                 color: Color(0x55000000),
                 offset: Offset(0, 4),
                 blurRadius: 4,
-                spreadRadius: 0,
               ),
             ],
           ),
@@ -61,7 +64,7 @@ class OrderCard extends StatelessWidget {
             padding: EdgeInsets.symmetric(vertical: 12, horizontal: 16),
             child: Row(
               children: [
-                // Image and caption section (60% width)
+                // Left side: Image and caption
                 Container(
                   width: MediaQuery.of(context).size.width * 0.45,
                   child: Column(
@@ -69,7 +72,7 @@ class OrderCard extends StatelessWidget {
                       ClipRRect(
                         borderRadius: BorderRadius.circular(6),
                         child: Image.asset(
-                          imgSrc,
+                          imgSrc, // Image path
                           width: double.infinity,
                           height: 100,
                           fit: BoxFit.cover,
@@ -78,85 +81,43 @@ class OrderCard extends StatelessWidget {
                       SizedBox(height: 8),
                       Text(
                         productName,
-                        style: TextStyle(fontSize: 12, color: Colors.white),
+                        style: TextStyle(fontSize: 12, color: white),
                       ),
                     ],
                   ),
                 ),
                 SizedBox(width: 0),
-                // Right-side info section (40% width)
+                // Right side: Information section (now centered horizontally, aligned to top vertically)
                 Container(
                   width: MediaQuery.of(context).size.width * 0.3,
+                  height: 125,
                   child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.end,
+                    mainAxisAlignment: MainAxisAlignment.start, // Align items to the top
+                    crossAxisAlignment: CrossAxisAlignment.center, // Center horizontally
                     children: [
-                      Center(
-                        child: Text(
-                          '$quantity',
-                          style: TextStyle(fontSize: 14, color: Colors.white),
-                        ),
+                      Text(
+                        '$quantity',
+                        style: TextStyle(fontSize: 14, color: white),
                       ),
-                      Center(
-                        child: Text(
-                          productCategory,
-                          style: TextStyle(fontSize: 10, color: Colors.white),
-                        ),
+                      Text(
+                        productCategory,
+                        style: TextStyle(fontSize: 12, color: white),
                       ),
                       SizedBox(height: 6),
-                      Center(
-                        child: Text(
-                          price,
-                          style: TextStyle(fontSize: 14, color: Colors.white),
-                        ),
+                      Text(
+                        price,
+                        style: TextStyle(fontSize: 14, color: white),
                       ),
                       SizedBox(height: 0),
-                      Center(
-                        child: Text(
-                          unitPrice,
-                          style: TextStyle(fontSize: 10, color: Colors.white),
-                        ),
+                      Text(
+                        unitPrice,
+                        style: TextStyle(fontSize: 10, color: white),
                       ),
                       SizedBox(height: 6),
-                      Center(
-                        child: Text(
-                          status,
-                          style: TextStyle(fontSize: 14, color: Colors.white),
-                        ),
-                      ),
-                      SizedBox(height: 0),
-                      Align(
-                        alignment: Alignment.bottomRight,
-                        child: TextButton(
-                          onPressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(builder: (context) => OrderScreen(orderId: orderId.toString())),
-                            );
-                          },
-                          style: TextButton.styleFrom(
-                            padding: EdgeInsets.zero,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(6),
-                            ),
-                          ),
-                          child: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Text(
-                                'View Details',
-                                style: TextStyle(
-                                  color: Colors.white,
-                                ),
-                              ),
-                              SvgPicture.asset(
-                                'assets/icons/right-arrow-2.svg',
-                                width: 10.0,
-                                height: 10.0,
-                                color: Colors.white,
-                              ),
-                            ],
-                          ),
-                        ),
+                      Text(
+                        status,
+                        //style: TextStyle(fontSize: 16, color: status == 'Declined' ? red : (status == 'Approved' ? paleGreen : white)),
+                        style: TextStyle(fontSize: 16, color: white),
                       ),
                     ],
                   ),
@@ -165,7 +126,47 @@ class OrderCard extends StatelessWidget {
             ),
           ),
         ),
-      ),
-    );
+
+        // Positioned Edit Button (Bottom-right)
+        Positioned(
+          bottom: -4, // Adjusted position for closer placement
+          right: 16,
+          child: TextButton(
+            onPressed: () {
+              // Handle View Details button click
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => OrderScreen(orderId: orderId.toString())),
+              );
+            },
+            style: TextButton.styleFrom(
+              padding: EdgeInsets.zero,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(6),
+              ),
+            ),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  'View Details',
+                  style: TextStyle(fontSize: 12, color: white),
+                ),
+                SizedBox(width: 8),
+                SvgPicture.asset(
+                  'assets/icons/right-arrow-2.svg',
+                  width: 8.0,
+                  height: 8.0,
+                  color: white,
+                ),
+              ],
+            ),
+          ),
+        ),
+      ],
+    ),
+  ),
+);
+
   }
 }
