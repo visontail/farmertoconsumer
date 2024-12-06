@@ -71,8 +71,8 @@ class ProfileScreenState extends State<ProfileScreen> {
     super.initState();
     
     //final String user =_userStorage.user.get() ?? "";
-    final String userId = user.id ?? "";
-    final String token = _userStorage.token.get() ?? "";
+    //final String userId = user.id ?? "";
+    //final String token = _userStorage.token.get() ?? "";
 
     _loadData(this.userId, this.token);
   }
