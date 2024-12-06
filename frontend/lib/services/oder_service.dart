@@ -8,7 +8,14 @@ import '../models/order.dart';
 import '../models/product.dart';
 import '../storages/user_storage.dart';
 
-class OrderService extends ChangeNotifier {
+class OrderService {
+  static final OrderService _singleton = OrderService._internal();
+  OrderService._internal();
+
+  factory OrderService() {
+    return _singleton;
+  }
+
   final UserStorage _userStorage = UserStorage();
 
   static const Map<String, String> headers = {

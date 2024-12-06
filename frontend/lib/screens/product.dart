@@ -43,7 +43,7 @@ class _ProductScreenState extends State<ProductScreen> {
   void initState() {
     super.initState();
     fetchProduct(widget.id);
-    orderService = Provider.of<OrderService>(context, listen: false);
+    orderService = OrderService();
   }
 
   @override
@@ -189,7 +189,7 @@ class _ProductScreenState extends State<ProductScreen> {
                                                   builder: (BuildContext context) {
                                                     return AlertDialog(
                                                       title: Text("Successful Order"),
-                                                      content: Text('${order.quantity} ${order.quantityUnit.name} of ${order.product.name}: ${order.price * order.quantity} Ft'),
+                                                      content: Text('${order.quantity} ${order.quantityUnit.name} of ${order.product.name}: ${order.fullPrice} Ft'),
                                                       actions: [
                                                         TextButton(
                                                           onPressed: () {

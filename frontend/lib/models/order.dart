@@ -46,4 +46,5 @@ class Order {
   int get quantity => _quantity;
   QuantityUnit get quantityUnit => _quantityUnit;
   bool? get approved => _approved;
+  int get fullPrice => _price * _quantity;
 }
