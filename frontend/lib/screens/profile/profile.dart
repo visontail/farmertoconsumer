@@ -134,17 +134,18 @@ class ProfileScreenState extends State<ProfileScreen> {
   Future<void> _recieveUser(response) async {
     bool _isProducer = false; 
     final responseBody = json.decode(response.body);
-    AuthenticatedUser? _user = AuthenticatedUser.fromJson(responseBody);
-
-    String? _userName = user?.name; // Name of the user
+    AuthenticatedUser? user = AuthenticatedUser.fromJson(responseBody);
+    String userName = user?.name ?? ''; // Name of the user
+    print('userName');
+    print(userName);
 
     // Check if producerData exists and handle accordingly
     String? producerDescription = user?.producerData != null ? user?.producerData?.description : null;
 
     // If successful, update the state with the user data
     setState(() {
-      user = _user;
-      userName = _userName ?? ''; // Update userName
+      this.user = user;
+      this.userName = userName; // Update userName
     });
 
     if(user?.producerData == null) {
