@@ -1,3 +1,4 @@
+import 'package:farmertoconsumer/models/producerData.dart';
 import 'package:farmertoconsumer/models/productCategory.dart';
 import 'package:farmertoconsumer/models/quantityUnit.dart';
 import 'package:farmertoconsumer/models/user.dart';

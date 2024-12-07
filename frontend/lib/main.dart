@@ -2,22 +2,21 @@ import 'package:farmertoconsumer/providers/auth_provider.dart';
 import 'package:farmertoconsumer/services/oder_service.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:farmertoconsumer/services/product_service.dart';
 
-import '../screens/feed/feed.dart';
-import '../screens/consumer_profile.dart';
-import '../screens/login.dart';
-import '../screens/order_confirmation.dart';
-import '../screens/order.dart';
-import '../screens/producer_profile.dart';
-import '../screens/product_management.dart';
-import '../screens/product_upload.dart';
-import '../screens/product.dart';
-import '../screens/registration.dart';
-import '../screens/user_upgrade_form.dart';
-import '../screens/user_upgrade.dart';
+import 'package:farmertoconsumer/screens/feed/feed.dart';
+import 'package:farmertoconsumer/screens/profile/profile.dart';
+import 'package:farmertoconsumer/screens/login.dart';
+import 'package:farmertoconsumer/screens/order/order.dart';
+import 'package:farmertoconsumer/screens/product_management.dart';
+import 'package:farmertoconsumer/screens/product_upload.dart';
+import 'package:farmertoconsumer/screens/product.dart';
+import 'package:farmertoconsumer/screens/registration.dart';
+import 'package:farmertoconsumer/screens/user_upgrade_form.dart';
+import 'package:farmertoconsumer/screens/user_upgrade.dart';
 
-import '../screens/feed/feed_data_provider.dart';
-import '../utils/routes.dart';
+import 'package:farmertoconsumer/screens/feed/feed_data_provider.dart';
+import 'package:farmertoconsumer/utils/routes.dart';
 
 void main() {
   runApp(const MyApp());
@@ -41,14 +40,11 @@ class MyApp extends StatelessWidget {
           Routes.feed: (context) => FeedScreen(),
           Routes.login: (context) => LoginScreen(),
           Routes.registration: (context) => RegistrationScreen(),
-          Routes.order: (context) => OrderScreen(),
-          Routes.orderConfirmation: (context) => OrderConfirmationScreen(),
-          Routes.consumerProfile: (context) => ConsumerProfileScreen(),
-          Routes.producerProfile: (context) => ProducerProfileScreen(),
+          Routes.order: (context) => OrderScreen(orderId: '1'),
+          Routes.profile: (context) => ProfileScreen(),
           Routes.productManagement: (context) => ProductManagementScreen(),
           Routes.productUpload: (context) => ProductUploadScreen(),
           Routes.userUpgrade: (context) => UserUpgradeScreen(),
-          Routes.userUpgradeForm: (context) => UserUpgradeFormScreen(),
         },
         onGenerateRoute: (settings) {
           if (settings.name == Routes.product) {

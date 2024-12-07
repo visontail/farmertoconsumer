@@ -3,6 +3,7 @@ import 'package:farmertoconsumer/models/authenticated_user.dart';
 import 'package:farmertoconsumer/storages/user_storage.dart';
 import 'package:http/http.dart' as http;
 
+import '../models/user.dart';
 import '../utils/api_endpoints.dart';
 
 class AuthService {
@@ -27,12 +28,12 @@ class AuthService {
       'password': password,
     });
 
-    try {
-      final response = await http.post(
-        Uri.parse(loginEndpoint),
-        body: jsonBody,
-        headers: headers,
-      );
+  try {
+    final response = await http.post(
+      Uri.parse(loginEndpoint),
+      body: jsonBody,
+      headers: headers,
+    );
 
       final responseBody = json.decode(response.body);
       print('Login Response: $responseBody');
@@ -63,12 +64,12 @@ class AuthService {
       'confirmPassword': confirmPassword,
     });
 
-    try {
-      final response = await http.post(
-        Uri.parse(registerEndpoint),
-        body: jsonBody,
-        headers: headers,
-      );
+  try {
+    final response = await http.post(
+      Uri.parse(registerEndpoint),
+      body: jsonBody,
+      headers: headers,
+    );
 
       final responseBody = json.decode(response.body);
       print('Register Response: $responseBody');

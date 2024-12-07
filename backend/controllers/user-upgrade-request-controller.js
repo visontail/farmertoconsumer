@@ -81,7 +81,7 @@ class UserUpgradeRequestController extends ControllerBase {
 
     async create(req, res) {
         const existingRequest = await UserUpgradeRequest
-            .findOne({ where: { UserId: req.user.id, approved: { [Op.not]: false } } })
+            .findOne({ where: { UserId: req.user.id, approved: null } })
         if (existingRequest) {
             return res.status(400)
                 .send({ message: 'User has already submitted a request' })

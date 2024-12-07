@@ -6,10 +6,14 @@ import 'package:farmertoconsumer/widgets/feed/search_text_field.dart';
 import 'package:farmertoconsumer/models/product.dart';
 import 'package:farmertoconsumer/models/productCategory.dart';
 import 'package:farmertoconsumer/screens/feed/feed_data_provider.dart';
+import 'package:farmertoconsumer/screens/profile/profile.dart';
+import 'package:farmertoconsumer/screens/login.dart';
 import 'package:farmertoconsumer/styles/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
+
+import 'package:farmertoconsumer/storages/user_storage.dart';
 
 class FeedScreen extends StatefulWidget {
   const FeedScreen({super.key});
@@ -21,9 +25,13 @@ class FeedScreen extends StatefulWidget {
 class _FeedScreenState extends State<FeedScreen> {
   final TextEditingController searchController = TextEditingController();
 
+  final UserStorage _userStorage = UserStorage();
+
   @override
   Widget build(BuildContext context) {
     final provider = Provider.of<FeedDataProvider>(context);
+
+    final token = _userStorage.token.get() ?? "";
 
     return Scaffold(
         body: RefreshIndicator(

@@ -5,6 +5,10 @@ const String authProfileEndpoint = '$baseUrl/auth/profile';
 
 const String productsEndPoint = '$baseUrl/products';
 const String productEndPoint = '$baseUrl/products/';
+const String authProfileEndpoint = '$baseUrl/auth/profile';
+
+const String productsEndPoint = '$baseUrl/products';
+const String productEndPoint = '$baseUrl/products/';
 
 const String getAllCategoryEndpoint = '$baseUrl/categories';
 const String getAllQuantityUnitEndpoint = '$baseUrl/quantity-units';
@@ -12,7 +16,7 @@ const String getAllQuantityUnitEndpoint = '$baseUrl/quantity-units';
 const String ordersEndPoint = '$baseUrl/orders';
 
 String getAllProductEndpoint(
-    String? search, int? categoryId, int? skip, int? take) {
+  String? search, int? categoryId, int? skip, int? take) {
   String url = '$baseUrl/products?';
 
   if (search != null) {

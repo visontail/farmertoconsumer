@@ -48,6 +48,7 @@ class _ProductScreenState extends State<ProductScreen> {
 
   @override
   Widget build(BuildContext context) {
+    var quantity = 1;
     return Scaffold(
       appBar: AppBar(
         title: Row(
