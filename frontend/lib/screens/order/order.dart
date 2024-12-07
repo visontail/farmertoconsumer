@@ -38,11 +38,11 @@ class OrderScreenState extends State<OrderScreen> {
         });
         if(order.approved != null) {
           setState(() {
-            isOrderConfirmed = true;            
+            this.isOrderConfirmed = true;            
           });
         } else {
           setState(() {
-            isRelevantProducer = dataProvider.isRelevantProducer(order);
+            this.isRelevantProducer = dataProvider.isRelevantProducer(order);
           });
         }
       } else {

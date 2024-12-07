@@ -6,7 +6,6 @@ import 'package:farmertoconsumer/widgets/profile/profile_hero.dart';
 import 'package:farmertoconsumer/widgets/profile/profile_orders.dart';
 import 'package:farmertoconsumer/widgets/profile/profile_products.dart';
 import 'package:farmertoconsumer/styles/colors.dart';
-import 'package:farmertoconsumer/storages/user_storage.dart';
 
 
 import 'package:farmertoconsumer/providers/auth_provider.dart';
@@ -24,15 +23,13 @@ class ProfileScreen extends StatefulWidget {
 class ProfileScreenState extends State<ProfileScreen> {
   final dataProvider = ProfileDataProvider();
 
-  final UserStorage _userStorage = UserStorage();
-
   bool isLoading = true;
 
-  int? userId = null;
+  AuthenticatedUser? user;
+  int? userId;
+  String userName = '';
   String token = '';
 
-  AuthenticatedUser? user = null;
-  String userName = "";
   bool isProducer = false; // Initial state: upgrade not requested
   bool hasPendingUserUpgradeRequest = false;
 
@@ -61,22 +58,24 @@ class ProfileScreenState extends State<ProfileScreen> {
   @override
   void initState() {
     super.initState();
-    
-    final AuthenticatedUser? _user =_userStorage.user.get() ?? null;
-    final int? _userId = _user?.id ?? null;
-    final String _token = _userStorage.token.get() ?? "";
+
+    final AuthenticatedUser? user = dataProvider.getUser();
+    final int? userId = user?.id;
+    final String userName = user?.name ?? '';
+    final String token = dataProvider.getToken();
 
     setState(() {
-      userId = _userId;
-      token = _token;
+      //this.user = user;
+      this.userId = userId;
+      this.userName = userName;
+      this.token = token;
     });
 
-    //_loadData(this.userId, this.token);
-    _loadData(_userId, _token);
+    _loadProfileData(userId, token);
   }
 
-  Future<void> _loadData(userId, token) async {
-    _fetchUser(this.userId, this.token); // Fetch user 
+  Future<void> _loadProfileData(userId, token) async {
+    _fetchUser(userId, token); // Fetch user 
   }
 
   Future<void> _fetchThings(url, token, callback) async {
