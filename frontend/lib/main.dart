@@ -1,22 +1,19 @@
 import 'package:farmertoconsumer/providers/auth_provider.dart';
-import 'package:farmertoconsumer/services/oder_service.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:farmertoconsumer/services/product_service.dart';
 
-import 'package:farmertoconsumer/screens/feed/feed.dart';
-import 'package:farmertoconsumer/screens/profile/profile.dart';
-import 'package:farmertoconsumer/screens/login.dart';
-import 'package:farmertoconsumer/screens/order/order.dart';
-import 'package:farmertoconsumer/screens/product_management.dart';
-import 'package:farmertoconsumer/screens/product_upload.dart';
-import 'package:farmertoconsumer/screens/product.dart';
-import 'package:farmertoconsumer/screens/registration.dart';
-import 'package:farmertoconsumer/screens/user_upgrade_form.dart';
-import 'package:farmertoconsumer/screens/user_upgrade.dart';
+import '../screens/feed/feed.dart';
+import '../screens/login.dart';
+import '../screens/profile/profile.dart';
+import '../screens/product_management.dart';
+import '../screens/product_upload.dart';
+import '../screens/product.dart';
+import '../screens/registration.dart';
+import '../screens/order/order.dart';
+import '../screens/user_upgrade.dart';
 
-import 'package:farmertoconsumer/screens/feed/feed_data_provider.dart';
-import 'package:farmertoconsumer/utils/routes.dart';
+import '../screens/feed/feed_data_provider.dart';
+import '../utils/routes.dart';
 
 void main() {
   runApp(const MyApp());
@@ -50,7 +47,7 @@ class MyApp extends StatelessWidget {
           if (settings.name == Routes.product) {
             final args = settings.arguments as Map<String, dynamic>?;
             return MaterialPageRoute(
-              builder: (context) => ProductScreen(id: args?['id'] ?? "1"),
+            builder: (context) => ProductScreen(id: args?['id'] ?? "1"),
             );
           }
           return null;

@@ -39,7 +39,7 @@ class _FeedScreenState extends State<FeedScreen> {
             onRefresh: provider.refresh,
             child: Column(
               children: [
-                appBarWidget(context),
+                appBarWidget(context, token),
                 SearchTextField(
                     search: provider.searchProduct,
                     controller: searchController),
@@ -71,18 +71,14 @@ class _FeedScreenState extends State<FeedScreen> {
             )));
   }
 
-  Widget appBarWidget(BuildContext context) {
+  Widget appBarWidget(BuildContext context, String token) {
     final authProvider = Provider.of<AuthProvider>(context);
 
     onSelectProfile() {
-      if (authProvider.isAuthenticated) {
-        if (authProvider.user!.isProducer) {
-          Navigator.pushNamed(context, Routes.producerProfile);
-        } else {
-          Navigator.pushNamed(context, Routes.consumerProfile);
-        }
-      } else {
+      if(token == '') {
         Navigator.pushNamed(context, Routes.login);
+      } else {
+        Navigator.pushNamed(context, Routes.profile);
       }
     }
 

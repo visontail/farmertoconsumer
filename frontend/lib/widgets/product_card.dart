@@ -1,4 +1,4 @@
-import 'package:farmertoconsumer/screens/product.dart';
+import 'package:farmertoconsumer/screens/product-modify.dart';
 import 'package:farmertoconsumer/models/product.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -14,7 +14,7 @@ class ProductCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    int? productId = product?.id;
+    int? productId = product?.id ?? -1;
     String productName = product?.name ?? '';
     String productCategory = product?.category?.name ?? '';
     String productquantityUnit = product?.quantityUnit?.name ?? '';
@@ -28,7 +28,7 @@ class ProductCard extends StatelessWidget {
         // Handle card tap (e.g., navigate to product details)
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => ProductScreen(id: productId.toString())),
+          MaterialPageRoute(builder: (context) => ProductModifyForm(id: productId)),
         );
       },
       child: Card(
@@ -138,7 +138,7 @@ class ProductCard extends StatelessWidget {
                   // Handle Edit button click
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => ProductScreen(id: productId.toString())),
+                    MaterialPageRoute(builder: (context) => ProductModifyForm(id: productId)),
                   );
                 },
                 style: TextButton.styleFrom(

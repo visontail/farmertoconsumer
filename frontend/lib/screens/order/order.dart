@@ -109,7 +109,7 @@ class OrderScreenState extends State<OrderScreen> {
     int q = order?.quantity ?? 1;
     String quantity = q.toString() + ' ' + quantityUnit; // Order quantity
     String status = order?.approved == null ? 'Pending' : (order?.approved == true ? 'Approved' : 'Declined');
-    double p = order?.price ?? 0;
+    int p = order?.price ?? 0;
     String price = (p * q).toString() + ' Ft'; // Order price
     String unitPrice = p.toString() + ' Ft/' + quantityUnit; // Order price
     String imgSrc = 'assets/images/product.jpg'; // Placeholder image source
@@ -210,7 +210,7 @@ class OrderScreenState extends State<OrderScreen> {
               // Display the buyer's name and buttons
               SizedBox(height: 12),
               Text(
-                'Buyer: ${order!.user.name}',
+                'Buyer: ${order!.customer.name}',
                 style: TextStyle(fontWeight: FontWeight.bold, color: mainGreen),
               ),
               SizedBox(height: 12),
