@@ -1,6 +1,7 @@
 import 'package:farmertoconsumer/screens/profile/profile_data_provider.dart';
 import 'package:farmertoconsumer/screens/login.dart';
 import 'package:farmertoconsumer/models/authenticated_user.dart';
+import 'package:farmertoconsumer/utils/snack_bar.dart';
 import 'package:farmertoconsumer/widgets/custom_app_bar.dart';
 import 'package:farmertoconsumer/widgets/profile/profile_hero.dart';
 import 'package:farmertoconsumer/widgets/profile/profile_orders.dart';
@@ -384,10 +385,6 @@ class ProfileScreenState extends State<ProfileScreen> {
                 // Handle the action to deny the request (e.g., delete or reject)
                 print('LOG OUT');
                 performLogout();
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => LoginScreen()),
-                );
               },
               child: Text('Log out'),
             ),
@@ -400,6 +397,11 @@ class ProfileScreenState extends State<ProfileScreen> {
   void performLogout() {
       final authProvider = Provider.of<AuthProvider>(context, listen: false);
       authProvider.logout();
+      Navigator.pop(context);
+      showSnackBar(
+          context: context,
+          message: "Logged out. See you soon!",
+          backgroundColor: mainGreen);
   }
 
 }
