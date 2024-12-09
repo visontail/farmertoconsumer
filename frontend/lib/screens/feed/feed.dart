@@ -25,13 +25,9 @@ class FeedScreen extends StatefulWidget {
 class _FeedScreenState extends State<FeedScreen> {
   final TextEditingController searchController = TextEditingController();
 
-  final UserStorage _userStorage = UserStorage();
-
   @override
   Widget build(BuildContext context) {
     final provider = Provider.of<FeedDataProvider>(context);
-
-    final token = _userStorage.token.get() ?? "";
 
     return Scaffold(
         body: RefreshIndicator(
@@ -39,7 +35,7 @@ class _FeedScreenState extends State<FeedScreen> {
             onRefresh: provider.refresh,
             child: Column(
               children: [
-                appBarWidget(context, token),
+                appBarWidget(context),
                 SearchTextField(
                     search: provider.searchProduct,
                     controller: searchController),
@@ -71,14 +67,14 @@ class _FeedScreenState extends State<FeedScreen> {
             )));
   }
 
-  Widget appBarWidget(BuildContext context, String token) {
+  Widget appBarWidget(BuildContext context) {
     final authProvider = Provider.of<AuthProvider>(context);
 
     onSelectProfile() {
-      if(token == '') {
-        Navigator.pushNamed(context, Routes.login);
-      } else {
+      if(authProvider.isAuthenticated) {
         Navigator.pushNamed(context, Routes.profile);
+      } else {
+        Navigator.pushNamed(context, Routes.login);
       }
     }
 

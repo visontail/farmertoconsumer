@@ -35,23 +35,13 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
         ],
       ),
       actions: [
-        GestureDetector(
-          onTap: () {
-            // Add your onTap functionality here
-            print('Icon clicked');
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => ProfileScreen()),
-            );
-          },
-          child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-            child: SvgPicture.asset(
-              'assets/icons/customer-icon.svg',
-              width: 20.0,
-              height: 20.0,
-              color: white,
-            ),
+        Padding(
+          padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+          child: SvgPicture.asset(
+            'assets/icons/customer-icon.svg',
+            width: 20.0,
+            height: 20.0,
+            color: white,
           ),
         ),
       ],
