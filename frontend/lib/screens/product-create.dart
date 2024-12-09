@@ -345,15 +345,30 @@ class _ProductCreateFormState extends State<ProductCreateForm> {
               children: [ElevatedButton(
               onPressed: () async {
                 if (_formKey.currentState!.validate()) {
-                  final productData = {
-                    'name': nameController.text,
-                    'categoryId': selectedCategory?.id,
-                    'quantity': quantity,
-                    'quantityUnitId': selectedQuantityUnit?.id,                    
-                    'price': int.tryParse(priceController.text) ?? 0,
-                    'description': descriptionController.text
-                  };
+                  try {
+                    final productData = {
+                      'name': nameController.text,
+                      'categoryId': selectedCategory?.id,
+                      'quantity': quantity,
+                      'quantityUnitId': selectedQuantityUnit?.id,                    
+                      'price': int.tryParse(priceController.text) ?? 0,
+                      'description': descriptionController.text
+                    };
 
+                    final productService = ProductService();
+                    final createProduct = await productService.createProduct(productData);
+
+                    // Sikeres mentés
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text('Product added successfully!')),
+                    );
+
+                    Navigator.pop(context); //navigate back 
+                  }
+
+
+                  
+/*
                   try {
                     final productService = Provider.of<ProductService>(context, listen: false);
                     await productService.createProduct(productData);
@@ -364,7 +379,7 @@ class _ProductCreateFormState extends State<ProductCreateForm> {
                     );
 
                     //Navigator.pop(context); //navigate back 
-                  } catch (e) {
+                  }*/ catch (e) {
                     // Hiba kezelése
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(content: Text('Failed to add product: $e')),
