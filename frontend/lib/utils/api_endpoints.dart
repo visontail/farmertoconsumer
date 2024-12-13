@@ -5,6 +5,7 @@ const String authProfileEndpoint = '$baseUrl/auth/profile';
 
 const String productsEndPoint = '$baseUrl/products';
 const String productEndPoint = '$baseUrl/products/';
+const String productImageDownloadEndpoint =  '$baseUrl/public/product-images/';
 
 const String getAllCategoryEndpoint = '$baseUrl/categories';
 const String getAllQuantityUnitEndpoint = '$baseUrl/quantity-units';

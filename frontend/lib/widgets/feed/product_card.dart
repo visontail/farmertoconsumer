@@ -1,5 +1,7 @@
+import 'dart:typed_data';
 import 'package:farmertoconsumer/models/product.dart';
 import 'package:farmertoconsumer/styles/colors.dart';
+import 'package:farmertoconsumer/utils/asset_helper.dart';
 import 'package:farmertoconsumer/utils/routes.dart';
 import 'package:flutter/material.dart';
 
@@ -26,10 +28,24 @@ class ProductCard extends StatelessWidget {
                       children: [
                         ClipRRect(
                             borderRadius: BorderRadius.circular(5),
-                            child: Image.asset(
-                                'assets/images/prod-placeholder.jpg',
-                                width: 180,
-                                fit: BoxFit.cover)),
+                            child: FutureBuilder(
+                                future: getProductImage(product),
+                                builder: (BuildContext context,
+                                    AsyncSnapshot<Uint8List> snapshot) {
+                                  if (snapshot.hasData) {
+                                    return Image.memory(snapshot.data!,
+                                        width: 180,
+                                        height: 100,
+                                        fit: BoxFit.cover);
+                                  } else {
+                                    return SizedBox(
+                                        width: 180,
+                                        height: 100,
+                                        child: Center(
+                                          child: CircularProgressIndicator(color: Colors.white),
+                                        ));
+                                  }
+                                })),
                         Expanded(
                             child: Center(
                                 child: Column(children: [
