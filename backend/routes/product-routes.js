@@ -62,6 +62,10 @@ module.exports = (fastify, _, next) => {
         }
     }, (req, res) => fastify.ProductController.update(req, res))
 
+    fastify.post('/:id/image', {
+        onRequest: fastify.authenticateProducer,
+    }, (req, res) => fastify.ProductController.uploadImage(req, res))
+
     next();
 }
 
