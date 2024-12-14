@@ -3,11 +3,12 @@ import 'package:farmertoconsumer/services/oder_service.dart';
 import 'package:farmertoconsumer/styles/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:provider/provider.dart';
 import '../models/order.dart';
 import '../models/product.dart';
 import '../services/product_service.dart';
+import '../utils/asset_helper.dart';
 import '../widgets/counter.dart';
+import 'dart:typed_data';
 
 class ProductScreen extends StatefulWidget {
   final String id;
@@ -23,6 +24,7 @@ class _ProductScreenState extends State<ProductScreen> {
   late OrderService orderService;
   int quantity = 1;
   AuthProvider authProvider = AuthProvider();
+  Future<Uint8List>? productImageFuture;
 
   Future<void> fetchProduct(String id) async {
     final productService = ProductService();
@@ -31,6 +33,7 @@ class _ProductScreenState extends State<ProductScreen> {
     if (product != null) {
       setState(() {
         errorMessage = null;
+        productImageFuture = getProductImage(product!);
       });
     } else {
       setState(() {
@@ -48,7 +51,6 @@ class _ProductScreenState extends State<ProductScreen> {
 
   @override
   Widget build(BuildContext context) {
-    var quantity = 1;
     return Scaffold(
       appBar: AppBar(
         title: Row(
@@ -287,13 +289,28 @@ class _ProductScreenState extends State<ProductScreen> {
                       alignment: Alignment.center,
                       width: 353,
                       child: ClipRRect(
-                        borderRadius: BorderRadius.circular(6),
-                        child: Image.asset(
-                          'assets/images/prod-placeholder.jpg',
-                          fit: BoxFit.fill,
-                        )
+                          borderRadius: BorderRadius.circular(5),
+                          child: FutureBuilder(
+                              future: productImageFuture,
+                              builder: (BuildContext context, AsyncSnapshot<Uint8List> snapshot) {
+                                if (snapshot.hasData) {
+                                  return Image.memory(snapshot.data!,
+                                      width: 353,
+                                      height: 200,
+                                      fit: BoxFit.cover);
+                                } else {
+                                  return SizedBox(
+                                      width: 353,
+                                      height: 200,
+                                      child: Center(
+                                        child: CircularProgressIndicator(color: Colors.white),
+                                      )
+                                  );
+                                }
+                              }
+                          )
                       ),
-                    )
+                    ),
                   ]
                 ),
               ],
