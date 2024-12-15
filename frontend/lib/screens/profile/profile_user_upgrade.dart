@@ -43,7 +43,8 @@ class _UpgradeFormScreenState extends State<UpgradeFormScreen> {
       // Prepare the payload as a JSON object
       Map<String, dynamic> payload = {
         'description': message,
-        'contact': contactInformation
+        'contact': contactInformation,
+        'profileDescription': description
       };
 
       // Specify the API endpoint
