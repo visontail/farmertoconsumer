@@ -1,6 +1,7 @@
 import 'package:farmertoconsumer/widgets/custom_app_bar.dart';
 import 'package:farmertoconsumer/styles/colors.dart';
 import 'package:farmertoconsumer/models/order.dart'; // assuming QuantityUnit is in this file
+import 'package:farmertoconsumer/models/product.dart'; // assuming QuantityUnit is in this file
 import 'package:farmertoconsumer/screens/order/order_data_provider.dart';
 import 'package:farmertoconsumer/screens/profile/profile.dart';
 
@@ -22,7 +23,8 @@ class OrderScreenState extends State<OrderScreen> {
   bool isOrderConfirmed = false;
   bool isRelevantProducer = false;//true;
 
-  Order? order; // We will store the fetched order here
+  //Order? order; // We will store the fetched order here
+  dynamic order; // We will store the fetched order here
 
 
   @override
@@ -103,6 +105,7 @@ class OrderScreenState extends State<OrderScreen> {
     String title = isRelevantProducer && !isOrderConfirmed ? 'Confirm Order' : 'Your order summary';
 
     int? orderId = order?.id ?? null;
+    Product product = order?.product ?? null;
     String productName = order?.product?.name ?? ''; // Product name
     String productCategory = order?.product?.category?.name ?? ''; // Product category
     String quantityUnit = order?.product?.quantityUnit?.name ?? '';
@@ -142,7 +145,28 @@ class OrderScreenState extends State<OrderScreen> {
             // Add Image below the Order ID and align to the left
             Row(
               children: [
-                Image.asset(imgSrc, height: 100),
+                //Image.asset(imgSrc, height: 100),
+                product == null ? Center(child: CircularProgressIndicator())
+                : ClipRRect(
+                  borderRadius: BorderRadius.circular(5),
+                  child: FutureBuilder(
+                      future: getProductImage(order.product),
+                      builder: (BuildContext context,
+                          AsyncSnapshot<Uint8List> snapshot) {
+                        if (snapshot.hasData) {
+                          return Image.memory(snapshot.data!,
+                              width: 180,
+                              height: 100,
+                              fit: BoxFit.cover);
+                        } else {
+                          return SizedBox(
+                              width: 180,
+                              height: 100,
+                              child: Center(
+                                child: CircularProgressIndicator(color: Colors.white),
+                              ));
+                        }
+                      })),
               ],
             ),
             SizedBox(height: 12),
