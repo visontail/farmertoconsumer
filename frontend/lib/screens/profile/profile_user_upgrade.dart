@@ -1,3 +1,4 @@
+import 'package:farmertoconsumer/utils/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:farmertoconsumer/storages/user_storage.dart';
 import 'package:flutter_svg/flutter_svg.dart'; // For loading SVG icons (if needed)
@@ -71,39 +72,25 @@ class _UpgradeFormScreenState extends State<UpgradeFormScreen> {
         // Check if the request was successful (status code 200)
         if (response.statusCode == 200) {
           // Handle the successful response
+          Navigator.pushNamedAndRemoveUntil(context, Routes.feed, (_) => false);
           showDialog(
             context: context,
             builder: (_) => AlertDialog(
               title: Text('Success'),
               content: Text('Your upgrade request was submitted successfully.'),
-              actions: [
-                TextButton(
-                  onPressed: () {
-                    Navigator.pop(context);
-                    // Optionally, navigate to another screen
-                  },
-                  child: Text('OK'),
-                ),
-              ],
             ),
           );
         } else {
           // Handle the error response
+          Navigator.pushNamedAndRemoveUntil(context, Routes.feed, (_) => false);
           showDialog(
             context: context,
             builder: (_) => AlertDialog(
               title: Text('Error'),
               content: Text('Failed to submit user upgrade: ${data['message']}'),
-              actions: [
-                TextButton(
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                  child: Text('OK'),
-                ),
-              ],
             ),
           );
+
         }
       } catch (error) {
         // Handle any error during the request (e.g., no internet connection)

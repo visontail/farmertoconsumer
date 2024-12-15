@@ -41,7 +41,7 @@ class _UpgradeSectionState extends State<UpgradeSection> {
 
   Future<void> saveDetails() async {
     var newContact = _userEmailtextController.text;
-    var newDescription = _descriptionController.text;
+    var newDescription = _descriptionController.text ?? '';
 
     int? userId = widget.user?.id;
     String token = widget.token;
