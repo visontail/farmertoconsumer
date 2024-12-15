@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+import 'package:farmertoconsumer/utils/asset_helper.dart';
 import 'package:farmertoconsumer/screens/order/order.dart';
 import 'package:farmertoconsumer/models/order.dart';
 import 'package:farmertoconsumer/styles/colors.dart';
@@ -6,7 +8,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 
 // OrderCard Widget: Extracted from OrderSection
 class OrderCard extends StatelessWidget {
-  final Order? order;
+  final Order order;
   final Color color;
 
   OrderCard({
@@ -26,7 +28,7 @@ class OrderCard extends StatelessWidget {
     int p = order?.price ?? 0;
     String price = (p * q).toString() + ' Ft'; // Order price
     String unitPrice = p.toString() + ' Ft/' + quantityUnit; // Order price
-    String imgSrc = 'assets/images/product.jpg'; // Placeholder image source
+    //String imgSrc = 'assets/images/product.jpg'; // Placeholder image source
 
     return GestureDetector(
   onTap: () {
@@ -68,6 +70,28 @@ class OrderCard extends StatelessWidget {
                   child: Column(
                     children: [
                       ClipRRect(
+                        borderRadius: BorderRadius.circular(5),
+                        child: FutureBuilder(
+                            future: getProductImage(order.product),
+                            builder: (BuildContext context,
+                                AsyncSnapshot<Uint8List> snapshot) {
+                              if (snapshot.hasData) {
+                                return Image.memory(snapshot.data!,
+                                    width: 180,
+                                    height: 100,
+                                    fit: BoxFit.cover);
+                              } else {
+                                return SizedBox(
+                                    width: 180,
+                                    height: 100,
+                                    child: Center(
+                                      child: CircularProgressIndicator(color: Colors.white),
+                                    ));
+                              }
+                            })),
+
+                      /*
+                      ClipRRect(
                         borderRadius: BorderRadius.circular(6),
                         child: Image.asset(
                           imgSrc, // Image path
@@ -76,6 +100,7 @@ class OrderCard extends StatelessWidget {
                           fit: BoxFit.cover,
                         ),
                       ),
+                      */
                       SizedBox(height: 8),
                       Text(
                         productName,

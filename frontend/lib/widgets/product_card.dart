@@ -1,10 +1,12 @@
+import 'dart:typed_data';
 import 'package:farmertoconsumer/screens/product-modify.dart';
 import 'package:farmertoconsumer/models/product.dart';
 import 'package:flutter/material.dart';
+import 'package:farmertoconsumer/utils/asset_helper.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class ProductCard extends StatelessWidget {
-  final Product? product;
+  final Product product;
   final Color color;
 
   ProductCard({
@@ -63,6 +65,27 @@ class ProductCard extends StatelessWidget {
                       child: Column(
                         children: [
                           ClipRRect(
+                            borderRadius: BorderRadius.circular(5),
+                            child: FutureBuilder(
+                                future: getProductImage(product),
+                                builder: (BuildContext context,
+                                    AsyncSnapshot<Uint8List> snapshot) {
+                                  if (snapshot.hasData) {
+                                    return Image.memory(snapshot.data!,
+                                        width: 180,
+                                        height: 100,
+                                        fit: BoxFit.cover);
+                                  } else {
+                                    return SizedBox(
+                                        width: 180,
+                                        height: 100,
+                                        child: Center(
+                                          child: CircularProgressIndicator(color: Colors.white),
+                                        ));
+                                  }
+                                })),
+                          /*
+                          ClipRRect(
                             borderRadius: BorderRadius.circular(6),
                             child: Image.asset(
                               'assets/images/product.jpg', // Example image
@@ -71,6 +94,7 @@ class ProductCard extends StatelessWidget {
                               fit: BoxFit.cover,
                             ),
                           ),
+                          */
                           SizedBox(height: 8),
                           Text(
                             productName,
