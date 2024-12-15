@@ -127,8 +127,9 @@ class _ProductCreateFormState extends State<ProductCreateForm> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              
-              // Drag-and-drop
+            
+            /*
+            // Drag-and-drop
             Container(
               width: double.infinity,
               padding: const EdgeInsets.all(16.0),
@@ -155,7 +156,8 @@ class _ProductCreateFormState extends State<ProductCreateForm> {
               ),
             ),
             const SizedBox(height: 16),  
-             
+            */
+
             //name
             Text(
               'Product Name',

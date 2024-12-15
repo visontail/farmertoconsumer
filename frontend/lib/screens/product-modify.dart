@@ -161,8 +161,9 @@ class _ProductModifyFormState extends State<ProductModifyForm> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              
-              // Drag-and-drop
+
+            /*  
+            // Drag-and-drop
             Container(
               width: double.infinity,
               padding: const EdgeInsets.all(16.0),
@@ -188,7 +189,8 @@ class _ProductModifyFormState extends State<ProductModifyForm> {
                 ],
               ),
             ),
-            const SizedBox(height: 16),  
+            const SizedBox(height: 16),
+            */
             
             //name
             Text(
@@ -411,6 +413,8 @@ class _ProductModifyFormState extends State<ProductModifyForm> {
                         backgroundColor: mainGreen, foregroundColor: white),
                     child: const Text('Save Product'),
                   ),
+                  
+                  /*
                   const SizedBox(width: 16),
                   ElevatedButton(
                     onPressed: () {
@@ -423,6 +427,7 @@ class _ProductModifyFormState extends State<ProductModifyForm> {
                         backgroundColor: Colors.red, foregroundColor: white),
                     child: const Text('Delete Product'),
                   ),
+                  */
                 ],
               ),
             ],
