@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:farmertoconsumer/storages/user_storage.dart';
 import 'package:flutter_svg/flutter_svg.dart'; // For loading SVG icons (if needed)
 import '../../widgets/custom_app_bar.dart';
 import 'package:http/http.dart' as http;
@@ -15,6 +16,8 @@ class UpgradeFormScreen extends StatefulWidget {
 class _UpgradeFormScreenState extends State<UpgradeFormScreen> {
   // Create a global key to identify the Form widget
   final _formKey = GlobalKey<FormState>();
+
+  final UserStorage _userStorage = UserStorage();
 
   // Controllers for the form fields to access and validate their values
   final TextEditingController _messageController = TextEditingController();
@@ -44,7 +47,8 @@ class _UpgradeFormScreenState extends State<UpgradeFormScreen> {
 
       // Specify the API endpoint
       String apiUrl = 'http://10.0.2.2:3000/user-upgrade-requests'; // Replace with the correct API URL
-      String token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NiwiaWF0IjoxNzMyMDQ4MTY5fQ.X7Zfqx6MbHyDAOucSGjJ9r5pDnot0D5f4-mAOJBmM5o';
+      //String token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NiwiaWF0IjoxNzMyMDQ4MTY5fQ.X7Zfqx6MbHyDAOucSGjJ9r5pDnot0D5f4-mAOJBmM5o';
+      String token = _userStorage.token.get() ?? "";
       //String token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNzMzNDIwMTg0fQ._n1lBDUpNHjiDaHNN_T4LmoxWcq82EKMZ5w8e5owo2o';  
       //String token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiaWF0IjoxNzMzNDIxNjcxfQ.Jw8B7ABRfk0NyZGLOyPD7x9W9IZwHmgsWXzJfcDXLb0';  
 
@@ -82,10 +86,6 @@ class _UpgradeFormScreenState extends State<UpgradeFormScreen> {
                 ),
               ],
             ),
-          );
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => ProfileScreen()),
           );
         } else {
           // Handle the error response
