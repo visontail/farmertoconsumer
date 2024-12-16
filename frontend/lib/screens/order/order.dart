@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+import 'package:farmertoconsumer/utils/asset_helper.dart';
 import 'package:farmertoconsumer/widgets/custom_app_bar.dart';
 import 'package:farmertoconsumer/styles/colors.dart';
 import 'package:farmertoconsumer/models/order.dart'; // assuming QuantityUnit is in this file
