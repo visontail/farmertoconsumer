@@ -15,7 +15,7 @@ class ProducerData {
     return ProducerData(
       id: json['id'],
       contact: json['contact'],
-      description: json['description'],
+      description: json['description'] ?? '',
     );
   }
 

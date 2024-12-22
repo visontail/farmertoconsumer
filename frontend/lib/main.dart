@@ -11,6 +11,7 @@ import '../screens/product.dart';
 import '../screens/registration.dart';
 import '../screens/order/order.dart';
 import '../screens/user_upgrade.dart';
+import '../screens/profile/profile_user_upgrade.dart';
 
 import '../screens/feed/feed_data_provider.dart';
 import '../utils/routes.dart';
@@ -42,6 +43,7 @@ class MyApp extends StatelessWidget {
           Routes.productManagement: (context) => ProductManagementScreen(),
           Routes.productUpload: (context) => ProductUploadScreen(),
           Routes.userUpgrade: (context) => UserUpgradeScreen(),
+          Routes.userUpgradeForm: (context) => UpgradeFormScreen(),          
         },
         onGenerateRoute: (settings) {
           if (settings.name == Routes.product) {

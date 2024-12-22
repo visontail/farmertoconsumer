@@ -1,3 +1,5 @@
+import 'package:farmertoconsumer/screens/feed/feed_data_provider.dart';
+import 'package:farmertoconsumer/utils/routes.dart';
 import 'package:farmertoconsumer/models/product.dart';
 import 'package:farmertoconsumer/models/productCategory.dart';
 import 'package:farmertoconsumer/models/quantityUnit.dart';
@@ -145,7 +147,8 @@ class _ProductModifyFormState extends State<ProductModifyForm> {
         leading: IconButton(
         icon: SvgPicture.asset('assets/icons/back-arrow.svg', width: 30, height: 30, color: white,),
         onPressed: () {
-          Navigator.pop(context); // navigate back
+            Provider.of<FeedDataProvider>(context, listen: false).reloadProducts();
+            Navigator.pushNamedAndRemoveUntil(context, Routes.feed, (_) => false);
           },
         ),
       backgroundColor: mainGreen,
@@ -158,8 +161,9 @@ class _ProductModifyFormState extends State<ProductModifyForm> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              
-              // Drag-and-drop
+
+            /*  
+            // Drag-and-drop
             Container(
               width: double.infinity,
               padding: const EdgeInsets.all(16.0),
@@ -185,7 +189,8 @@ class _ProductModifyFormState extends State<ProductModifyForm> {
                 ],
               ),
             ),
-            const SizedBox(height: 16),  
+            const SizedBox(height: 16),
+            */
             
             //name
             Text(
@@ -395,7 +400,8 @@ class _ProductModifyFormState extends State<ProductModifyForm> {
                             const SnackBar(content: Text('Product updated successfully!')),
                           );
 
-                          Navigator.pop(context); // navigate back to the previous screen
+                          Provider.of<FeedDataProvider>(context, listen: false).reloadProducts();
+                          Navigator.pushNamedAndRemoveUntil(context, Routes.feed, (_) => false);
                         } catch (e) {
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(content: Text('Failed to update product: $e')),
@@ -407,17 +413,21 @@ class _ProductModifyFormState extends State<ProductModifyForm> {
                         backgroundColor: mainGreen, foregroundColor: white),
                     child: const Text('Save Product'),
                   ),
+                  
+                  /*
                   const SizedBox(width: 16),
                   ElevatedButton(
                     onPressed: () {
                       // TODO: delete product
 
-                      Navigator.pop(context); // navigate back to the previous screen
+                      Provider.of<FeedDataProvider>(context, listen: false).reloadProducts();
+                      Navigator.pushNamedAndRemoveUntil(context, Routes.feed, (_) => false);
                     },
                     style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.red, foregroundColor: white),
                     child: const Text('Delete Product'),
                   ),
+                  */
                 ],
               ),
             ],

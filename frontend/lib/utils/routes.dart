@@ -8,5 +8,5 @@ class Routes {
   static const String productUpload = '/product_upload';
   static const String product = '/product';
   static const String userUpgrade = '/user_upgrade';
-  static const String userUpgradeForm = '/user_upgrade_form';
+  static const String userUpgradeForm = '/profile/profile_user_upgrade';
 }

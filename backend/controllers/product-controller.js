@@ -1,6 +1,10 @@
 const { Product, User } = require('../models');
 const { Op, where } = require('sequelize');
 const ControllerBase = require('./controller-base');
+const path = require("path");
+const fs = require("fs");
+const util = require("util");
+const { productImagesDir } = require('../config');
 
 class ProductController extends ControllerBase {
     async getAll(req, res) {
@@ -60,7 +64,7 @@ class ProductController extends ControllerBase {
             description,
             ProducerDataId: producerData.id,
         })
-        
+
         return this.fastify.ProductShaper.single.shape(product);
     }
 
@@ -88,6 +92,28 @@ class ProductController extends ControllerBase {
         }));
 
         return ProductShaper.single.shape(product);
+    }
+
+    async uploadImage(req, res) {
+        const data = await req.file();
+
+        if (!data) {
+            res.status(400).send({ error: 'No file uploaded' });
+            return;
+        }
+
+        const user = await User.findByPk(req.user.id);
+        const producerData = await user.getProducerData();
+        const product = await Product.findByPk(req.params.id);
+        if (product.ProducerDataId !== producerData.id) {
+            return res.status(401).send({ message: 'Unauthorized' });
+        }
+
+        const filePath = path.join(productImagesDir, `${product.id}.jpg`);
+
+        await util.promisify(fs.writeFile)(filePath, await data.toBuffer());
+
+        return res.status(200).send({ message: 'Image uploaded successfully' });
     }
 }
 
